@@ -1,0 +1,7 @@
+<h2>Seller login</h2>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p}}
+<button type="submit">Log In</button>
+</form>
+<p>Need an account? <a href="{% url 'signup' %}">Sign up here</a></p>

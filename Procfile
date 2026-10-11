@@ -1,0 +1,1 @@
+web: gunicorn blue_market_backend.wsgi --log-file -

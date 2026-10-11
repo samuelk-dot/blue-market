@@ -1,0 +1,16 @@
+{
+  "short_name": "BlueMarket",
+  "name": "BlueMarket — Buy, Sell & Commission Hub",
+  "icons": [
+    {
+      "src": "/src/assets/images/product_smartwatch_titanium_1791459209101.jpg",
+      "type": "image/jpeg",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#090d16",
+  "theme_color": "#1d4ed8",
+  "display": "standalone",
+  "orientation": "portrait"
+}

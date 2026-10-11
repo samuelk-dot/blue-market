@@ -1,0 +1,8 @@
+{
+  "name": "Samuel King'uri — Developer & Creator Studio",
+  "description": "Production-grade portfolio, web platform, and interactive live developer studio optimized for Google Chrome and modern browsers.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
