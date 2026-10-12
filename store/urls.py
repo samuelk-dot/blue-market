@@ -12,4 +12,5 @@ urlpatterns = [
     path('search/', views.search_products, name='search_products'),
     path('api/autocomplete/', views.product_autocomplete, name='product_autocomplete'),
     path('api/ai-ingest/', views.ai_universal_ingest, name='ai_universal_ingest'),
+    path('delete-product/<int:product_id>/', views.delete_product, name='delete_product'),
 ]

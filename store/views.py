@@ -179,3 +179,9 @@ def ai_universal_ingest(request):
             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
             
     return JsonResponse({'status': 'error', 'message': 'Only POST requests allowed'}, status=405)
+ @login_required
+def delete_product(request, product_id):
+    if request.method == 'POST':
+        product = get_object_or_404(Product, id=product_id)
+        product.delete()
+    return redirect('dashboard')   
