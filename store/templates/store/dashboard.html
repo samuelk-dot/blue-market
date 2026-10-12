@@ -3,65 +3,7 @@
 
 <div class="max-w-7xl mx-auto px-4 py-6 space-y-8">
 
-    <!-- 1. MOVING FEATURED SLIDER (CAROUSEL) -->
-    <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 text-white shadow-xl">
-        <div id="hero-slider" class="flex transition-transform duration-700 ease-in-out" style="transform: translateX(0%);">
-            
-            <!-- Slide 1 -->
-            <div class="min-w-full p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6">
-                <div class="space-y-4 max-w-xl">
-                    <span class="inline-block bg-amber-500 text-slate-900 font-extrabold text-xs px-3 py-1 rounded-full uppercase tracking-wider">
-                        ⚡ Newest Best Item
-                    </span>
-                    <h1 class="text-3xl md:text-5xl font-black tracking-tight leading-tight">
-                        Next-Gen Flagship Laptops & Tech
-                    </h1>
-                    <p class="text-slate-300 text-sm md:text-base">
-                        Get verified gear directly from top sellers with instant M-Pesa, Card, and PayPal payouts.
-                    </p>
-                    <a href="#products" class="inline-block bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-6 py-3 rounded-xl transition shadow-lg">
-                        Explore Deals <i class="fa-solid fa-arrow-right ml-1"></i>
-                    </a>
-                </div>
-                <div class="w-full md:w-1/2 flex justify-center">
-                    <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80" alt="Tech Banner" class="rounded-xl shadow-2xl max-h-64 object-cover">
-                </div>
-            </div>
-
-            <!-- Slide 2 -->
-            <div class="min-w-full p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6">
-                <div class="space-y-4 max-w-xl">
-                    <span class="inline-block bg-blue-500 text-white font-extrabold text-xs px-3 py-1 rounded-full uppercase tracking-wider">
-                        🛡️ Trusted Vendor Guarantee
-                    </span>
-                    <h1 class="text-3xl md:text-5xl font-black tracking-tight leading-tight">
-                        Zero-Fee Vendor Payouts
-                    </h1>
-                    <p class="text-slate-300 text-sm md:text-base">
-                        Receive instant payouts to your M-Pesa, Bank, PayPal, or Debit Card automatically.
-                    </p>
-                    <a href="#payout-settings" class="inline-block bg-blue-600 hover:bg-blue-500 text-white font-bold px-6 py-3 rounded-xl transition shadow-lg">
-                        Setup Payouts <i class="fa-solid fa-wallet ml-1"></i>
-                    </a>
-                </div>
-                <div class="w-full md:w-1/2 flex justify-center">
-                    <img src="https://images.unsplash.com/photo-1556742049-0a67dd35f29d?auto=format&fit=crop&w=800&q=80" alt="Vendor Banner" class="rounded-xl shadow-2xl max-h-64 object-cover">
-                </div>
-            </div>
-
-        </div>
-
-        <!-- Slider Controls -->
-        <button id="prevSlide" class="absolute left-3 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white w-10 h-10 rounded-full flex items-center justify-center transition">
-            <i class="fa-solid fa-chevron-left"></i>
-        </button>
-        <button id="nextSlide" class="absolute right-3 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white w-10 h-10 rounded-full flex items-center justify-center transition">
-            <i class="fa-solid fa-chevron-right"></i>
-        </button>
-    </div>
-
-
-    <!-- 2. MAIN TWO-COLUMN DASHBOARD GRID -->
+    <!-- MAIN TWO-COLUMN DASHBOARD GRID -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
         <!-- CARD 1: ADD NEW PRODUCT & AI INGESTER -->
@@ -79,12 +21,12 @@
             <!-- AI Universal Smart-Parse Box -->
             <div class="mb-6 p-4 bg-gradient-to-r from-indigo-50 to-blue-50 border border-indigo-200 rounded-xl shadow-sm">
                 <label class="block text-xs font-bold text-indigo-800 uppercase tracking-wider mb-1">
-                    🤖 AI Universal Stock Ingest
+                    🤖 AI Universal Ingest (Paste Raw Specs)
                 </label>
-                <p class="text-xs text-slate-500 mb-2">Paste raw text specs (pickups, bikes, laptops, watches) to auto-fill form fields.</p>
-                <textarea id="aiRawInput" rows="3" placeholder="e.g. Toyota Hilux 2.8L Diesel, KES 5,200,000, 4x4 Automatic, Double Cab..." class="w-full p-2.5 border border-slate-200 rounded-xl text-sm bg-white mb-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"></textarea>
+                <p class="text-xs text-slate-500 mb-2">Paste raw text specs, price, and image links to auto-fill form fields.</p>
+                <textarea id="aiRawInput" rows="3" placeholder="Paste any raw text here... (e.g., Toyota Hilux Double Cab 2.8L, 5,200,000 KES, https://...)" class="w-full p-2.5 border border-slate-200 rounded-xl text-sm bg-white mb-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"></textarea>
                 <button type="button" onclick="parseWithAI()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-xl text-xs transition flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-wand-magic-sparkles"></i> ✨ Auto-Parse & Fill Fields
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> ✨ Auto-Parse & Fill Form
                 </button>
             </div>
 
@@ -103,17 +45,17 @@
 
                 <div class="grid grid-cols-2 gap-4">
                     <div class="space-y-1">
-                        <label class="text-xs font-semibold text-slate-600 uppercase tracking-wider">Price (KES)</label>
+                        <label class="text-xs font-semibold text-slate-600 uppercase tracking-wider">Price (KSH / \$)</label>
                         <input type="number" step="0.01" name="price" id="product_price_input" required class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
                     </div>
                     <div class="space-y-1">
                         <label class="text-xs font-semibold text-slate-600 uppercase tracking-wider">Image URL</label>
-                        <input type="url" name="image_url" placeholder="https://..." class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        <input type="url" name="image_url" id="product_image_input" placeholder="https://..." class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
                     </div>
                 </div>
 
                 <button type="submit" name="add_product" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl text-sm transition shadow-md flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-box-archive"></i> Publish Product Live
+                    <i class="fa-solid fa-box-archive"></i> Publish Product
                 </button>
             </form>
         </div>
@@ -149,7 +91,7 @@
                 </div>
 
                 <div class="space-y-1">
-                    <label class="text-xs font-semibold text-slate-600 uppercase tracking-wider">Account Holder Name</label>
+                    <label class="text-xs font-semibold text-slate-600 uppercase tracking-wider">Account Holder Full Name</label>
                     <input type="text" name="account_holder_name" value="{{ vendor_profile.account_holder_name|default:'' }}" placeholder="Full legal name" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
                 </div>
 
@@ -192,7 +134,7 @@
         {% if products %}
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 {% for item in products %}
-                <div class="border border-slate-200 rounded-xl overflow-hidden hover:shadow-lg transition">
+                <div class="border border-slate-200 rounded-xl overflow-hidden hover:shadow-lg transition flex flex-col">
                     {% if item.image_url %}
                         <img src="{{ item.image_url }}" alt="{{ item.name }}" class="h-44 w-full object-cover">
                     {% else %}
@@ -223,7 +165,6 @@
 
 <!-- JAVASCRIPT LOGIC -->
 <script>
-// AI Universal Smart-Parse Function
 function parseWithAI() {
     const rawText = document.getElementById('aiRawInput').value;
     if(!rawText) {
@@ -245,44 +186,20 @@ function parseWithAI() {
         }
     }
     
-    // Use first line as title name
+    // Auto-detect image URL if http link is present in text
+    const urlMatch = rawText.match(/https?:\/\/[^\s]+/g);
+    if(urlMatch && urlMatch.length > 0) {
+        const imageField = document.getElementById('product_image_input');
+        if(imageField) imageField.value = urlMatch[0];
+    }
+    
+    // Use first line as product name title
     const lines = rawText.split('\n');
     const nameField = document.getElementById('product_name_input');
     if(nameField) nameField.value = lines[0].substring(0, 50);
     
-    alert('✨ AI successfully parsed text into fields!');
+    alert('✨ AI successfully parsed name, price, image URL, and description!');
 }
-
-// Hero Slider Script
-const slider = document.getElementById('hero-slider');
-const prevBtn = document.getElementById('prevSlide');
-const nextBtn = document.getElementById('nextSlide');
-let currentSlide = 0;
-const totalSlides = 2;
-
-function updateSlider() {
-    if(slider) slider.style.transform = `translateX(-${currentSlide * 100}%)`;
-}
-
-if(nextBtn) {
-    nextBtn.addEventListener('click', () => {
-        currentSlide = (currentSlide + 1) % totalSlides;
-        updateSlider();
-    });
-}
-
-if(prevBtn) {
-    prevBtn.addEventListener('click', () => {
-        currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
-        updateSlider();
-    });
-}
-
-// Auto-slide every 5 seconds
-setInterval(() => {
-    currentSlide = (currentSlide + 1) % totalSlides;
-    updateSlider();
-}, 5000);
 </script>
 
 {% endblock %}
