@@ -1,6 +1,6 @@
 {% extends 'store/base.html' %}
-
 {% block content %}
+
 <div class="max-w-7xl mx-auto px-4 py-6 space-y-8">
 
     <!-- 1. MOVING FEATURED SLIDER (CAROUSEL) -->
@@ -19,12 +19,12 @@
                     <p class="text-slate-300 text-sm md:text-base">
                         Get verified gear directly from top sellers with instant M-Pesa, Card, and PayPal payouts.
                     </p>
-                    <a href="#products" class="inline-block bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-6 py-3 rounded-xl shadow-lg transition-transform hover:-translate-y-0.5">
+                    <a href="#products" class="inline-block bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-6 py-3 rounded-xl transition shadow-lg">
                         Explore Deals <i class="fa-solid fa-arrow-right ml-1"></i>
                     </a>
                 </div>
                 <div class="w-full md:w-1/2 flex justify-center">
-                    <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80" alt="Featured Laptop" class="rounded-xl shadow-2xl object-cover h-64 w-full md:w-96 transform hover:scale-105 transition-transform duration-500">
+                    <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80" alt="Tech Banner" class="rounded-xl shadow-2xl max-h-64 object-cover">
                 </div>
             </div>
 
@@ -38,36 +38,37 @@
                         Zero-Fee Vendor Payouts
                     </h1>
                     <p class="text-slate-300 text-sm md:text-base">
-                        Receive instant payouts to your M-Pesa, Bank, PayPal, or Debit Card account seamlessly.
+                        Receive instant payouts to your M-Pesa, Bank, PayPal, or Debit Card automatically.
                     </p>
-                    <a href="#payout-settings" class="inline-block bg-blue-600 hover:bg-blue-500 text-white font-bold px-6 py-3 rounded-xl shadow-lg transition-transform hover:-translate-y-0.5">
+                    <a href="#payout-settings" class="inline-block bg-blue-600 hover:bg-blue-500 text-white font-bold px-6 py-3 rounded-xl transition shadow-lg">
                         Setup Payouts <i class="fa-solid fa-wallet ml-1"></i>
                     </a>
                 </div>
                 <div class="w-full md:w-1/2 flex justify-center">
-                    <img src="https://images.unsplash.com/photo-1556742049-0a67dd35f29d?auto=format&fit=crop&w=800&q=80" alt="Digital Payments" class="rounded-xl shadow-2xl object-cover h-64 w-full md:w-96 transform hover:scale-105 transition-transform duration-500">
+                    <img src="https://images.unsplash.com/photo-1556742049-0a67dd35f29d?auto=format&fit=crop&w=800&q=80" alt="Vendor Banner" class="rounded-xl shadow-2xl max-h-64 object-cover">
                 </div>
             </div>
 
         </div>
 
-        <!-- Slider Navigation Controls -->
-        <button id="prevSlide" class="absolute left-3 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-sm transition-colors">
+        <!-- Slider Controls -->
+        <button id="prevSlide" class="absolute left-3 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white w-10 h-10 rounded-full flex items-center justify-center transition">
             <i class="fa-solid fa-chevron-left"></i>
         </button>
-        <button id="nextSlide" class="absolute right-3 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-sm transition-colors">
+        <button id="nextSlide" class="absolute right-3 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white w-10 h-10 rounded-full flex items-center justify-center transition">
             <i class="fa-solid fa-chevron-right"></i>
         </button>
     </div>
 
-    <!-- MAIN TWO-COLUMN DASHBOARD GRID -->
+
+    <!-- 2. MAIN TWO-COLUMN DASHBOARD GRID -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
-        <!-- CARD 1: ADD NEW PRODUCT -->
+        <!-- CARD 1: ADD NEW PRODUCT & AI INGESTER -->
         <div class="bg-white rounded-2xl p-6 shadow-md border border-slate-100 hover:shadow-lg transition-shadow">
             <div class="flex items-center gap-3 mb-6 pb-3 border-b border-slate-100">
-                <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-lg">
-                    <i class="fa-solid fa-plus"></i>
+                <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center font-bold">
+                    <i class="fa-solid fa-plus text-lg"></i>
                 </div>
                 <div>
                     <h2 class="text-xl font-bold text-slate-800">Add New Product</h2>
@@ -75,47 +76,54 @@
                 </div>
             </div>
 
-            <!-- AI Smart-Parse Quick Box -->
-            <div class="mb-4 p-4 bg-indigo-50 border border-indigo-200 rounded-xl">
-                <label class="block text-xs font-bold text-indigo-700 uppercase mb-1">🤖 AI Universal Ingest (Paste Raw Specs)</label>
-                <textarea id="aiRawInput" rows="3" placeholder="Paste any raw text here... (e.g., Toyota Hilux Double Cab 2.8L, 5,200,000 KES...)" class="w-full p-2 border rounded text-sm bg-white mb-2"></textarea>
-                <button type="button" onclick="parseWithAI()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded text-xs font-bold">✨ Auto-Parse & Fill Form</button>
+            <!-- AI Universal Smart-Parse Box -->
+            <div class="mb-6 p-4 bg-gradient-to-r from-indigo-50 to-blue-50 border border-indigo-200 rounded-xl shadow-sm">
+                <label class="block text-xs font-bold text-indigo-800 uppercase tracking-wider mb-1">
+                    🤖 AI Universal Stock Ingest
+                </label>
+                <p class="text-xs text-slate-500 mb-2">Paste raw text specs (pickups, bikes, laptops, watches) to auto-fill form fields.</p>
+                <textarea id="aiRawInput" rows="3" placeholder="e.g. Toyota Hilux 2.8L Diesel, KES 5,200,000, 4x4 Automatic, Double Cab..." class="w-full p-2.5 border border-slate-200 rounded-xl text-sm bg-white mb-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"></textarea>
+                <button type="button" onclick="parseWithAI()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-xl text-xs transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> ✨ Auto-Parse & Fill Fields
+                </button>
             </div>
 
+            <!-- Product Form -->
             <form method="POST" class="space-y-4">
                 {% csrf_token %}
                 <div class="space-y-1">
                     <label class="text-xs font-semibold text-slate-600 uppercase tracking-wider">Product Name</label>
-                    <input type="text" name="name" required class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                    <input type="text" name="name" id="product_name_input" required class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
                 </div>
 
                 <div class="space-y-1">
                     <label class="text-xs font-semibold text-slate-600 uppercase tracking-wider">Description</label>
-                    <textarea name="description" rows="3" required class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"></textarea>
+                    <textarea name="description" id="product_desc_input" rows="3" required class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
                 </div>
 
                 <div class="grid grid-cols-2 gap-4">
                     <div class="space-y-1">
-                        <label class="text-xs font-semibold text-slate-600 uppercase tracking-wider">Price (KSh / \$)</label>
-                        <input type="number" step="0.01" name="price" required class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                        <label class="text-xs font-semibold text-slate-600 uppercase tracking-wider">Price (KES)</label>
+                        <input type="number" step="0.01" name="price" id="product_price_input" required class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
                     </div>
                     <div class="space-y-1">
                         <label class="text-xs font-semibold text-slate-600 uppercase tracking-wider">Image URL</label>
-                        <input type="url" name="image_url" placeholder="https://..." class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                        <input type="url" name="image_url" placeholder="https://..." class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
                     </div>
                 </div>
 
-                <button type="submit" name="add_product" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl shadow-md transition-colors flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-box-archive"></i> Publish Product
+                <button type="submit" name="add_product" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl text-sm transition shadow-md flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-box-archive"></i> Publish Product Live
                 </button>
             </form>
         </div>
 
-        <!-- CARD 2: VENDOR PAYOUT SETTINGS (WHERE TO RECEIVE MONEY) -->
+
+        <!-- CARD 2: VENDOR PAYOUT SETTINGS -->
         <div id="payout-settings" class="bg-white rounded-2xl p-6 shadow-md border border-slate-100 hover:shadow-lg transition-shadow">
             <div class="flex items-center gap-3 mb-6 pb-3 border-b border-slate-100">
-                <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold text-lg">
-                    <i class="fa-solid fa-building-columns"></i>
+                <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold">
+                    <i class="fa-solid fa-building-columns text-lg"></i>
                 </div>
                 <div>
                     <h2 class="text-xl font-bold text-slate-800">Payout Account Settings</h2>
@@ -127,47 +135,47 @@
                 {% csrf_token %}
                 <div class="space-y-1">
                     <label class="text-xs font-semibold text-slate-600 uppercase tracking-wider">Store Name</label>
-                    <input type="text" name="store_name" value="{{ vendor_profile.store_name|default:'' }}" placeholder="e.g. Alpha Tech Store" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm">
+                    <input type="text" name="store_name" value="{{ vendor_profile.store_name|default:'' }}" placeholder="e.g. Alpha Tech Store" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
                 </div>
 
                 <div class="space-y-1">
                     <label class="text-xs font-semibold text-slate-600 uppercase tracking-wider">Preferred Payout Method</label>
-                    <select name="payout_method" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm bg-white">
+                    <select name="payout_method" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
                         <option value="mpesa" {% if vendor_profile.payout_method == 'mpesa' %}selected{% endif %}>🟢 M-Pesa Mobile Money</option>
-                        <option value="paypal" {% if vendor_profile.payout_method == 'paypal' %}selected{% endif %}>🔵 PayPal Account</option>
-                        <option value="card" {% if vendor_profile.payout_method == 'card' %}selected{% endif %}>💳 Debit / Credit Card Direct Payout</option>
+                        <option value="paypal" {% if vendor_profile.payout_method == 'paypal' %}selected{% endif %}>🔵 PayPal</option>
+                        <option value="card" {% if vendor_profile.payout_method == 'card' %}selected{% endif %}>💳 Credit / Debit Card</option>
                         <option value="bank" {% if vendor_profile.payout_method == 'bank' %}selected{% endif %}>🏦 Bank Transfer</option>
                     </select>
                 </div>
 
                 <div class="space-y-1">
-                    <label class="text-xs font-semibold text-slate-600 uppercase tracking-wider">Account Holder Full Name</label>
-                    <input type="text" name="account_holder_name" value="{{ vendor_profile.account_holder_name|default:'' }}" placeholder="Full legal name" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm">
+                    <label class="text-xs font-semibold text-slate-600 uppercase tracking-wider">Account Holder Name</label>
+                    <input type="text" name="account_holder_name" value="{{ vendor_profile.account_holder_name|default:'' }}" placeholder="Full legal name" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
                 </div>
 
                 <div class="grid grid-cols-2 gap-4">
                     <div class="space-y-1">
                         <label class="text-xs font-semibold text-slate-600 uppercase tracking-wider">M-Pesa Number</label>
-                        <input type="text" name="mpesa_phone_number" value="{{ vendor_profile.mpesa_phone_number|default:'' }}" placeholder="07XXXXXXXX" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm">
+                        <input type="text" name="mpesa_phone_number" value="{{ vendor_profile.mpesa_phone_number|default:'' }}" placeholder="07XXXXXXXX" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
                     </div>
                     <div class="space-y-1">
                         <label class="text-xs font-semibold text-slate-600 uppercase tracking-wider">PayPal Email</label>
-                        <input type="email" name="paypal_email" value="{{ vendor_profile.paypal_email|default:'' }}" placeholder="user@email.com" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm">
+                        <input type="email" name="paypal_email" value="{{ vendor_profile.paypal_email|default:'' }}" placeholder="user@email.com" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
                     </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-4">
                     <div class="space-y-1">
                         <label class="text-xs font-semibold text-slate-600 uppercase tracking-wider">Card / Bank Acct #</label>
-                        <input type="text" name="card_or_account_number" value="{{ vendor_profile.card_or_account_number|default:'' }}" placeholder="Card or Acct #" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm">
+                        <input type="text" name="card_or_account_number" value="{{ vendor_profile.card_or_account_number|default:'' }}" placeholder="Card or Acct #" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
                     </div>
                     <div class="space-y-1">
                         <label class="text-xs font-semibold text-slate-600 uppercase tracking-wider">Bank Name</label>
-                        <input type="text" name="bank_name" value="{{ vendor_profile.bank_name|default:'' }}" placeholder="e.g. KCB / Equity" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm">
+                        <input type="text" name="bank_name" value="{{ vendor_profile.bank_name|default:'' }}" placeholder="e.g. KCB / Equity" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
                     </div>
                 </div>
 
-                <button type="submit" name="update_payout" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold py-3 rounded-xl shadow-md transition-colors flex items-center justify-center gap-2">
+                <button type="submit" name="update_payout" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold py-3 rounded-xl text-sm transition shadow-md flex items-center justify-center gap-2">
                     <i class="fa-solid fa-shield-check"></i> Save Payout Details
                 </button>
             </form>
@@ -175,13 +183,16 @@
 
     </div>
 
-    <!-- LISTED PRODUCTS SECTION -->
+
+    <!-- 3. LISTED PRODUCTS SECTION -->
     <div id="products" class="bg-white rounded-2xl p-6 shadow-md border border-slate-100">
-        <h2 class="text-xl font-bold text-slate-800 mb-4">Your Listed Products</h2>
+        <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+            <i class="fa-solid fa-boxes-stacked text-blue-600"></i> Your Listed Products
+        </h2>
         {% if products %}
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 {% for item in products %}
-                <div class="border border-slate-200 rounded-xl overflow-hidden hover:shadow-lg transition-shadow bg-white flex flex-col justify-between">
+                <div class="border border-slate-200 rounded-xl overflow-hidden hover:shadow-lg transition">
                     {% if item.image_url %}
                         <img src="{{ item.image_url }}" alt="{{ item.name }}" class="h-44 w-full object-cover">
                     {% else %}
@@ -194,8 +205,8 @@
                         <p class="text-slate-500 text-xs line-clamp-2">{{ item.description }}</p>
                     </div>
                     <div class="p-4 pt-0 flex items-center justify-between border-t border-slate-100 mt-2">
-                        <span class="text-lg font-black text-blue-600">KSh {{ item.price }}</span>
-                        <span class="text-xs bg-emerald-100 text-emerald-700 font-bold px-2.5 py-1 rounded-full">Active</span>
+                        <span class="text-lg font-black text-blue-600">KES {{ item.price }}</span>
+                        <span class="text-xs bg-emerald-100 text-emerald-700 font-bold px-2.5 py-1 rounded-md">Live</span>
                     </div>
                 </div>
                 {% endfor %}
@@ -203,96 +214,16 @@
         {% else %}
             <div class="text-center py-12 text-slate-400 space-y-2">
                 <i class="fa-solid fa-box-open text-4xl mb-2"></i>
-                <p>No products listed yet. Create one above!</p>
+                <p>No products listed yet. Paste raw text above or create one manually!</p>
             </div>
         {% endif %}
     </div>
 
 </div>
 
-<!-- CAROUSEL SLIDER SCRIPT -->
+<!-- JAVASCRIPT LOGIC -->
 <script>
-    const slider = document.getElementById('hero-slider');
-    const prevBtn = document.getElementById('prevSlide');
-    const nextBtn = document.getElementById('nextSlide');
-    let currentSlide = 0;
-    const totalSlides = 2;
-
-    function updateSlider() {
-        slider.style.transform = `translateX(-${currentSlide * 100}%)`;
-    }
-
-    nextBtn.addEventListener('click', () => {
-        currentSlide = (currentSlide + 1) % totalSlides;
-        updateSlider();
-    });
-
-    prevBtn.addEventListener('click', () => {
-        currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
-        updateSlider();
-    });
-
-    // Auto-slide every 5 seconds
-    setInterval(() => {
-        currentSlide = (currentSlide + 1) % totalSlides;
-        updateSlider();
-    }, 5000);
-</script>
-
-    <h2 class="text-2xl font-bold mb-6 text-gray-800">🤝 Partner & Admin Dashboard</h2>
-    
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- AI Universal Stock Ingester -->
-        <div class="bg-white p-6 rounded-xl shadow-md border">
-            <h3 class="text-lg font-bold text-gray-800 mb-2">🤖 AI Universal Stock Ingester</h3>
-            <p class="text-sm text-gray-500 mb-4">Paste any raw car specs, laptop details, or gear description. The system will publish it live instantly.</p>
-            
-            <form id="aiIngestForm">
-                <input type="text" id="itemName" placeholder="Item Name (e.g., Toyota Hilux or MacBook Pro)" class="w-full p-2 border rounded mb-3 text-sm">
-                <input type="number" id="itemPrice" placeholder="Price in KES" class="w-full p-2 border rounded mb-3 text-sm">
-                <textarea id="rawText" placeholder="Paste full specs or description here..." rows="4" class="w-full p-2 border rounded mb-3 text-sm"></textarea>
-                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded font-semibold w-full text-sm">Publish Live to BLUE MARKET</button>
-            </form>
-        </div>
-
-        <!-- Payout Settings Section -->
-        <div class="bg-white p-6 rounded-xl shadow-md border">
-            <h3 class="text-lg font-bold text-gray-800 mb-2">🏛️ Payout Account Settings</h3>
-            <p class="text-sm text-gray-500 mb-4">Configure where you receive sales payouts automatically.</p>
-            
-            <div class="mb-3">
-                <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Store Name</label>
-                <input type="text" value="BLUE MARKET Official" class="w-full p-2 border rounded text-sm bg-gray-50" readonly>
-            </div>
-            <div class="mb-3">
-                <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Preferred Payout Method</label>
-                <input type="text" value="M-Pesa Mobile Money (0741578860)" class="w-full p-2 border rounded text-sm bg-gray-50" readonly>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-document.getElementById('aiIngestForm').addEventListener('submit', async function(e) {
-  e.preventDefault();
-  const name = document.getElementById('itemName').value;
-  const price = document.getElementById('itemPrice').value;
-  const raw_text = document.getElementById('rawText').value;
-
-  const response = await fetch('/api/ai-ingest/', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name, price, raw_text })
-  });
-  
-  const result = await response.json();
-  if(result.status === 'success') {
-    alert('Success! Item is now live on BLUE MARKET.');
-    location.reload();
-  } else {
-    alert('Error: ' + result.message);
-  }
-});
+// AI Universal Smart-Parse Function
 function parseWithAI() {
     const rawText = document.getElementById('aiRawInput').value;
     if(!rawText) {
@@ -301,24 +232,57 @@ function parseWithAI() {
     }
     
     // Auto-fill description
-    const descField = document.querySelector('textarea[name="description"]');
+    const descField = document.getElementById('product_desc_input');
     if(descField) descField.value = rawText;
     
     // Auto-detect price numbers
     const numbers = rawText.match(/\d[\d,\.]*/g);
     if(numbers && numbers.length > 0) {
         const possiblePrice = numbers[numbers.length - 1].replace(/,/g, '');
-        const priceField = document.querySelector('input[name="price"]');
-        if(priceField && possiblePrice > 1000) {
+        const priceField = document.getElementById('product_price_input');
+        if(priceField && parseFloat(possiblePrice) > 1000) {
             priceField.value = possiblePrice;
         }
     }
     
-    // Use the first line as the title name
+    // Use first line as title name
     const lines = rawText.split('\n');
-    const nameField = document.querySelector('input[name="name"]');
+    const nameField = document.getElementById('product_name_input');
     if(nameField) nameField.value = lines[0].substring(0, 50);
-    alert('AI successfully parsed text into fields!');
+    
+    alert('✨ AI successfully parsed text into fields!');
 }
+
+// Hero Slider Script
+const slider = document.getElementById('hero-slider');
+const prevBtn = document.getElementById('prevSlide');
+const nextBtn = document.getElementById('nextSlide');
+let currentSlide = 0;
+const totalSlides = 2;
+
+function updateSlider() {
+    if(slider) slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+}
+
+if(nextBtn) {
+    nextBtn.addEventListener('click', () => {
+        currentSlide = (currentSlide + 1) % totalSlides;
+        updateSlider();
+    });
+}
+
+if(prevBtn) {
+    prevBtn.addEventListener('click', () => {
+        currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+        updateSlider();
+    });
+}
+
+// Auto-slide every 5 seconds
+setInterval(() => {
+    currentSlide = (currentSlide + 1) % totalSlides;
+    updateSlider();
+}, 5000);
 </script>
+
 {% endblock %}
