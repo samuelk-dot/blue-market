@@ -8,6 +8,24 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Prevent horizontal overflow on mobile -->
+    <style>
+      *, *::before, *::after {
+        box-sizing: border-box;
+      }
+
+      body, html {
+        max-width: 100%;
+        overflow-x: hidden;
+        margin: 0;
+        padding: 0;
+      }
+
+      img, video, iframe {
+        max-width: 100%;
+        height: auto;
+      }
+    </style>
 </head>
 <body class="bg-slate-50 text-slate-900 font-sans flex flex-col min-h-screen selection:bg-blue-600 selection:text-white">
 
