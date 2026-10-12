@@ -23,10 +23,10 @@
                 <label class="block text-xs font-bold text-indigo-800 uppercase tracking-wider mb-1">
                     🤖 AI Universal Ingest (Paste Raw Specs)
                 </label>
-                <p class="text-xs text-slate-500 mb-2">Paste raw text specs, price, and image links to auto-fill form fields.</p>
-                <textarea id="aiRawInput" rows="3" placeholder="Paste any raw text here... (e.g., Toyota Hilux Double Cab 2.8L, 5,200,000 KES, https://...)" class="w-full p-2.5 border border-slate-200 rounded-xl text-sm bg-white mb-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"></textarea>
-                <button type="button" onclick="parseWithAI()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-xl text-xs transition flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-wand-magic-sparkles"></i> ✨ Auto-Parse & Fill Form
+                <p class="text-xs text-slate-500 mb-2">Paste multiple items separated by --- to bulk publish live instantly.</p>
+                <textarea id="aiRawInput" rows="4" placeholder="Paste raw text here... (e.g. Item 1 name, price, image URL --- Item 2 name, price, image URL)" class="w-full p-2.5 border border-slate-200 rounded-xl text-sm bg-white mb-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"></textarea>
+                <button type="button" onclick="parseAndAutoPublishAll()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> ✨ Auto-Parse & Bulk Publish All Items Live
                 </button>
             </div>
 
@@ -55,7 +55,7 @@
                 </div>
 
                 <button type="submit" name="add_product" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl text-sm transition shadow-md flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-box-archive"></i> Publish Product
+                    <i class="fa-solid fa-box-archive"></i> Publish Product Live
                 </button>
             </form>
         </div>
@@ -163,42 +163,83 @@
 
 </div>
 
-<!-- JAVASCRIPT LOGIC -->
+<!-- JAVASCRIPT LOGIC FOR BULK AI AUTO-PUBLISHING -->
 <script>
-function parseWithAI() {
-    const rawText = document.getElementById('aiRawInput').value;
-    if(!rawText) {
-        alert('Please paste some raw text first!');
+async function parseAndAutoPublishAll() {
+    const rawText = document.getElementById('aiRawInput').value.trim();
+    if (!rawText) {
+        alert('Please paste item details first!');
         return;
     }
-    
-    // Auto-fill description
-    const descField = document.getElementById('product_desc_input');
-    if(descField) descField.value = rawText;
-    
-    // Auto-detect price numbers
-    const numbers = rawText.match(/\d[\d,\.]*/g);
-    if(numbers && numbers.length > 0) {
-        const possiblePrice = numbers[numbers.length - 1].replace(/,/g, '');
-        const priceField = document.getElementById('product_price_input');
-        if(priceField && parseFloat(possiblePrice) > 1000) {
-            priceField.value = possiblePrice;
+
+    // Splits multiple items separated by '---' or double line breaks into separate products
+    let rawBlocks = rawText.split(/---|\n\s*\n/).map(b => b.trim()).filter(b => b.length > 0);
+
+    if (rawBlocks.length === 0) {
+        alert('No valid items found.');
+        return;
+    }
+
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    let successCount = 0;
+
+    for (let i = 0; i < rawBlocks.length; i++) {
+        const block = rawBlocks[i];
+        const lines = block.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+
+        // First line becomes product name
+        const name = lines[0] ? lines[0].substring(0, 100) : `Parsed Item ${i + 1}`;
+
+        // Entire block becomes description
+        const description = block;
+
+        // Auto-detect price (looks for numbers > 1000)
+        let price = 0;
+        const numbers = block.match(/\d[\d,\.]*/g);
+        if (numbers) {
+            for (let numStr of numbers) {
+                const cleanNum = parseFloat(numStr.replace(/,/g, ''));
+                if (cleanNum > 1000) {
+                    price = cleanNum;
+                    break;
+                }
+            }
+        }
+
+        // Auto-detect image URL link
+        let imageUrl = '';
+        const urlMatch = block.match(/https?:\/\/[^\s]+/g);
+        if (urlMatch && urlMatch.length > 0) {
+            imageUrl = urlMatch[0];
+        }
+
+        // Prepare data to send to backend
+        const formData = new FormData();
+        formData.append('add_product', '1');
+        formData.append('name', name);
+        formData.append('description', description);
+        formData.append('price', price);
+        formData.append('image_url', imageUrl);
+
+        try {
+            const response = await fetch(window.location.href, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrfToken
+                },
+                body: formData
+            });
+
+            if (response.ok) {
+                successCount++;
+            }
+        } catch (err) {
+            console.error(`Error auto-publishing item ${i + 1}:`, err);
         }
     }
-    
-    // Auto-detect image URL if http link is present in text
-    const urlMatch = rawText.match(/https?:\/\/[^\s]+/g);
-    if(urlMatch && urlMatch.length > 0) {
-        const imageField = document.getElementById('product_image_input');
-        if(imageField) imageField.value = urlMatch[0];
-    }
-    
-    // Use first line as product name title
-    const lines = rawText.split('\n');
-    const nameField = document.getElementById('product_name_input');
-    if(nameField) nameField.value = lines[0].substring(0, 50);
-    
-    alert('✨ AI successfully parsed name, price, image URL, and description!');
+
+    alert(`✨ Success! ${successCount} separate item(s) were automatically created and published live!`);
+    window.location.reload();
 }
 </script>
 
