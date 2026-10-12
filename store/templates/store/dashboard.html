@@ -231,4 +231,63 @@
         updateSlider();
     }, 5000);
 </script>
+
+{% extends 'store/base.html' %}
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <h2 class="text-2xl font-bold mb-6 text-gray-800">🤝 Partner & Admin Dashboard</h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- AI Universal Stock Ingester -->
+        <div class="bg-white p-6 rounded-xl shadow-md border">
+            <h3 class="text-lg font-bold text-gray-800 mb-2">🤖 AI Universal Stock Ingester</h3>
+            <p class="text-sm text-gray-500 mb-4">Paste any raw car specs, laptop details, or gear description. The system will publish it live instantly.</p>
+            
+            <form id="aiIngestForm">
+                <input type="text" id="itemName" placeholder="Item Name (e.g., Toyota Hilux or MacBook Pro)" class="w-full p-2 border rounded mb-3 text-sm">
+                <input type="number" id="itemPrice" placeholder="Price in KES" class="w-full p-2 border rounded mb-3 text-sm">
+                <textarea id="rawText" placeholder="Paste full specs or description here..." rows="4" class="w-full p-2 border rounded mb-3 text-sm"></textarea>
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded font-semibold w-full text-sm">Publish Live to BLUE MARKET</button>
+            </form>
+        </div>
+
+        <!-- Payout Settings Section -->
+        <div class="bg-white p-6 rounded-xl shadow-md border">
+            <h3 class="text-lg font-bold text-gray-800 mb-2">🏛️ Payout Account Settings</h3>
+            <p class="text-sm text-gray-500 mb-4">Configure where you receive sales payouts automatically.</p>
+            
+            <div class="mb-3">
+                <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Store Name</label>
+                <input type="text" value="BLUE MARKET Official" class="w-full p-2 border rounded text-sm bg-gray-50" readonly>
+            </div>
+            <div class="mb-3">
+                <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Preferred Payout Method</label>
+                <input type="text" value="M-Pesa Mobile Money (0741578860)" class="w-full p-2 border rounded text-sm bg-gray-50" readonly>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('aiIngestForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const name = document.getElementById('itemName').value;
+  const price = document.getElementById('itemPrice').value;
+  const raw_text = document.getElementById('rawText').value;
+
+  const response = await fetch('/api/ai-ingest/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, price, raw_text })
+  });
+  
+  const result = await response.json();
+  if(result.status === 'success') {
+    alert('Success! Item is now live on BLUE MARKET.');
+    location.reload();
+  } else {
+    alert('Error: ' + result.message);
+  }
+});
+</script>
 {% endblock %}

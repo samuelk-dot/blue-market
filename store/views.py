@@ -5,6 +5,7 @@ from django.contrib.auth import login
 from django.db.models import Q
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from .models import Product
 from .models import Product, VendorProfile, CartItem, Order
 from .forms import ProductForm, VendorProfileForm
 
@@ -151,4 +152,30 @@ def api_add_third_party_vehicle(request):
             }, status=201)
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+    return JsonResponse({'status': 'error', 'message': 'Only POST requests allowed'}, status=405)
+
+@csrf_exempt
+def ai_universal_ingest(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            raw_text = data.get('raw_text', '')
+            custom_price = data.get('price', 0)
+            custom_name = data.get('name', 'Dynamic Item')
+            
+            product = Product.objects.create(
+                name=custom_name,
+                description=raw_text,
+                price=custom_price
+            )
+            
+            return JsonResponse({
+                'status': 'success',
+                'message': 'Item dynamically parsed and published live!',
+                'product_id': product.id,
+                'title': product.name
+            }, status=201)
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+            
     return JsonResponse({'status': 'error', 'message': 'Only POST requests allowed'}, status=405)
