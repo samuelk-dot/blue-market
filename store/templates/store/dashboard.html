@@ -239,9 +239,6 @@
     }, 5000);
 </script>
 
-{% extends 'store/base.html' %}
-
-<div class="container mx-auto px-4 py-8">
     <h2 class="text-2xl font-bold mb-6 text-gray-800">🤝 Partner & Admin Dashboard</h2>
     
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -321,7 +318,6 @@ function parseWithAI() {
     const lines = rawText.split('\n');
     const nameField = document.querySelector('input[name="name"]');
     if(nameField) nameField.value = lines[0].substring(0, 50);
-    
     alert('AI successfully parsed text into fields!');
 }
 </script>
