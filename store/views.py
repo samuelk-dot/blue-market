@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login
 from django.db.models import Q
+from django.http import JsonResponse
 from .models import Product, VendorProfile, CartItem, Order
 from .forms import ProductForm, VendorProfileForm
 
@@ -108,3 +109,26 @@ def login_view(request):
     else:
         form = AuthenticationForm()
     return render(request, 'store/login.html', {'form': form})
+
+def search_products(request):
+    query = request.GET.get('q', '').strip()
+    products = Product.objects.all()
+
+    if query:
+        products = products.filter(
+            Q(name__icontains=query) |
+            Q(description__icontains=query)
+        )
+
+    return render(request, 'store/search_results.html', {
+        'products': products,
+        'query': query
+    })
+    
+def product_autocomplete(request):
+    query = request.GET.get('term', '')
+    results = []
+    if query:
+        matches = Product.objects.filter(title__icontains=query)[:5]
+        results = [{'id': p.id, 'title': p.title, 'price': p.price} for p in matches]
+    return JsonResponse(results, safe=False)

@@ -146,5 +146,35 @@
         </div>
     </footer>
 
+    <div style="position: relative; width: 100%; max-width: 400px; margin: 10px auto;">
+    <input type="text" id="search-input" placeholder="Search laptops, bikes, cars..." autocomplete="off" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
+    <div id="suggestions-box" style="position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #ddd; border-radius: 6px; z-index: 1000; box-shadow: 0 4px 6px rgba(0,0,0,0.1);"></div>
+</div>
+
+<script>
+  const input = document.getElementById('search-input');
+  const suggestions = document.getElementById('suggestions-box');
+
+  input.addEventListener('input', async () => {
+    const query = input.value.trim();
+    if (query.length < 2) {
+      suggestions.innerHTML = '';
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/autocomplete/?term=${query}`);
+      const data = await response.json();
+
+      suggestions.innerHTML = data.map(item => `
+        <a href="/product/${item.id}/" style="display: block; padding: 10px; color: #333; text-decoration: none; border-bottom: 1px solid #f0f0f0;">
+          ${item.title} - KSh ${item.price}
+        </a>
+      `).join('');
+    } catch (err) {
+      console.error(err);
+    }
+  });
+</script>
 </body>
 </html>

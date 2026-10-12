@@ -9,4 +9,6 @@ urlpatterns = [
     path('place-order/', views.place_order, name='place_order'),
     path('signup/', views.signup_view, name='signup'),
     path('login/', views.login_view, name='login'),
+    path('search/', views.search_products, name='search_products'),
+    path('api/autocomplete/', views.product_autocomplete, name='product_autocomplete'),
 ]
