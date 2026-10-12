@@ -26,7 +26,7 @@
                 <p class="text-xs text-slate-500 mb-2">Paste multiple items separated by --- to bulk publish live instantly.</p>
                 <textarea id="aiRawInput" rows="4" placeholder="Paste raw text here... (e.g. Item 1 name, price, image URL --- Item 2 name, price, image URL)" class="w-full p-2.5 border border-slate-200 rounded-xl text-sm bg-white mb-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"></textarea>
                 <button type="button" onclick="parseAndAutoPublishAll()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-wand-magic-sparkles"></i> ✨ Auto-Parse & Bulk Publish All Items Live
+                  <i class="fa-solid fa-wand-magic-sparkles"></i> ✨ Auto-Parse & Bulk Publish All Items Live
                 </button>
             </div>
 
@@ -163,7 +163,7 @@
 
 </div>
 
-<!-- JAVASCRIPT LOGIC FOR BULK AI AUTO-PUBLISHING -->
+<!-- JAVASCRIPT LOGIC -->
 <script>
 async function parseAndAutoPublishAll() {
     const rawText = document.getElementById('aiRawInput').value.trim();
@@ -172,7 +172,7 @@ async function parseAndAutoPublishAll() {
         return;
     }
 
-    // Splits multiple items separated by '---' or double line breaks into separate products
+    // Split raw text into separate product blocks using '---'
     let rawBlocks = rawText.split(/---|\n\s*\n/).map(b => b.trim()).filter(b => b.length > 0);
 
     if (rawBlocks.length === 0) {
@@ -213,7 +213,7 @@ async function parseAndAutoPublishAll() {
             imageUrl = urlMatch[0];
         }
 
-        // Prepare data to send to backend
+        // Build POST form data
         const formData = new FormData();
         formData.append('add_product', '1');
         formData.append('name', name);
@@ -222,6 +222,7 @@ async function parseAndAutoPublishAll() {
         formData.append('image_url', imageUrl);
 
         try {
+            // Auto-submit directly to Django backend
             const response = await fetch(window.location.href, {
                 method: 'POST',
                 headers: {
