@@ -179,6 +179,28 @@ def ai_universal_ingest(request):
             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
             
     return JsonResponse({'status': 'error', 'message': 'Only POST requests allowed'}, status=405)
+
+def product_detail(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    images = product.images.all()
+
+    if request.method == 'POST' and request.user == product.vendor:
+        image_url = request.POST.get('gallery_image_url')
+        image_file = request.FILES.get('gallery_image_file')
+
+        if product.images.count() < 5:
+            if image_file or image_url:
+                ProductImage.objects.create(
+                    product=product,
+                    image_file=image_file if image_file else None,
+                    image_url=image_url if image_url else None
+                )
+        return redirect('product_detail', product_id=product.id)
+
+    return render(request, 'store/detail.html', {
+        'product': product,
+        'images': images
+    })
 @login_required
 def delete_product(request, product_id):
     if request.method == 'POST':
