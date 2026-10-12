@@ -124,7 +124,7 @@ def search_products(request):
         'products': products,
         'query': query
     })
-    
+
 def product_autocomplete(request):
     query = request.GET.get('term', '')
     results = []
@@ -132,3 +132,22 @@ def product_autocomplete(request):
         matches = Product.objects.filter(title__icontains=query)[:5]
         results = [{'id': p.id, 'title': p.title, 'price': p.price} for p in matches]
     return JsonResponse(results, safe=False)
+
+@csrf_exempt
+def api_add_third_party_vehicle(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            product = Product.objects.create(
+                name=data.get('title'),
+                description=data.get('description'),
+                price=data.get('auto_calculated_price')
+            )
+            return JsonResponse({
+                'status': 'success',
+                'message': 'Listing posted live to BLUE MARKET',
+                'product_id': product.id
+            }, status=201)
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+    return JsonResponse({'status': 'error', 'message': 'Only POST requests allowed'}, status=405)
