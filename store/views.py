@@ -4,6 +4,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login
 from django.db.models import Q
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 from .models import Product, VendorProfile, CartItem, Order
 from .forms import ProductForm, VendorProfileForm
 
