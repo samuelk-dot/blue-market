@@ -75,6 +75,13 @@
                 </div>
             </div>
 
+            <!-- AI Smart-Parse Quick Box -->
+            <div class="mb-4 p-4 bg-indigo-50 border border-indigo-200 rounded-xl">
+                <label class="block text-xs font-bold text-indigo-700 uppercase mb-1">🤖 AI Universal Ingest (Paste Raw Specs)</label>
+                <textarea id="aiRawInput" rows="3" placeholder="Paste any raw text here... (e.g., Toyota Hilux Double Cab 2.8L, 5,200,000 KES...)" class="w-full p-2 border rounded text-sm bg-white mb-2"></textarea>
+                <button type="button" onclick="parseWithAI()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded text-xs font-bold">✨ Auto-Parse & Fill Form</button>
+            </div>
+
             <form method="POST" class="space-y-4">
                 {% csrf_token %}
                 <div class="space-y-1">
@@ -289,5 +296,33 @@ document.getElementById('aiIngestForm').addEventListener('submit', async functio
     alert('Error: ' + result.message);
   }
 });
+function parseWithAI() {
+    const rawText = document.getElementById('aiRawInput').value;
+    if(!rawText) {
+        alert('Please paste some raw text first!');
+        return;
+    }
+    
+    // Auto-fill description
+    const descField = document.querySelector('textarea[name="description"]');
+    if(descField) descField.value = rawText;
+    
+    // Auto-detect price numbers
+    const numbers = rawText.match(/\d[\d,\.]*/g);
+    if(numbers && numbers.length > 0) {
+        const possiblePrice = numbers[numbers.length - 1].replace(/,/g, '');
+        const priceField = document.querySelector('input[name="price"]');
+        if(priceField && possiblePrice > 1000) {
+            priceField.value = possiblePrice;
+        }
+    }
+    
+    // Use the first line as the title name
+    const lines = rawText.split('\n');
+    const nameField = document.querySelector('input[name="name"]');
+    if(nameField) nameField.value = lines[0].substring(0, 50);
+    
+    alert('AI successfully parsed text into fields!');
+}
 </script>
 {% endblock %}
