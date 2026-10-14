@@ -1,4 +1,6 @@
+from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
+from .models import Product, CartItem, ProductImage
 
 def index(request):
     category = request.GET.get('category')
@@ -9,10 +11,12 @@ def index(request):
     else:
         products = Product.objects.all().order_by('-id')
 
+    cart_count = 0
     if request.user.is_authenticated:
-        cart_count = CartItem.objects.filter(user=request.user).count()
-    else:
-        cart_count = 0
+        try:
+            cart_count = CartItem.objects.filter(user=request.user).count()
+        except Exception:
+            cart_count = 0
 
     return render(request, 'store/index.html', {
         'products': products,
