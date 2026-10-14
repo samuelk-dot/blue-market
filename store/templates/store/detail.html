@@ -1,52 +1,45 @@
 {% extends 'store/base.html' %}
 {% block content %}
-<div class="space-y-8">
-    <div class="bg-gradient-to-r from-slate-950 via-slate-900 to-amber-950 border border-slate-800 rounded-3xl p-8 md:p-12 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-8">
-        <div class="space-y-4 max-w-xl">
-            <span class="bg-amber-500/10 text-amber-500 font-bold text-xs uppercase px-3 py-1 rounded-full border border-amber-500/20">Industrial Engineering & Customization</span>
-            <h1 class="text-3xl md:text-5xl font-black text-slate-100 tracking-tight">Advanced Machinery, Custom Vehicles & Tactical Fleet</h1>
-            <p class="text-slate-400 text-sm leading-relaxed">Source high-performance sport cars, adventure bikes, heavy trailers, and custom engineered components with verified global shipping and local M-Pesa clearing.</p>
-        </div>
-    </div>
+<div class="max-w-5xl mx-auto px-4 py-8 space-y-8">
+    <a href="{% url 'index' %}" class="inline-flex items-center gap-2 text-xs text-amber-500 font-bold hover:underline mb-4">
+        <i class="fa-solid fa-arrow-left"></i> Return to Fleet Catalog
+    </a>
 
-    <div class="space-y-6">
-        <div class="flex items-center justify-between border-b border-slate-800 pb-4">
-            <h2 class="text-xl font-bold text-slate-200 flex items-center gap-2">
-                <i class="fa-solid fa-boxes-stacked text-amber-500"></i> Available Assets & Inventories
-            </h2>
-            <span class="text-xs text-slate-500 font-mono">{{ products.count }} Units Active</span>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-slate-900 p-6 rounded-3xl border border-slate-800 shadow-2xl">
+        <!-- Main Image -->
+        <div class="space-y-4">
+            <div class="rounded-2xl overflow-hidden border border-slate-800 bg-slate-950">
+                {% if product.image_url %}
+                    <img id="mainImage" src="{{ product.image_url }}" alt="{{ product.name }}" class="w-full h-80 object-cover">
+                {% else %}
+                    <div class="h-80 flex items-center justify-center text-slate-700">
+                        <i class="fa-solid fa-gears text-5xl"></i>
+                    </div>
+                {% endif %}
+            </div>
         </div>
 
-        {% if products %}
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {% for item in products %}
-                    <a href="{% url 'product_detail' item.id %}" class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-amber-500 transition group block shadow-lg">
-                        <div class="h-48 bg-slate-950 relative overflow-hidden">
-                            {% if item.image_url %}
-                                <img src="{{ item.image_url }}" alt="{{ item.name }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                            {% else %}
-                                <div class="w-full h-full flex items-center justify-center text-slate-700">
-                                    <i class="fa-solid fa-microchip text-4xl"></i>
-                                </div>
-                            {% endif %}
-                        </div>
-                        <div class="p-5 space-y-3">
-                            <h3 class="font-bold text-slate-100 group-hover:text-amber-500 transition truncate">{{ item.name }}</h3>
-                            <p class="text-xs text-slate-400 line-clamp-2">{{ item.description }}</p>
-                            <div class="pt-2 border-t border-slate-800 flex items-center justify-between">
-                                <span class="text-amber-500 font-black text-sm">KES {{ item.price }}</span>
-                                <span class="text-[10px] bg-slate-800 text-slate-300 px-2.5 py-1 rounded-md">Inspect &rarr;</span>
-                            </div>
-                        </div>
-                    </a>
-                {% endfor %}
+        <!-- Specifications & Direct WhatsApp Order -->
+        <div class="space-y-6">
+            <div>
+                <h1 class="text-2xl font-black text-slate-100 mb-2">{{ product.name }}</h1>
+                <p class="text-sm text-slate-400 whitespace-pre-line leading-relaxed">{{ product.description }}</p>
             </div>
-        {% else %}
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-12 text-center text-slate-500 space-y-3">
-                <i class="fa-solid fa-folder-open text-4xl text-slate-700"></i>
-                <p>No engineering assets listed under this category yet.</p>
+
+            <div class="p-4 bg-slate-950 border border-slate-800 rounded-2xl space-y-2">
+                <div class="flex justify-between items-center">
+                    <span class="text-xs font-semibold text-slate-400 uppercase">Valuation / Price</span>
+                    <span class="text-xl font-black text-amber-500">KES {{ product.price }}</span>
+                </div>
             </div>
-        {% endif %}
+
+            <div class="p-4 border border-slate-800 rounded-2xl bg-slate-950 space-y-3">
+                <h4 class="text-xs font-bold text-slate-300 uppercase">Order / Inquire via Direct Line</h4>
+                <a href="https://wa.me/254741578860?text=Hello%20VANGUARD,%20I%20am%20inquiring%20about%20{{ product.name }}" target="_blank" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl text-sm transition flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-whatsapp text-lg"></i> Dispatch via WhatsApp
+                </a>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

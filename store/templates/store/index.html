@@ -1,18 +1,20 @@
 {% extends 'store/base.html' %}
 {% block content %}
 <div class="space-y-8">
+    <!-- Hero Banner -->
     <div class="bg-gradient-to-r from-slate-950 via-slate-900 to-amber-950 border border-slate-800 rounded-3xl p-8 md:p-12 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-8">
         <div class="space-y-4 max-w-xl">
             <span class="bg-amber-500/10 text-amber-500 font-bold text-xs uppercase px-3 py-1 rounded-full border border-amber-500/20">Industrial Engineering & Customization</span>
             <h1 class="text-3xl md:text-5xl font-black text-slate-100 tracking-tight">Advanced Machinery, Custom Vehicles & Tactical Fleet</h1>
-            <p class="text-slate-400 text-sm leading-relaxed">Source high-performance sport cars, adventure bikes, heavy trailers, and custom engineered components with verified global shipping and local M-Pesa clearing.</p>
+            <p class="text-slate-400 text-sm leading-relaxed">Source high-performance engines, doors, bonnets, turbos, sport cars, adventure bikes, heavy trailers, and custom components.</p>
         </div>
     </div>
 
+    <!-- Product Grid -->
     <div class="space-y-6">
         <div class="flex items-center justify-between border-b border-slate-800 pb-4">
             <h2 class="text-xl font-bold text-slate-200 flex items-center gap-2">
-                <i class="fa-solid fa-boxes-stacked text-amber-500"></i> Available Assets & Inventories
+                <i class="fa-solid fa-boxes-stacked text-amber-500"></i> Available Assets & Components
             </h2>
             <span class="text-xs text-slate-500 font-mono">{{ products.count }} Units Active</span>
         </div>
@@ -26,7 +28,7 @@
                                 <img src="{{ item.image_url }}" alt="{{ item.name }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                             {% else %}
                                 <div class="w-full h-full flex items-center justify-center text-slate-700">
-                                    <i class="fa-solid fa-microchip text-4xl"></i>
+                                    <i class="fa-solid fa-gears text-4xl"></i>
                                 </div>
                             {% endif %}
                         </div>
@@ -44,7 +46,7 @@
         {% else %}
             <div class="bg-slate-900 border border-slate-800 rounded-2xl p-12 text-center text-slate-500 space-y-3">
                 <i class="fa-solid fa-folder-open text-4xl text-slate-700"></i>
-                <p>No engineering assets listed under this category yet.</p>
+                <p>No machinery or spare parts listed under this category yet.</p>
             </div>
         {% endif %}
     </div>
