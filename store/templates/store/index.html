@@ -2,50 +2,152 @@
 {% block content %}
 <div class="space-y-8">
     
-    <!-- Hero Section with Text Left and Active Image Gallery Right -->
+    <!-- Dynamic Hero Section -->
     <div class="bg-gradient-to-r from-slate-950 via-slate-900 to-amber-950 border border-slate-800 rounded-3xl p-8 md:p-12 shadow-2xl flex flex-col md:flex-row items-center gap-8 overflow-hidden">
         
-        <!-- Left: Text Content -->
+        <!-- Left: Dynamic Text Content -->
         <div class="space-y-4 md:w-1/2">
-            <span class="bg-amber-500/10 text-amber-500 font-bold text-xs uppercase px-3 py-1 rounded-full border border-amber-500/20">Industrial Engineering & Customization</span>
-            <h1 class="text-3xl md:text-5xl font-black text-slate-100 tracking-tight leading-tight">Advanced Machinery, Custom Vehicles & Tactical Fleet</h1>
-            <p class="text-slate-400 text-sm leading-relaxed max-w-lg">Source high-performance engines, doors, bonnets, turbos, sport cars, adventure bikes, heavy trailers, and custom components.</p>
+            <span class="bg-amber-500/10 text-amber-500 font-bold text-xs uppercase px-3 py-1 rounded-full border border-amber-500/20">
+                {% if current_category == 'car' or current_category == 'sport_car' or current_category == 'suv' or current_category == 'offroad' %}
+                    Automotive Division & Fleet
+                {% elif current_category == 'bike' or current_category == 'commuter_bike' or current_category == 'adventure_bike' %}
+                    Two-Wheeler & Moto Engineering
+                {% elif current_category == 'heavy_fleet' or current_category == 'trailer_rollie' or current_category == 'lorry_truck' %}
+                    Heavy Haulage & Commercial Transport
+                {% elif current_category == 'spare_part' or current_category == 'engine_part' or current_category == 'body_panel' %}
+                    Precision Spare Parts & Custom Tuning
+                {% else %}
+                    Industrial Engineering & Customization
+                {% endif %}
+            </span>
+
+            <h1 class="text-3xl md:text-5xl font-black text-slate-100 tracking-tight leading-tight">
+                {% if current_category == 'car' or current_category == 'sport_car' or current_category == 'suv' or current_category == 'offroad' %}
+                    High-Performance Cars, Pickups, SUVs & Sedans
+                {% elif current_category == 'bike' or current_category == 'commuter_bike' or current_category == 'adventure_bike' %}
+                    Vanguard Motorcycles, Commuters & Hyper Bikes
+                {% elif current_category == 'heavy_fleet' or current_category == 'trailer_rollie' or current_category == 'lorry_truck' %}
+                    Heavy Trailers, Lorries & Logistics Fleet
+                {% elif current_category == 'spare_part' or current_category == 'engine_part' or current_category == 'body_panel' %}
+                    Engines, Body Panels, Bonnets & Custom Parts
+                {% else %}
+                    Advanced Machinery, Custom Vehicles & Tactical Fleet
+                {% endif %}
+            </h1>
+
+            <p class="text-slate-400 text-sm leading-relaxed max-w-lg">
+                {% if current_category == 'car' or current_category == 'sport_car' or current_category == 'suv' or current_category == 'offroad' %}
+                    Explore custom street cars, rugged 4x4 desert offroaders, heavy pickup utility vehicles, and luxury sedans engineered for performance.
+                {% elif current_category == 'bike' or current_category == 'commuter_bike' or current_category == 'adventure_bike' %}
+                    Browse durable commuter bikes, adventure tourers, and high-speed machinery built for endurance on any terrain.
+                {% elif current_category == 'heavy_fleet' or current_category == 'trailer_rollie' or current_category == 'lorry_truck' %}
+                    Heavy-duty commercial trailers, rollies, long-haul lorries, and transit bus units for industrial transport.
+                {% elif current_category == 'spare_part' or current_category == 'engine_part' or current_category == 'body_panel' %}
+                    Source exact-fit turbochargers, engine blocks, replacement panels, doors, and custom tuning kits.
+                {% else %}
+                    Source high-performance engines, doors, bonnets, turbos, sport cars, adventure bikes, heavy trailers, and custom components.
+                {% endif %}
+            </p>
             <p class="text-amber-500 text-xs font-mono">⚡ VANGUARD MOTORS Ecosystem</p>
         </div>
 
-        <!-- Right: Active Action Gallery (Sport Car, Offroad, SUV, Trailer, Bike) -->
+        <!-- Right: Dynamic Action Image Grid Based on Category -->
         <div class="md:w-1/2 w-full grid grid-cols-2 gap-3 h-72">
-            <!-- 1. Sport Car -->
-            <div class="relative rounded-xl overflow-hidden border border-slate-800 group bg-slate-900">
-                <img src="https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&w=600&q=80" alt="Sport Car" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent flex items-end p-3">
-                    <span class="text-[10px] font-bold text-amber-400 uppercase tracking-widest"><i class="fa-solid fa-car-rear mr-1"></i> Sport Cars</span>
+            {% if current_category == 'car' or current_category == 'sport_car' or current_category == 'suv' or current_category == 'offroad' %}
+                <!-- Car Images -->
+                <div class="relative rounded-xl overflow-hidden border border-slate-800 group bg-slate-900">
+                    <img src="https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&w=600&q=80" alt="Sport Sedan" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent flex items-end p-3"><span class="text-[10px] font-bold text-amber-400 uppercase">Sport Sedans</span></div>
                 </div>
-            </div>
-            
-            <!-- 2. Offroad / Desert Rig -->
-            <div class="relative rounded-xl overflow-hidden border border-slate-800 group bg-slate-950">
-                <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=600&q=80" alt="Offroad Desert" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent flex items-end p-3">
-                    <span class="text-[10px] font-bold text-amber-400 uppercase tracking-widest"><i class="fa-solid fa-mountain-sun mr-1"></i> Desert Offroad</span>
+                <div class="relative rounded-xl overflow-hidden border border-slate-800 group bg-slate-950">
+                    <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=600&q=80" alt="SUV 4x4" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent flex items-end p-3"><span class="text-[10px] font-bold text-amber-400 uppercase">SUVs & Offroad</span></div>
                 </div>
-            </div>
+                <div class="relative rounded-xl overflow-hidden border border-slate-800 group bg-slate-950">
+                    <img src="https://images.unsplash.com/photo-1553440569-bcc63803a83d?auto=format&fit=crop&w=600&q=80" alt="Pickup Truck" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent flex items-end p-3"><span class="text-[10px] font-bold text-amber-400 uppercase">Utility Pickups</span></div>
+                </div>
+                <div class="relative rounded-xl overflow-hidden border border-slate-800 group bg-slate-950">
+                    <img src="https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=600&q=80" alt="Luxury Car" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent flex items-end p-3"><span class="text-[10px] font-bold text-amber-400 uppercase">Custom Tuning</span></div>
+                </div>
 
-            <!-- 3. Heavy Trailer & Hauler -->
-            <div class="relative rounded-xl overflow-hidden border border-slate-800 group bg-slate-950">
-                <img src="https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&w=600&q=80" alt="Heavy Trailer" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent flex items-end p-3">
-                    <span class="text-[10px] font-bold text-amber-400 uppercase tracking-widest"><i class="fa-solid fa-trailer mr-1"></i> Heavy Fleet</span>
+            {% elif current_category == 'bike' or current_category == 'commuter_bike' or current_category == 'adventure_bike' %}
+                <!-- Bike Images -->
+                <div class="relative rounded-xl overflow-hidden border border-slate-800 group bg-slate-900">
+                    <img src="https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=600&q=80" alt="Commuter Bike" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent flex items-end p-3"><span class="text-[10px] font-bold text-amber-400 uppercase">Commuter Bikes</span></div>
                 </div>
-            </div>
+                <div class="relative rounded-xl overflow-hidden border border-slate-800 group bg-slate-950">
+                    <img src="https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=600&q=80" alt="Adventure Moto" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent flex items-end p-3"><span class="text-[10px] font-bold text-amber-400 uppercase">Adventure Tourers</span></div>
+                </div>
+                <div class="relative rounded-xl overflow-hidden border border-slate-800 group bg-slate-950">
+                    <img src="https://images.unsplash.com/photo-1502744688674-c919d1a87038?auto=format&fit=crop&w=600&q=80" alt="Hyper Bike" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent flex items-end p-3"><span class="text-[10px] font-bold text-amber-400 uppercase">Hyper Bikes</span></div>
+                </div>
+                <div class="relative rounded-xl overflow-hidden border border-slate-800 group bg-slate-950">
+                    <img src="https://images.unsplash.com/photo-1515588240030-cf2f52a38994?auto=format&fit=crop&w=600&q=80" alt="Scooters Quads" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent flex items-end p-3"><span class="text-[10px] font-bold text-amber-400 uppercase">Quads & Scooters</span></div>
+                </div>
 
-            <!-- 4. Motorcycle & Bikes -->
-            <div class="relative rounded-xl overflow-hidden border border-slate-800 group bg-slate-950">
-                <img src="https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=600&q=80" alt="Vanguard Motorcycle" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent flex items-end p-3">
-                    <span class="text-[10px] font-bold text-amber-400 uppercase tracking-widest"><i class="fa-solid fa-motorcycle mr-1"></i> Vanguard Moto</span>
+            {% elif current_category == 'heavy_fleet' or current_category == 'trailer_rollie' or current_category == 'lorry_truck' %}
+                <!-- Heavy Fleet Images -->
+                <div class="relative rounded-xl overflow-hidden border border-slate-800 group bg-slate-900">
+                    <img src="https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&w=600&q=80" alt="Heavy Trailer" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent flex items-end p-3"><span class="text-[10px] font-bold text-amber-400 uppercase">Trailers & Rollies</span></div>
                 </div>
-            </div>
+                <div class="relative rounded-xl overflow-hidden border border-slate-800 group bg-slate-950">
+                    <img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=600&q=80" alt="Lorry Truck" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent flex items-end p-3"><span class="text-[10px] font-bold text-amber-400 uppercase">Heavy Lorries</span></div>
+                </div>
+                <div class="relative rounded-xl overflow-hidden border border-slate-800 group bg-slate-950">
+                    <img src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=600&q=80" alt="Bus Transporter" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent flex items-end p-3"><span class="text-[10px] font-bold text-amber-400 uppercase">Buses & Fleet</span></div>
+                </div>
+                <div class="relative rounded-xl overflow-hidden border border-slate-800 group bg-slate-950">
+                    <img src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=600&q=80" alt="Cargo Logistics" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent flex items-end p-3"><span class="text-[10px] font-bold text-amber-400 uppercase">Industrial Logistics</span></div>
+                </div>
+
+            {% elif current_category == 'spare_part' or current_category == 'engine_part' or current_category == 'body_panel' %}
+                <!-- Spare Parts Images -->
+                <div class="relative rounded-xl overflow-hidden border border-slate-800 group bg-slate-900">
+                    <img src="https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=600&q=80" alt="Engine Component" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent flex items-end p-3"><span class="text-[10px] font-bold text-amber-400 uppercase">Engine Components</span></div>
+                </div>
+                <div class="relative rounded-xl overflow-hidden border border-slate-800 group bg-slate-950">
+                    <img src="https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=600&q=80" alt="Body Panels" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent flex items-end p-3"><span class="text-[10px] font-bold text-amber-400 uppercase">Doors & Bonnets</span></div>
+                </div>
+                <div class="relative rounded-xl overflow-hidden border border-slate-800 group bg-slate-950">
+                    <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=600&q=80" alt="Turbocharger" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent flex items-end p-3"><span class="text-[10px] font-bold text-amber-400 uppercase">Turbos & Exhausts</span></div>
+                </div>
+                <div class="relative rounded-xl overflow-hidden border border-slate-800 group bg-slate-950">
+                    <img src="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=600&q=80" alt="Custom Tuning" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent flex items-end p-3"><span class="text-[10px] font-bold text-amber-400 uppercase">Custom Tuning</span></div>
+                </div>
+
+            {% else %}
+                <!-- Default Grid -->
+                <div class="relative rounded-xl overflow-hidden border border-slate-800 group bg-slate-900">
+                    <img src="https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&w=600&q=80" alt="Sport Car" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent flex items-end p-3"><span class="text-[10px] font-bold text-amber-400 uppercase">Cars & Vehicles</span></div>
+                </div>
+                <div class="relative rounded-xl overflow-hidden border border-slate-800 group bg-slate-950">
+                    <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=600&q=80" alt="Desert Offroad" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent flex items-end p-3"><span class="text-[10px] font-bold text-amber-400 uppercase">Desert Offroad</span></div>
+                </div>
+                <div class="relative rounded-xl overflow-hidden border border-slate-800 group bg-slate-950">
+                    <img src="https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&w=600&q=80" alt="Heavy Trailer" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent flex items-end p-3"><span class="text-[10px] font-bold text-amber-400 uppercase">Heavy Fleet</span></div>
+                </div>
+                <div class="relative rounded-xl overflow-hidden border border-slate-800 group bg-slate-950">
+                    <img src="https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=600&q=80" alt="Vanguard Moto" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent flex items-end p-3"><span class="text-[10px] font-bold text-amber-400 uppercase">Vanguard Moto</span></div>
+                </div>
+            {% endif %}
         </div>
     </div>
 
@@ -74,8 +176,8 @@
         {% else %}
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-16 text-center text-slate-500 space-y-4 flex flex-col items-center justify-center">
             <i class="fa-solid fa-folder-open text-6xl text-slate-700"></i>
-            <p class="font-bold text-slate-300">No machinery or spare parts listed yet.</p>
-            <p class="text-sm max-w-sm">Use your Operator Dashboard to add sport cars, offroad rigs, heavy trailers, or motorcycles.</p>
+            <p class="font-bold text-slate-300">No machinery or spare parts listed under this category.</p>
+            <p class="text-sm max-w-sm">Use your Operator Dashboard to add pickups, sedans, bikes, or spare parts to this section.</p>
         </div>
         {% endif %}
     </div>
