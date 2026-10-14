@@ -72,22 +72,25 @@
 
         <!-- Category Links Bar (Filters products on public homepage) -->
         <div class="bg-white px-6 shadow-xs border-b border-slate-200">
-            <div class="max-w-7xl mx-auto flex items-center gap-8 py-2.5 text-xs font-semibold text-slate-700 overflow-x-auto">
-                <a href="{% url 'index' %}" class="hover:text-blue-600 whitespace-nowrap font-bold">All Items</a>
-                <a href="{% url 'index' %}?category=car" class="hover:text-blue-600 whitespace-nowrap text-blue-600 font-bold flex items-center gap-1">
-                    <i class="fa-solid fa-car"></i> Cars & Vehicles
+            <div class="max-w-7xl mx-auto px-4 flex items-center gap-8 py-2.5 text-xs font-semibold">
+                <!-- All Items -->
+                <a href="{% url 'index' %}" class="{% if not request.GET.category %}text-blue-600 font-bold{% else %}text-slate-700 hover:text-blue-600{% endif %} whitespace-nowrap">
+                 All Items
                 </a>
-                <a href="{% url 'index' %}?category=bike" class="hover:text-amber-600 whitespace-nowrap text-amber-600 font-bold flex items-center gap-1">
-                    <i class="fa-solid fa-motorcycle"></i> Sport Dirt Bikes & Quads
+
+                <!-- Cars & Vehicles -->
+                <a href="{% url 'index' %}?category=car" class="{% if request.GET.category == 'car' %}text-blue-600 font-bold{% else %}text-slate-700 hover:text-blue-600{% endif %} whitespace-nowrap flex items-center gap-1">
+                <i class="fa-solid fa-car"></i> Cars & Vehicles
                 </a>
-                <a href="{% url 'index' %}?category=laptop" class="hover:text-blue-600 whitespace-nowrap flex items-center gap-1">
-                    <i class="fa-solid fa-laptop"></i> Laptops
+
+                <!-- Sport Dirt Bikes & Quads -->
+                <a href="{% url 'index' %}?category=bike" class="{% if request.GET.category == 'bike' %}text-blue-600 font-bold{% else %}text-slate-700 hover:text-blue-600{% endif %} whitespace-nowrap flex items-center gap-1">
+                <i class="fa-solid fa-motorcycle"></i> Sport Dirt Bikes & Quads
                 </a>
-                <a href="{% url 'index' %}?category=phone" class="hover:text-blue-600 whitespace-nowrap flex items-center gap-1">
-                    <i class="fa-solid fa-mobile-screen-button"></i> Smartphones
-                </a>
-                <a href="{% url 'index' %}?category=watch" class="hover:text-blue-600 whitespace-nowrap flex items-center gap-1">
-                    <i class="fa-solid fa-clock"></i> Smart Watches
+
+                <!-- Spare Parts -->
+                <a href="{% url 'index' %}?category=spare_parts" class="{% if request.GET.category == 'spare_parts' %}text-blue-600 font-bold{% else %}text-slate-700 hover:text-blue-600{% endif %} whitespace-nowrap flex items-center gap-1">
+                <i class="fa-solid fa-gears"></i> Spare Parts
                 </a>
             </div>
         </div>

@@ -8,6 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import Product
 from .models import Product, VendorProfile, CartItem, Order
 from .forms import ProductForm, VendorProfileForm
+from .models import order, Product
 
 # 1. PUBLIC HOMEPAGE VIEW
 def index(request):
@@ -207,3 +208,23 @@ def delete_product(request, product_id):
         product = get_object_or_404(Product, id=product_id)
         product.delete()
     return redirect('dashboard')   
+def place_order(request):
+    cart = request.session.get('cart', {})
+    if not cart:
+        return redirect('cart_view')
+
+    if request.method == 'POST':
+        for product_id, quantity in cart.items():
+            product = get_object_or_404(Product, id=product_id)
+            Order.objects.create(
+                user=request.user if request.user.is_authenticated else None,
+                product=product,
+                quantity=quantity,
+                total_price=product.price * quantity
+            )
+        
+        # Clear cart after successfully placing order
+        request.session['cart'] = {}
+        return render(request, 'store/order_success.html')
+
+    return redirect('cart_view')
