@@ -1,17 +1,56 @@
 {% extends 'store/base.html' %}
 {% block content %}
 <div class="space-y-8">
-    <!-- Hero Banner -->
-    <div class="bg-gradient-to-r from-slate-950 via-slate-900 to-amber-950 border border-slate-800 rounded-3xl p-8 md:p-12 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-8">
-        <div class="space-y-4 max-w-xl">
+    
+    <!-- Hero Section with Text Left and Active Image Gallery Right -->
+    <div class="bg-gradient-to-r from-slate-950 via-slate-900 to-amber-950 border border-slate-800 rounded-3xl p-8 md:p-12 shadow-2xl flex flex-col md:flex-row items-center gap-8 overflow-hidden">
+        
+        <!-- Left: Text Content -->
+        <div class="space-y-4 md:w-1/2">
             <span class="bg-amber-500/10 text-amber-500 font-bold text-xs uppercase px-3 py-1 rounded-full border border-amber-500/20">Industrial Engineering & Customization</span>
-            <h1 class="text-3xl md:text-5xl font-black text-slate-100 tracking-tight">Advanced Machinery, Custom Vehicles & Tactical Fleet</h1>
-            <p class="text-slate-400 text-sm leading-relaxed">Source high-performance engines, doors, bonnets, turbos, sport cars, adventure bikes, heavy trailers, and custom components.</p>
+            <h1 class="text-3xl md:text-5xl font-black text-slate-100 tracking-tight leading-tight">Advanced Machinery, Custom Vehicles & Tactical Fleet</h1>
+            <p class="text-slate-400 text-sm leading-relaxed max-w-lg">Source high-performance engines, doors, bonnets, turbos, sport cars, adventure bikes, heavy trailers, and custom components.</p>
+            <p class="text-amber-500 text-xs font-mono">⚡ VANGUARD MOTORS Ecosystem</p>
+        </div>
+
+        <!-- Right: Active Action Gallery (Sport Car, Offroad, SUV, Trailer, Bike) -->
+        <div class="md:w-1/2 w-full grid grid-cols-2 gap-3 h-72">
+            <!-- 1. Sport Car -->
+            <div class="relative rounded-xl overflow-hidden border border-slate-800 group bg-slate-900">
+                <img src="https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&w=600&q=80" alt="Sport Car" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent flex items-end p-3">
+                    <span class="text-[10px] font-bold text-amber-400 uppercase tracking-widest"><i class="fa-solid fa-car-rear mr-1"></i> Sport Cars</span>
+                </div>
+            </div>
+            
+            <!-- 2. Offroad / Desert Rig -->
+            <div class="relative rounded-xl overflow-hidden border border-slate-800 group bg-slate-950">
+                <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=600&q=80" alt="Offroad Desert" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent flex items-end p-3">
+                    <span class="text-[10px] font-bold text-amber-400 uppercase tracking-widest"><i class="fa-solid fa-mountain-sun mr-1"></i> Desert Offroad</span>
+                </div>
+            </div>
+
+            <!-- 3. Heavy Trailer & Hauler -->
+            <div class="relative rounded-xl overflow-hidden border border-slate-800 group bg-slate-950">
+                <img src="https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&w=600&q=80" alt="Heavy Trailer" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent flex items-end p-3">
+                    <span class="text-[10px] font-bold text-amber-400 uppercase tracking-widest"><i class="fa-solid fa-trailer mr-1"></i> Heavy Fleet</span>
+                </div>
+            </div>
+
+            <!-- 4. Motorcycle & Bikes -->
+            <div class="relative rounded-xl overflow-hidden border border-slate-800 group bg-slate-950">
+                <img src="https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=600&q=80" alt="Vanguard Motorcycle" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent flex items-end p-3">
+                    <span class="text-[10px] font-bold text-amber-400 uppercase tracking-widest"><i class="fa-solid fa-motorcycle mr-1"></i> Vanguard Moto</span>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Product Grid -->
-    <div class="space-y-6">
+    <!-- Available Assets Section -->
+    <div class="space-y-6 pt-6">
         <div class="flex items-center justify-between border-b border-slate-800 pb-4">
             <h2 class="text-xl font-bold text-slate-200 flex items-center gap-2">
                 <i class="fa-solid fa-boxes-stacked text-amber-500"></i> Available Assets & Components
@@ -20,34 +59,24 @@
         </div>
 
         {% if products %}
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {% for item in products %}
-                    <a href="{% url 'product_detail' item.id %}" class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-amber-500 transition group block shadow-lg">
-                        <div class="h-48 bg-slate-950 relative overflow-hidden">
-                            {% if item.image_url %}
-                                <img src="{{ item.image_url }}" alt="{{ item.name }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                            {% else %}
-                                <div class="w-full h-full flex items-center justify-center text-slate-700">
-                                    <i class="fa-solid fa-gears text-4xl"></i>
-                                </div>
-                            {% endif %}
-                        </div>
-                        <div class="p-5 space-y-3">
-                            <h3 class="font-bold text-slate-100 group-hover:text-amber-500 transition truncate">{{ item.name }}</h3>
-                            <p class="text-xs text-slate-400 line-clamp-2">{{ item.description }}</p>
-                            <div class="pt-2 border-t border-slate-800 flex items-center justify-between">
-                                <span class="text-amber-500 font-black text-sm">KES {{ item.price }}</span>
-                                <span class="text-[10px] bg-slate-800 text-slate-300 px-2.5 py-1 rounded-md">Inspect &rarr;</span>
-                            </div>
-                        </div>
-                    </a>
-                {% endfor %}
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {% for product in products %}
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-4 hover:border-amber-500/50 transition">
+                <h3 class="font-bold text-slate-100">{{ product.name }}</h3>
+                <p class="text-xs text-slate-400 line-clamp-2">{{ product.description }}</p>
+                <div class="flex items-center justify-between pt-2 border-t border-slate-800">
+                    <span class="text-amber-500 font-bold">${{ product.price }}</span>
+                    <a href="{% url 'product_detail' product.id %}" class="text-xs bg-slate-800 hover:bg-amber-600 hover:text-slate-950 px-3 py-1.5 rounded-lg font-semibold transition">View Asset</a>
+                </div>
             </div>
+            {% endfor %}
+        </div>
         {% else %}
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-12 text-center text-slate-500 space-y-3">
-                <i class="fa-solid fa-folder-open text-4xl text-slate-700"></i>
-                <p>No machinery or spare parts listed under this category yet.</p>
-            </div>
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-16 text-center text-slate-500 space-y-4 flex flex-col items-center justify-center">
+            <i class="fa-solid fa-folder-open text-6xl text-slate-700"></i>
+            <p class="font-bold text-slate-300">No machinery or spare parts listed yet.</p>
+            <p class="text-sm max-w-sm">Use your Operator Dashboard to add sport cars, offroad rigs, heavy trailers, or motorcycles.</p>
+        </div>
         {% endif %}
     </div>
 </div>
