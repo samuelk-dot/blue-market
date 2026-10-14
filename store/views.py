@@ -3,16 +3,49 @@ from django.db.models import Q
 from django.http import JsonResponse
 from .models import Product
 
-# Core Index View
 def index(request):
     category = request.GET.get('category')
     query = request.GET.get('q')
+    
     try:
         products = Product.objects.all().order_by('-id')
+        
         if category:
-            products = products.filter(
-                Q(name__icontains=category) | Q(description__icontains=category)
-            )
+            # Group filtering for parent tabs
+            if category == 'car':
+                products = products.filter(
+                    Q(name__icontains='sport') | Q(description__icontains='sport') |
+                    Q(name__icontains='car') | Q(description__icontains='car') |
+                    Q(name__icontains='suv') | Q(description__icontains='suv') |
+                    Q(name__icontains='offroad') | Q(description__icontains='offroad')
+                )
+            elif category == 'bike':
+                products = products.filter(
+                    Q(name__icontains='bike') | Q(description__icontains='bike') |
+                    Q(name__icontains='motorcycle') | Q(description__icontains='motorcycle') |
+                    Q(name__icontains='quad') | Q(description__icontains='quad') |
+                    Q(name__icontains='scooter') | Q(description__icontains='scooter')
+                )
+            elif category == 'heavy_fleet':
+                products = products.filter(
+                    Q(name__icontains='trailer') | Q(description__icontains='trailer') |
+                    Q(name__icontains='lorry') | Q(description__icontains='lorry') |
+                    Q(name__icontains='truck') | Q(description__icontains='truck') |
+                    Q(name__icontains='bus') | Q(description__icontains='bus')
+                )
+            elif category == 'spare_part':
+                products = products.filter(
+                    Q(name__icontains='spare') | Q(description__icontains='spare') |
+                    Q(name__icontains='engine') | Q(description__icontains='engine') |
+                    Q(name__icontains='turbo') | Q(description__icontains='turbo') |
+                    Q(name__icontains='panel') | Q(description__icontains='panel')
+                )
+            else:
+                # Specific sub-category match
+                products = products.filter(
+                    Q(name__icontains=category) | Q(description__icontains=category)
+                )
+                
         if query:
             products = products.filter(
                 Q(name__icontains=query) | Q(description__icontains=query)
@@ -24,23 +57,17 @@ def index(request):
         'products': products,
     })
 
-# Product Detail View
-def product_detail(request, product_id):
-    try:
-        product = get_object_or_404(Product, id=product_id)
-        return render(request, 'store/detail.html', {'product': product})
-    except Exception:
-        return redirect('index')
-
-# Vendor Dashboard
 def vendor_dashboard(request):
     try:
         products = Product.objects.all().order_by('-id')
-        return render(request, 'store/dashboard.html', {'products': products})
     except Exception:
-        return render(request, 'store/dashboard.html', {'products': []})
+        products = []
+    return render(request, 'store/vendor_dashboard.html', {'products': products})
 
-# Cart & Order Handlers
+def product_detail(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    return render(request, 'store/product_detail.html', {'product': product})
+
 def cart_view(request):
     return render(request, 'store/cart.html')
 
@@ -50,17 +77,21 @@ def add_to_cart(request, product_id):
 def place_order(request):
     return redirect('index')
 
-# Auth Handlers
 def signup_view(request):
     return render(request, 'store/signup.html')
 
 def login_view(request):
     return render(request, 'store/login.html')
 
-# Search & Autocomplete
 def search_products(request):
     query = request.GET.get('q', '')
-    return redirect(f'/?q={query}')
+    try:
+        products = Product.objects.filter(
+            Q(name__icontains=query) | Q(description__icontains=query)
+        )
+    except Exception:
+        products = []
+    return render(request, 'store/index.html', {'products': products})
 
 def product_autocomplete(request):
     query = request.GET.get('q', '')
