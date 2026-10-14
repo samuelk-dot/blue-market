@@ -1,204 +1,52 @@
 {% extends 'store/base.html' %}
-
 {% block content %}
-<div class="space-y-12">
+<div class="space-y-8">
+    <div class="bg-gradient-to-r from-slate-950 via-slate-900 to-amber-950 border border-slate-800 rounded-3xl p-8 md:p-12 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-8">
+        <div class="space-y-4 max-w-xl">
+            <span class="bg-amber-500/10 text-amber-500 font-bold text-xs uppercase px-3 py-1 rounded-full border border-amber-500/20">Industrial Engineering & Customization</span>
+            <h1 class="text-3xl md:text-5xl font-black text-slate-100 tracking-tight">Advanced Machinery, Custom Vehicles & Tactical Fleet</h1>
+            <p class="text-slate-400 text-sm leading-relaxed">Source high-performance sport cars, adventure bikes, heavy trailers, and custom engineered components with verified global shipping and local M-Pesa clearing.</p>
+        </div>
+    </div>
 
-    <!-- DYNAMIC CAROUSEL BASED ON SELECTED CATEGORY -->
-    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-slate-950 via-blue-950 to-indigo-950 text-white shadow-2xl border border-slate-800">
-        
-        {% if selected_category == 'car' %}
-            <!-- CARS SLIDER (Hilux, BMW, Audi, Toyota, Range Rover) -->
-            <div id="hero-carousel" class="flex transition-transform duration-700 ease-in-out" style="transform: translateX(0%);">
-                <div class="min-w-full p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6">
-                    <div class="space-y-4 max-w-xl">
-                        <span class="inline-block bg-amber-500 text-slate-950 font-black text-xs px-3.5 py-1.5 rounded-full uppercase">🏎️ Toyota Hilux Tough Edition</span>
-                        <h1 class="text-3xl md:text-5xl font-black">Toyota Hilux Double Cab</h1>
-                        <p class="text-slate-300 text-sm">Heavy duty performance, high durability, and commercial readiness.</p>
-                    </div>
-                    <img src="https://images.pexels.com/photos/116675/pexels-photo-116675.jpeg?auto=compress&cs=tinysrgb&w=900" class="rounded-2xl shadow-2xl h-64 w-full md:w-1/2 object-cover">
-                </div>
-                <div class="min-w-full p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6">
-                    <div class="space-y-4 max-w-xl">
-                        <span class="inline-block bg-blue-500 text-white font-black text-xs px-3.5 py-1.5 rounded-full uppercase">🏎️ BMW M Series</span>
-                        <h1 class="text-3xl md:text-5xl font-black">BMW M4 & Luxury Sedans</h1>
-                        <p class="text-slate-300 text-sm">Turbocharged engineering and precision driving dynamics.</p>
-                    </div>
-                    <img src="https://images.pexels.com/photos/3729464/pexels-photo-3729464.jpeg?auto=compress&cs=tinysrgb&w=900" class="rounded-2xl shadow-2xl h-64 w-full md:w-1/2 object-cover">
-                </div>
-                <div class="min-w-full p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6">
-                    <div class="space-y-4 max-w-xl">
-                        <span class="inline-block bg-emerald-500 text-slate-950 font-black text-xs px-3.5 py-1.5 rounded-full uppercase">🏎️ Audi Quattro Series</span>
-                        <h1 class="text-3xl md:text-5xl font-black">Audi RS Sport Performance</h1>
-                        <p class="text-slate-300 text-sm">All-wheel drive traction, high tech digital cockpit, luxury finishes.</p>
-                    </div>
-                    <img src="https://images.pexels.com/photos/120049/pexels-photo-120049.jpeg?auto=compress&cs=tinysrgb&w=900" class="rounded-2xl shadow-2xl h-64 w-full md:w-1/2 object-cover">
-                </div>
+    <div class="space-y-6">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+            <h2 class="text-xl font-bold text-slate-200 flex items-center gap-2">
+                <i class="fa-solid fa-boxes-stacked text-amber-500"></i> Available Assets & Inventories
+            </h2>
+            <span class="text-xs text-slate-500 font-mono">{{ products.count }} Units Active</span>
+        </div>
+
+        {% if products %}
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {% for item in products %}
+                    <a href="{% url 'product_detail' item.id %}" class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-amber-500 transition group block shadow-lg">
+                        <div class="h-48 bg-slate-950 relative overflow-hidden">
+                            {% if item.image_url %}
+                                <img src="{{ item.image_url }}" alt="{{ item.name }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                            {% else %}
+                                <div class="w-full h-full flex items-center justify-center text-slate-700">
+                                    <i class="fa-solid fa-microchip text-4xl"></i>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="p-5 space-y-3">
+                            <h3 class="font-bold text-slate-100 group-hover:text-amber-500 transition truncate">{{ item.name }}</h3>
+                            <p class="text-xs text-slate-400 line-clamp-2">{{ item.description }}</p>
+                            <div class="pt-2 border-t border-slate-800 flex items-center justify-between">
+                                <span class="text-amber-500 font-black text-sm">KES {{ item.price }}</span>
+                                <span class="text-[10px] bg-slate-800 text-slate-300 px-2.5 py-1 rounded-md">Inspect &rarr;</span>
+                            </div>
+                        </div>
+                    </a>
+                {% endfor %}
             </div>
-
-        {% elif selected_category == 'bike' %}
-            <!-- SPORT BIKES SLIDER (Adventure, Sport, Normal, Quad, Scooters) -->
-            <div id="hero-carousel" class="flex transition-transform duration-700 ease-in-out" style="transform: translateX(0%);">
-                <div class="min-w-full p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6">
-                    <div class="space-y-4 max-w-xl">
-                        <span class="inline-block bg-amber-500 text-slate-950 font-black text-xs px-3.5 py-1.5 rounded-full uppercase">🏍️ BMW R1300 GS Adventure</span>
-                        <h1 class="text-3xl md:text-5xl font-black">Touring & Trail Adventure</h1>
-                        <p class="text-slate-300 text-sm">Built for cross-country long rides and rugged off-road dirt tracks.</p>
-                    </div>
-                    <img src="https://images.pexels.com/photos/2116475/pexels-photo-2116475.jpeg?auto=compress&cs=tinysrgb&w=900" class="rounded-2xl shadow-2xl h-64 w-full md:w-1/2 object-cover">
-                </div>
-                <div class="min-w-full p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6">
-                    <div class="space-y-4 max-w-xl">
-                        <span class="inline-block bg-rose-500 text-white font-black text-xs px-3.5 py-1.5 rounded-full uppercase">🏍️ High-CC Superbikes</span>
-                        <h1 class="text-3xl md:text-5xl font-black">Sport Performance Bikes</h1>
-                        <p class="text-slate-300 text-sm">Aerodynamic speed tuning, disc brakes, and race track ergonomics.</p>
-                    </div>
-                    <img src="https://images.pexels.com/photos/104842/bmw-bike-headlight-motorcycle-104842.jpeg?auto=compress&cs=tinysrgb&w=900" class="rounded-2xl shadow-2xl h-64 w-full md:w-1/2 object-cover">
-                </div>
-                <div class="min-w-full p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6">
-                    <div class="space-y-4 max-w-xl">
-                        <span class="inline-block bg-emerald-500 text-slate-950 font-black text-xs px-3.5 py-1.5 rounded-full uppercase">🏍️ Off-Road Dirt Quads & Scooters</span>
-                        <h1 class="text-3xl md:text-5xl font-black">Quad Bikes & Commuters</h1>
-                        <p class="text-slate-300 text-sm">Economical urban scooters and high torque 4x4 quad dirt bikes.</p>
-                    </div>
-                    <img src="https://images.pexels.com/photos/2116475/pexels-photo-2116475.jpeg?auto=compress&cs=tinysrgb&w=900" class="rounded-2xl shadow-2xl h-64 w-full md:w-1/2 object-cover">
-                </div>
-            </div>
-
-        {% elif selected_category == 'laptop' %}
-            <!-- LAPTOPS SLIDER -->
-            <div id="hero-carousel" class="flex transition-transform duration-700 ease-in-out" style="transform: translateX(0%);">
-                <div class="min-w-full p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6">
-                    <div class="space-y-4 max-w-xl">
-                        <span class="inline-block bg-purple-500 text-white font-black text-xs px-3.5 py-1.5 rounded-full uppercase">💻 Creator Workstations</span>
-                        <h1 class="text-3xl md:text-5xl font-black">Flagship High-Performance Laptops</h1>
-                        <p class="text-slate-300 text-sm">Multi-core processors, 4K displays, and dedicated graphics power.</p>
-                    </div>
-                    <img src="https://images.pexels.com/photos/18105/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=900" class="rounded-2xl shadow-2xl h-64 w-full md:w-1/2 object-cover">
-                </div>
-                <div class="min-w-full p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6">
-                    <div class="space-y-4 max-w-xl">
-                        <span class="inline-block bg-blue-500 text-white font-black text-xs px-3.5 py-1.5 rounded-full uppercase">🖥️ PC Desktops</span>
-                        <h1 class="text-3xl md:text-5xl font-black">Liquid-Cooled Workstations</h1>
-                        <p class="text-slate-300 text-sm">Custom desktop towers engineered for extreme software tasks.</p>
-                    </div>
-                    <img src="https://images.pexels.com/photos/777001/pexels-photo-777001.jpeg?auto=compress&cs=tinysrgb&w=900" class="rounded-2xl shadow-2xl h-64 w-full md:w-1/2 object-cover">
-                </div>
-            </div>
-
-        {% elif selected_category == 'phone' %}
-            <!-- SMARTPHONES SLIDER -->
-            <div id="hero-carousel" class="flex transition-transform duration-700 ease-in-out" style="transform: translateX(0%);">
-                <div class="min-w-full p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6">
-                    <div class="space-y-4 max-w-xl">
-                        <span class="inline-block bg-rose-500 text-white font-black text-xs px-3.5 py-1.5 rounded-full uppercase">📱 iPhone 16 Pro Max</span>
-                        <h1 class="text-3xl md:text-5xl font-black">Next-Gen Titanium Flagships</h1>
-                        <p class="text-slate-300 text-sm">Pro camera systems, ultra-fast processors, and all-day battery life.</p>
-                    </div>
-                    <img src="https://images.pexels.com/photos/788946/pexels-photo-788946.jpeg?auto=compress&cs=tinysrgb&w=900" class="rounded-2xl shadow-2xl h-64 w-full md:w-1/2 object-cover">
-                </div>
-            </div>
-
-        {% elif selected_category == 'watch' %}
-            <!-- SMART WATCHES SLIDER -->
-            <div id="hero-carousel" class="flex transition-transform duration-700 ease-in-out" style="transform: translateX(0%);">
-                <div class="min-w-full p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6">
-                    <div class="space-y-4 max-w-xl">
-                        <span class="inline-block bg-cyan-400 text-slate-950 font-black text-xs px-3.5 py-1.5 rounded-full uppercase">⌚ Ultra Smartwatches</span>
-                        <h1 class="text-3xl md:text-5xl font-black">Titanium OLED Watches</h1>
-                        <p class="text-slate-300 text-sm">Fitness analytics, heart rate tracking, GPS, and cellular calls.</p>
-                    </div>
-                    <img src="https://images.pexels.com/photos/437037/pexels-photo-437037.jpeg?auto=compress&cs=tinysrgb&w=900" class="rounded-2xl shadow-2xl h-64 w-full md:w-1/2 object-cover">
-                </div>
-            </div>
-
         {% else %}
-            <!-- DEFAULT MIXED SLIDER FOR "ALL ITEMS" -->
-            <div id="hero-carousel" class="flex transition-transform duration-700 ease-in-out" style="transform: translateX(0%);">
-                <div class="min-w-full p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6">
-                    <div class="space-y-4 max-w-xl">
-                        <span class="inline-block bg-amber-500 text-slate-950 font-black text-xs px-3.5 py-1.5 rounded-full uppercase">🏎️ Vehicles & Motors</span>
-                        <h1 class="text-3xl md:text-5xl font-black">Range Rover Autobiography</h1>
-                        <p class="text-slate-300 text-sm">Verify and buy premium SUVs directly with M-Pesa & Bank payouts.</p>
-                    </div>
-                    <img src="https://images.pexels.com/photos/116675/pexels-photo-116675.jpeg?auto=compress&cs=tinysrgb&w=900" class="rounded-2xl shadow-2xl h-64 w-full md:w-1/2 object-cover">
-                </div>
-                <div class="min-w-full p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6">
-                    <div class="space-y-4 max-w-xl">
-                        <span class="inline-block bg-emerald-500 text-slate-950 font-black text-xs px-3.5 py-1.5 rounded-full uppercase">🏍️ Sport Bikes</span>
-                        <h1 class="text-3xl md:text-5xl font-black">BMW R1300 GS Adventure</h1>
-                        <p class="text-slate-300 text-sm">Adventure touring motorcycles and off-road quad bikes.</p>
-                    </div>
-                    <img src="https://images.pexels.com/photos/2116475/pexels-photo-2116475.jpeg?auto=compress&cs=tinysrgb&w=900" class="rounded-2xl shadow-2xl h-64 w-full md:w-1/2 object-cover">
-                </div>
-                <div class="min-w-full p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6">
-                    <div class="space-y-4 max-w-xl">
-                        <span class="inline-block bg-rose-500 text-white font-black text-xs px-3.5 py-1.5 rounded-full uppercase">📱 Flagship Tech</span>
-                        <h1 class="text-3xl md:text-5xl font-black">iPhone 16 Pro & OLED Watches</h1>
-                        <p class="text-slate-300 text-sm">Original laptops, smartwatches, and flagship phones from top sellers.</p>
-                    </div>
-                    <img src="https://images.pexels.com/photos/788946/pexels-photo-788946.jpeg?auto=compress&cs=tinysrgb&w=900" class="rounded-2xl shadow-2xl h-64 w-full md:w-1/2 object-cover">
-                </div>
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-12 text-center text-slate-500 space-y-3">
+                <i class="fa-solid fa-folder-open text-4xl text-slate-700"></i>
+                <p>No engineering assets listed under this category yet.</p>
             </div>
         {% endif %}
-
-        <!-- Navigation buttons -->
-        <button id="carouselPrev" class="absolute left-4 top-1/2 -translate-y-1/2 bg-slate-900/70 text-white w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-md">
-            <i class="fa-solid fa-chevron-left"></i>
-        </button>
-        <button id="carouselNext" class="absolute right-4 top-1/2 -translate-y-1/2 bg-slate-900/70 text-white w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-md">
-            <i class="fa-solid fa-chevron-right"></i>
-        </button>
     </div>
-
-    <!-- LISTED PRODUCTS SECTION -->
-    <div id="marketplace" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {% for item in products %}
-        <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm hover:shadow-md flex flex-col justify-between">
-            <img src="{{ item.image_url }}" class="h-44 w-full object-cover rounded-xl mb-3">
-            <h3 class="font-bold text-slate-800">{{ item.name }}</h3>
-            <p class="text-xs text-slate-500 my-1 line-clamp-2">{{ item.description }}</p>
-            <div class="flex items-center justify-between mt-3 pt-2 border-t border-slate-100">
-                <span class="font-black text-blue-600">KSh {{ item.price }}</span>
-                <a href="{% url 'add_to_cart' item.id %}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs px-3 py-2 rounded-xl flex items-center gap-1">
-                    <i class="fa-solid fa-cart-plus"></i> Add to Cart
-                </a>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-
 </div>
-
-<!-- SLIDER ANIMATION SCRIPT -->
-<script>
-    const carousel = document.getElementById('hero-carousel');
-    const prevBtn = document.getElementById('carouselPrev');
-    const nextBtn = document.getElementById('carouselNext');
-    let index = 0;
-
-    if (carousel) {
-        const totalSlides = carousel.children.length;
-
-        function moveCarousel() {
-            carousel.style.transform = `translateX(-${index * 100}%)`;
-        }
-
-        if (nextBtn && prevBtn && totalSlides > 1) {
-            nextBtn.addEventListener('click', () => {
-                index = (index + 1) % totalSlides;
-                moveCarousel();
-            });
-
-            prevBtn.addEventListener('click', () => {
-                index = (index - 1 + totalSlides) % totalSlides;
-                moveCarousel();
-            });
-
-            setInterval(() => {
-                index = (index + 1) % totalSlides;
-                moveCarousel();
-            }, 5000);
-        }
-    }
-</script>
-{% endblock %} 
+{% endblock %}
