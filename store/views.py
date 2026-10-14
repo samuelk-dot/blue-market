@@ -6,14 +6,13 @@ from .models import Product
 def index(request):
     category = request.GET.get('category')
     query = request.GET.get('q')
-    
+
     try:
         products = Product.objects.all().order_by('-id')
         
         if category:
-            # Strict database filtering: category must match exactly
             products = products.filter(category=category)
-                
+
         if query:
             products = products.filter(
                 Q(name__icontains=query) | Q(description__icontains=query)
@@ -23,7 +22,7 @@ def index(request):
 
     return render(request, 'store/index.html', {
         'products': products,
-        'current_category': category,
+        'current_category': str(category) if category else '',
     })
 
 def vendor_dashboard(request):
