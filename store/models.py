@@ -35,7 +35,70 @@ class Product(models.Model):
     def __str__(self):
         return f"{self.name} ({self.get_category_display()})"
 
+from django.db import models
+from django.contrib.auth.models import User
 
+class VehicleListing(models.Model):
+    seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name='listings')
+
+    # Core Identity
+    make = models.CharField(max_length=50)
+    model = models.CharField(max_length=50)
+    display_name = models.CharField(max_length=100, blank=True, null=True)
+    year = models.IntegerField(null=True, blank=True)
+
+    # Identification & Documentation
+    chassis_number = models.CharField(max_length=100, blank=True, null=True)
+    registration_number = models.CharField(max_length=50, blank=True, null=True)
+    engine_number = models.CharField(max_length=100, blank=True, null=True)
+    stock_mode = models.CharField(
+        max_length=20,
+        choices=[('hard', 'Hard Stock'), ('soft', 'Soft Stock')],
+        default='hard'
+    )
+
+    # Specs & Performance
+    fuel_type = models.CharField(max_length=30, blank=True, null=True)
+    body_type = models.CharField(max_length=30, blank=True, null=True)
+    drivetrain = models.CharField(max_length=30, blank=True, null=True)
+    engine_cc = models.IntegerField(null=True, blank=True)
+    transmission = models.CharField(max_length=30, blank=True, null=True)
+
+    # Condition & Mileage
+    usage_condition = models.CharField(max_length=50, blank=True, null=True)
+    mileage = models.IntegerField(null=True, blank=True)
+    description = models.TextField(blank=True, null=True)
+
+    # 7. Pricing & Terms
+    listing_price = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
+    is_negotiable = models.BooleanField(default=False)
+    trade_in_accepted = models.BooleanField(default=False)
+    asset_financing_available = models.BooleanField(default=False)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    @property
+    def is_ready_for_marketing(self):
+        """Validates if essential marketing attributes exist."""
+        return all([
+            self.year,
+            self.listing_price,
+            self.mileage,
+            self.fuel_type,
+            self.body_type,
+            self.transmission,
+            self.usage_condition,
+            self.images.exists()
+        ])
+
+    @property
+    def is_ready_for_closure(self):
+        """Validates legal fields required for generating Sale Agreements/Invoices."""
+        return all([
+            self.chassis_number,
+            self.registration_number
+        ])
+        
 # Model for up to 5 additional gallery images (File or URL)
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, related_name='images', on_delete=models.CASCADE)

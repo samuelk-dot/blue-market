@@ -1,0 +1,361 @@
+<div class="max-w-3xl mx-auto my-8 bg-white p-8 rounded-xl shadow-md border border-slate-200">
+
+    <!-- Step Progress Header -->
+    <div class="flex items-center justify-between mb-8 border-b pb-4">
+        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Step <span id="current-step-num">1</span> of 9</span>
+        <div class="flex gap-1.5" id="step-indicators">
+            <!-- 9 progress bars generated via JS -->
+        </div>
+    </div>
+
+    <form id="vehicle-form" method="POST" enctype="multipart/form-data" class="space-y-6">
+        {% csrf_token %}
+
+        <!-- STEP 1: Core Identity -->
+        <div class="form-step space-y-4">
+            <h2 class="text-xl font-bold text-slate-800">1. Core Identity</h2>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-semibold mb-1">Make *</label>
+                    <input type="text" name="make" id="id_make" class="w-full border rounded-lg p-2.5" placeholder="e.g. Toyota">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold mb-1">Model *</label>
+                    <input type="text" name="model" id="id_model" class="w-full border rounded-lg p-2.5" placeholder="e.g. Prado">
+                </div>
+            </div>
+            <div>
+                <label class="block text-sm font-semibold mb-1">Year *</label>
+                <input type="number" name="year" id="id_year" class="w-full border rounded-lg p-2.5" placeholder="2020">
+            </div>
+        </div>
+
+        <!-- STEP 2: Documentation & Registration -->
+        <div class="form-step hidden space-y-4">
+            <h2 class="text-xl font-bold text-slate-800">2. Identification & Documentation</h2>
+            <div>
+                <label class="block text-sm font-semibold mb-1">Chassis / VIN Number</label>
+                <input type="text" name="chassis_number" id="id_chassis" class="w-full border rounded-lg p-2.5 uppercase" placeholder="e.g. KDJ150-0012345">
+            </div>
+            <div>
+                <label class="block text-sm font-semibold mb-1">Registration Number</label>
+                <input type="text" name="registration_number" id="id_registration" class="w-full border rounded-lg p-2.5 uppercase" placeholder="e.g. KDA 123X">
+            </div>
+            <div>
+                <label class="block text-sm font-semibold mb-1">Engine Number</label>
+                <input type="text" name="engine_number" id="id_engine_num" class="w-full border rounded-lg p-2.5 uppercase">
+            </div>
+            <div>
+                <label class="block text-sm font-semibold mb-1">Stock Mode</label>
+                <select name="stock_mode" class="w-full border rounded-lg p-2.5">
+                    <option value="hard">Hard Stock (Physical vehicle in yard)</option>
+                    <option value="soft">Soft Stock (Brokered / Sourced listing)</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- STEP 3: Specs & Body -->
+        <div class="form-step hidden space-y-4">
+            <h2 class="text-xl font-bold text-slate-800">3. Specifications</h2>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-semibold mb-1">Body Type</label>
+                    <input type="text" name="body_type" id="id_body_type" class="w-full border rounded-lg p-2.5" placeholder="e.g. SUV, Saloon">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold mb-1">Fuel Type</label>
+                    <select name="fuel_type" id="id_fuel_type" class="w-full border rounded-lg p-2.5">
+                        <option value="">Select Fuel</option>
+                        <option value="Petrol">Petrol</option>
+                        <option value="Diesel">Diesel</option>
+                        <option value="Hybrid">Hybrid</option>
+                        <option value="Electric">Electric</option>
+                    </select>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-semibold mb-1">Gearbox / Transmission</label>
+                    <select name="transmission" id="id_transmission" class="w-full border rounded-lg p-2.5">
+                        <option value="">Select Gearbox</option>
+                        <option value="Automatic">Automatic</option>
+                        <option value="Manual">Manual</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold mb-1">Engine Size (CC)</label>
+                    <input type="number" name="engine_cc" id="id_engine_cc" class="w-full border rounded-lg p-2.5" placeholder="2700">
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 4: Condition & Mileage -->
+        <div class="form-step hidden space-y-4">
+            <h2 class="text-xl font-bold text-slate-800">4. Condition</h2>
+            <div>
+                <label class="block text-sm font-semibold mb-1">Usage Condition</label>
+                <select name="usage_condition" id="id_condition" class="w-full border rounded-lg p-2.5">
+                    <option value="">Select Condition</option>
+                    <option value="Foreign Used">Foreign Used</option>
+                    <option value="Locally Used">Locally Used</option>
+                    <option value="Brand New">Brand New</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-semibold mb-1">Mileage (KM)</label>
+                <input type="number" name="mileage" id="id_mileage" class="w-full border rounded-lg p-2.5" placeholder="e.g. 65000">
+            </div>
+        </div>
+
+        <!-- STEP 5: Description & Notes -->
+        <div class="form-step hidden space-y-4">
+            <h2 class="text-xl font-bold text-slate-800">5. Vehicle Description</h2>
+            <div>
+                <label class="block text-sm font-semibold mb-1">Detailed Description</label>
+                <textarea name="description" class="w-full border rounded-lg p-2.5 h-32" placeholder="Detail additional features, service records, etc."></textarea>
+            </div>
+        </div>
+
+        <!-- STEP 6: Photos -->
+        <div class="form-step hidden space-y-4">
+            <h2 class="text-xl font-bold text-slate-800">6. Vehicle Photos</h2>
+            <div class="border-2 border-dashed border-slate-300 rounded-lg p-6 text-center bg-slate-50">
+                <input type="file" name="images" id="id_images" multiple class="w-full">
+                <p class="text-xs text-slate-500 mt-2">Upload multiple images. First picture will act as primary thumbnail.</p>
+            </div>
+        </div>
+
+        <!-- STEP 7: Pricing Section (Matches Image 1) -->
+        <div class="form-step hidden space-y-5">
+            <h2 class="text-xl font-bold text-slate-800">7. Pricing</h2>
+            
+            <div>
+                <label class="block text-sm font-semibold mb-1">Listing price</label>
+                <p class="text-xs text-slate-500 mb-2">Enter the full amount in shillings. A car at 2.9 million is 2900000, not 2.9.</p>
+                <input type="number" name="listing_price" id="id_listing_price" class="w-full border rounded-lg p-3 text-lg font-medium" placeholder="2900000">
+                <p class="text-xs text-slate-400 mt-1">This price shows everywhere on Motifiti: search, the marketplace and your own page. Listing a real car at a token price like 1 or 0 to pull in enquiries gets the listing taken down.</p>
+            </div>
+
+            <div class="space-y-3 pt-2">
+                <div>
+                    <label class="flex items-center gap-2 font-medium text-slate-800 text-sm">
+                        <input type="checkbox" name="is_negotiable" class="rounded border-slate-300 text-lime-600 focus:ring-lime-500">
+                        <span>Negotiable</span>
+                    </label>
+                    <p class="text-xs text-slate-500 ml-6">Tick this and buyers see a "Negotiable" tag, so they know there's room to talk.</p>
+                </div>
+
+                <div>
+                    <label class="flex items-center gap-2 font-medium text-slate-800 text-sm">
+                        <input type="checkbox" name="trade_in_accepted" class="rounded border-slate-300 text-lime-600 focus:ring-lime-500">
+                        <span>Trade-in accepted</span>
+                    </label>
+                    <p class="text-xs text-slate-500 ml-6">Tick this if you'd take a vehicle as part payment, with the balance in cash.</p>
+                </div>
+
+                <div>
+                    <label class="flex items-center gap-2 font-medium text-slate-800 text-sm">
+                        <input type="checkbox" name="asset_financing_available" class="rounded border-slate-300 text-lime-600 focus:ring-lime-500">
+                        <span>Asset financing available</span>
+                    </label>
+                    <p class="text-xs text-slate-500 ml-6">Tick this if a buyer can pay in instalments, or if you'll help them arrange a bank loan.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 8: Summary View (Matches Image 2) -->
+        <div class="form-step hidden space-y-3 border-t pt-4 text-sm text-slate-700">
+            <h2 class="text-xl font-bold text-slate-800 mb-4">8. Listing Summary</h2>
+            <div class="flex justify-between py-1 border-b"><span>Usage condition</span><span id="sum-condition" class="font-medium">-</span></div>
+            <div class="flex justify-between py-1 border-b"><span>Chassis</span><span id="sum-chassis" class="font-medium">-</span></div>
+            <div class="flex justify-between py-1 border-b"><span>Registration</span><span id="sum-registration" class="font-medium">-</span></div>
+            <div class="flex justify-between py-1 border-b"><span>Engine number</span><span id="sum-engine" class="font-medium">-</span></div>
+            <div class="flex justify-between py-1 border-b"><span>Listing price</span><span id="sum-price" class="font-medium">-</span></div>
+        </div>
+
+        <!-- STEP 9: Completeness Check (Matches Image 3) -->
+        <div class="form-step hidden space-y-6">
+            <h2 class="text-xl font-bold text-slate-800">9. Completeness Check</h2>
+
+            <!-- Ready for Marketing Section -->
+            <div class="space-y-2">
+                <h3 class="font-bold text-slate-800">Ready for Marketing</h3>
+                <div class="space-y-1.5 text-sm">
+                    <div id="chk-photos" class="flex items-center gap-2 text-rose-600"><span>✕</span><span>Photos</span></div>
+                    <div id="chk-mileage" class="flex items-center gap-2 text-rose-600"><span>✕</span><span>Mileage</span></div>
+                    <div id="chk-year" class="flex items-center gap-2 text-rose-600"><span>✕</span><span>Year</span></div>
+                    <div id="chk-price" class="flex items-center gap-2 text-rose-600"><span>✕</span><span>Listing price</span></div>
+                    <div id="chk-specs" class="flex items-center gap-2 text-rose-600"><span>✕</span><span>Specs - body type, gearbox, fuel, engine size, condition</span></div>
+                </div>
+            </div>
+
+            <!-- Closure Checklist Section -->
+            <div class="space-y-2 pt-2 border-t">
+                <h3 class="font-bold text-slate-800">Closure Checklist <span class="text-xs font-normal text-slate-500">(generating a Sale Agreement or Invoice)</span></h3>
+                <div class="space-y-1.5 text-sm">
+                    <div id="chk-chassis" class="flex items-center gap-2 text-rose-600"><span>✕</span><span>Chassis number</span></div>
+                    <div id="chk-reg" class="flex items-center gap-2 text-rose-600"><span>✕</span><span>Registration number</span></div>
+                </div>
+            </div>
+
+            <!-- Soft warning box matching screenshot -->
+            <div class="p-4 bg-rose-50 border border-rose-200 rounded-lg text-rose-800 text-xs">
+                <p class="font-semibold">You'll need this to publish: <span id="missing-fields-text">Listing price</span></p>
+                <p class="text-slate-600 mt-0.5">You can carry on and add it later - the car still saves.</p>
+            </div>
+        </div>
+
+        <!-- Navigation Controls -->
+        <div class="flex justify-between items-center mt-8 pt-4 border-t">
+            <button type="button" id="prevBtn" class="px-5 py-2 border rounded-lg font-semibold text-slate-600 hover:bg-slate-100 hidden">Back</button>
+            <button type="button" id="nextBtn" class="px-6 py-2 bg-lime-500 hover:bg-lime-600 text-slate-950 font-bold rounded-lg ml-auto">Next</button>
+            <button type="submit" id="submitBtn" class="px-6 py-2 bg-lime-500 hover:bg-lime-600 text-slate-950 font-bold rounded-lg ml-auto hidden">Save Vehicle</button>
+        </div>
+    </form>
+</div>
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto my-8 bg-white p-8 rounded-xl shadow-md border border-slate-200">
+    <form id="vehicle-form" method="POST" enctype="multipart/form-data" class="space-y-6">
+        {% csrf_token %}
+        
+        <!-- All your form steps (Step 1 to Step 9) -->
+
+        <!-- Navigation Controls -->
+        <div class="flex justify-between items-center mt-8 pt-4 border-t">
+            <button type="button" id="prevBtn" class="px-5 py-2 border rounded-lg font-semibold text-slate-600 hover:bg-slate-100 hidden">Back</button>
+            <button type="button" id="nextBtn" class="px-6 py-2 bg-lime-500 hover:bg-lime-600 text-slate-950 font-bold rounded-lg ml-auto">Next</button>
+            <button type="submit" id="submitBtn" class="px-6 py-2 bg-lime-500 hover:bg-lime-600 text-slate-950 font-bold rounded-lg ml-auto hidden">Save Vehicle</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    let currentStep = 0;
+    const steps = document.querySelectorAll('.form-step');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const submitBtn = document.getElementById('submitBtn');
+
+    // Render Progress Indicators dynamically
+    const indicatorsContainer = document.getElementById('step-indicators');
+    if (indicatorsContainer) {
+        for (let i = 0; i < steps.length; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'step-indicator w-6 h-1.5 bg-slate-200 rounded-full transition-all';
+            indicatorsContainer.appendChild(dot);
+        }
+    }
+    const indicators = document.querySelectorAll('.step-indicator');
+
+    function updateCompletenessCheck() {
+        const getValue = (id) => {
+            const el = document.getElementById(id);
+            return el ? el.value.trim() : '';
+        };
+
+        const hasPhotos = document.getElementById('id_images') ? document.getElementById('id_images').files.length > 0 : false;
+        const mileage = getValue('id_mileage');
+        const year = getValue('id_year');
+        const price = getValue('id_listing_price');
+        const bodyType = getValue('id_body_type');
+        const fuel = getValue('id_fuel_type');
+        const gearbox = getValue('id_transmission');
+        const engineCc = getValue('id_engine_cc');
+        const condition = getValue('id_condition');
+        const chassis = getValue('id_chassis');
+        const reg = getValue('id_registration');
+
+        const hasSpecs = bodyType && fuel && gearbox && engineCc && condition;
+
+        const setStatus = (elementId, isValid) => {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+            const icon = el.children[0];
+            if (isValid) {
+                el.className = 'flex items-center gap-2 text-emerald-600 font-medium';
+                if (icon) icon.textContent = '✓';
+            } else {
+                el.className = 'flex items-center gap-2 text-rose-600';
+                if (icon) icon.textContent = '✕';
+            }
+        };
+
+        // Update Checklist items
+        setStatus('chk-photos', hasPhotos);
+        setStatus('chk-mileage', Boolean(mileage));
+        setStatus('chk-year', Boolean(year));
+        setStatus('chk-price', Boolean(price));
+        setStatus('chk-specs', Boolean(hasSpecs));
+        setStatus('chk-chassis', Boolean(chassis));
+        setStatus('chk-reg', Boolean(reg));
+
+        // Summary step populated text
+        if (document.getElementById('sum-condition')) document.getElementById('sum-condition').innerText = condition || '-';
+        if (document.getElementById('sum-chassis')) document.getElementById('sum-chassis').innerText = chassis || '-';
+        if (document.getElementById('sum-registration')) document.getElementById('sum-registration').innerText = reg || '-';
+        if (document.getElementById('sum-engine')) document.getElementById('sum-engine').innerText = getValue('id_engine_num') || '-';
+        if (document.getElementById('sum-price')) document.getElementById('sum-price').innerText = price ? `KES ${Number(price).toLocaleString()}` : '-';
+
+        // Compile Missing Fields Notice
+        const missing = [];
+        if (!price) missing.push('Listing price');
+        if (!hasPhotos) missing.push('Photos');
+        if (!mileage) missing.push('Mileage');
+        if (!hasSpecs) missing.push('Specs');
+
+        const missingEl = document.getElementById('missing-fields-text');
+        if (missingEl) {
+            missingEl.innerText = missing.length > 0 ? missing.join(', ') : 'None! Ready for publish.';
+        }
+    }
+
+    function showStep(n) {
+        steps.forEach((step, index) => {
+            step.classList.toggle('hidden', index !== n);
+            if (indicators[index]) {
+                indicators[index].className = index <= n 
+                    ? 'step-indicator w-6 h-1.5 bg-lime-500 rounded-full transition-all' 
+                    : 'step-indicator w-6 h-1.5 bg-slate-200 rounded-full transition-all';
+            }
+        });
+
+        const stepNumEl = document.getElementById('current-step-num');
+        if (stepNumEl) stepNumEl.innerText = n + 1;
+
+        if (prevBtn) prevBtn.classList.toggle('hidden', n === 0);
+
+        if (n === steps.length - 1) {
+            if (nextBtn) nextBtn.classList.add('hidden');
+            if (submitBtn) submitBtn.classList.remove('hidden');
+            updateCompletenessCheck();
+        } else {
+            if (nextBtn) nextBtn.classList.remove('hidden');
+            if (submitBtn) submitBtn.classList.add('hidden');
+        }
+    }
+
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            if (currentStep < steps.length - 1) {
+                currentStep++;
+                showStep(currentStep);
+            }
+        });
+    }
+
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            if (currentStep > 0) {
+                currentStep--;
+                showStep(currentStep);
+            }
+        });
+    }
+
+    showStep(currentStep);
+</script>
+{% endblock %}
