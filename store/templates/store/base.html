@@ -40,18 +40,89 @@
             </div>
         </div>
 
-        <!-- Category Bar -->
+        <!-- 4 Core Main Sections Navbar -->
         <div class="bg-slate-900 px-6 border-b border-slate-800">
-            <div class="max-w-7xl mx-auto px-4 flex items-center gap-6 py-2.5 text-xs font-semibold overflow-x-auto whitespace-nowrap">
-                <a href="{% url 'index' %}" class="text-amber-500 font-bold">All Assets</a>
-                <a href="{% url 'index' %}?category=sport_car" class="text-slate-400 hover:text-amber-500"><i class="fa-solid fa-car-rear"></i> Sport Cars</a>
-                <a href="{% url 'index' %}?category=suv" class="text-slate-400 hover:text-amber-500"><i class="fa-solid fa-truck-monster"></i> Heavy SUVs & 4x4</a>
-                <a href="{% url 'index' %}?category=commuter_bike" class="text-slate-400 hover:text-amber-500"><i class="fa-solid fa-motorcycle"></i> Commuter Bikes</a>
-                <a href="{% url 'index' %}?category=adventure_bike" class="text-slate-400 hover:text-amber-500"><i class="fa-solid fa-mountain"></i> Adventure Bikes</a>
-                <a href="{% url 'index' %}?category=hyper_bike" class="text-slate-400 hover:text-amber-500"><i class="fa-solid fa-bolt"></i> Hyper Bikes</a>
-                <a href="{% url 'index' %}?category=quad_scooter" class="text-slate-400 hover:text-amber-500"><i class="fa-solid fa-shield"></i> Quads & Scooters</a>
-                <a href="{% url 'index' %}?category=trailer_rollie" class="text-slate-400 hover:text-amber-500"><i class="fa-solid fa-trailer"></i> Trailers & Rollies</a>
-                <a href="{% url 'index' %}?category=spare_part" class="text-slate-400 hover:text-amber-500"><i class="fa-solid fa-gears"></i> Heavy Spare Parts</a>
+            <div class="max-w-7xl mx-auto px-4 flex items-center gap-8 py-3 text-xs font-bold uppercase tracking-wide">
+                
+                <a href="{% url 'index' %}" class="text-amber-500 hover:text-amber-400">
+                    <i class="fa-solid fa-layer-group mr-1"></i> All Assets
+                </a>
+
+                <!-- 1. Cars Section Dropdown -->
+                <div class="relative group cursor-pointer">
+                    <a href="{% url 'index' %}?category=car" class="text-slate-300 group-hover:text-amber-500 flex items-center gap-1 py-1">
+                        <i class="fa-solid fa-car"></i> Cars & Vehicles <i class="fa-solid fa-chevron-down text-[10px] ml-1"></i>
+                    </a>
+                    <div class="absolute left-0 top-full hidden group-hover:flex flex-col bg-slate-950 border border-slate-800 rounded-xl shadow-2xl py-2 w-52 z-50">
+                        <a href="{% url 'index' %}?category=sport_car" class="px-4 py-2 hover:bg-slate-900 text-slate-300 hover:text-amber-500 flex items-center gap-2">
+                            <i class="fa-solid fa-car-rear text-amber-500"></i> Sport Cars
+                        </a>
+                        <a href="{% url 'index' %}?category=suv" class="px-4 py-2 hover:bg-slate-900 text-slate-300 hover:text-amber-500 flex items-center gap-2">
+                            <i class="fa-solid fa-truck-monster text-amber-500"></i> Heavy SUVs & 4x4
+                        </a>
+                        <a href="{% url 'index' %}?category=offroad" class="px-4 py-2 hover:bg-slate-900 text-slate-300 hover:text-amber-500 flex items-center gap-2">
+                            <i class="fa-solid fa-mountain-sun text-amber-500"></i> Offroad Rig
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 2. Motorcycles Section Dropdown -->
+                <div class="relative group cursor-pointer">
+                    <a href="{% url 'index' %}?category=bike" class="text-slate-300 group-hover:text-amber-500 flex items-center gap-1 py-1">
+                        <i class="fa-solid fa-motorcycle"></i> Bikes & Motorcycles <i class="fa-solid fa-chevron-down text-[10px] ml-1"></i>
+                    </a>
+                    <div class="absolute left-0 top-full hidden group-hover:flex flex-col bg-slate-950 border border-slate-800 rounded-xl shadow-2xl py-2 w-56 z-50">
+                        <a href="{% url 'index' %}?category=commuter_bike" class="px-4 py-2 hover:bg-slate-900 text-slate-300 hover:text-amber-500 flex items-center gap-2">
+                            <i class="fa-solid fa-motorcycle text-amber-500"></i> Commuter Bikes
+                        </a>
+                        <a href="{% url 'index' %}?category=adventure_bike" class="px-4 py-2 hover:bg-slate-900 text-slate-300 hover:text-amber-500 flex items-center gap-2">
+                            <i class="fa-solid fa-mountain text-amber-500"></i> Adventure Bikes
+                        </a>
+                        <a href="{% url 'index' %}?category=hyper_bike" class="px-4 py-2 hover:bg-slate-900 text-slate-300 hover:text-amber-500 flex items-center gap-2">
+                            <i class="fa-solid fa-bolt text-amber-500"></i> Hyper Bikes
+                        </a>
+                        <a href="{% url 'index' %}?category=quad_scooter" class="px-4 py-2 hover:bg-slate-900 text-slate-300 hover:text-amber-500 flex items-center gap-2">
+                            <i class="fa-solid fa-shield text-amber-500"></i> Quads & Scooters
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 3. Heavy Haulage & Commercial Fleet -->
+                <div class="relative group cursor-pointer">
+                    <a href="{% url 'index' %}?category=heavy_fleet" class="text-slate-300 group-hover:text-amber-500 flex items-center gap-1 py-1">
+                        <i class="fa-solid fa-truck-moving"></i> Trailers, Lorries & Buses <i class="fa-solid fa-chevron-down text-[10px] ml-1"></i>
+                    </a>
+                    <div class="absolute left-0 top-full hidden group-hover:flex flex-col bg-slate-950 border border-slate-800 rounded-xl shadow-2xl py-2 w-60 z-50">
+                        <a href="{% url 'index' %}?category=trailer_rollie" class="px-4 py-2 hover:bg-slate-900 text-slate-300 hover:text-amber-500 flex items-center gap-2">
+                            <i class="fa-solid fa-trailer text-amber-500"></i> Trailers & Rollies
+                        </a>
+                        <a href="{% url 'index' %}?category=lorry_truck" class="px-4 py-2 hover:bg-slate-900 text-slate-300 hover:text-amber-500 flex items-center gap-2">
+                            <i class="fa-solid fa-truck-front text-amber-500"></i> Lorries & Heavy Haulers
+                        </a>
+                        <a href="{% url 'index' %}?category=bus_transporter" class="px-4 py-2 hover:bg-slate-900 text-slate-300 hover:text-amber-500 flex items-center gap-2">
+                            <i class="fa-solid fa-bus text-amber-500"></i> Buses & Fleet Transporters
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 4. Spare Parts Section Dropdown -->
+                <div class="relative group cursor-pointer">
+                    <a href="{% url 'index' %}?category=spare_part" class="text-slate-300 group-hover:text-amber-500 flex items-center gap-1 py-1">
+                        <i class="fa-solid fa-gears"></i> Heavy Spare Parts <i class="fa-solid fa-chevron-down text-[10px] ml-1"></i>
+                    </a>
+                    <div class="absolute left-0 top-full hidden group-hover:flex flex-col bg-slate-950 border border-slate-800 rounded-xl shadow-2xl py-2 w-56 z-50">
+                        <a href="{% url 'index' %}?category=engine_part" class="px-4 py-2 hover:bg-slate-900 text-slate-300 hover:text-amber-500 flex items-center gap-2">
+                            <i class="fa-solid fa-microchip text-amber-500"></i> Engine & Turbo Components
+                        </a>
+                        <a href="{% url 'index' %}?category=body_panel" class="px-4 py-2 hover:bg-slate-900 text-slate-300 hover:text-amber-500 flex items-center gap-2">
+                            <i class="fa-solid fa-shield-halved text-amber-500"></i> Doors, Bonnets & Panels
+                        </a>
+                        <a href="{% url 'index' %}?category=custom_tuning" class="px-4 py-2 hover:bg-slate-900 text-slate-300 hover:text-amber-500 flex items-center gap-2">
+                            <i class="fa-solid fa-wrench text-amber-500"></i> Custom Tuning Parts
+                        </a>
+                    </div>
+                </div>
+
             </div>
         </div>
     </header>
