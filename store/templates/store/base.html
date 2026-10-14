@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VANGUARD - Engineering, Customization & Heavy Machinery</title>
+    <title>VANGUARD - Custom Engineering & Tactical Fleet</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -16,7 +16,7 @@
 
     <!-- Strategic Ticker -->
     <div class="bg-amber-600 text-slate-950 text-xs font-bold py-2 px-4 text-center tracking-wider">
-        ⚡ INDUSTRIAL TACTICAL & ENGINEERING EXPANSION: Ground Vehicles, Heavy Machining, Aviation Prototyping & Custom Defense Systems
+        ⚡ INDUSTRIAL TACTICAL & ENGINEERING EXPANSION: Ground Vehicles, Heavy Machining & Custom Spare Parts
     </div>
 
     <!-- Main Header -->
@@ -28,15 +28,14 @@
                     <i class="fa-solid fa-gears text-xl"></i> VANGUARD
                 </a>
                 
-                <!-- Operator Portal Links -->
+                <!-- Navigation & Portal Links -->
                 <div class="flex items-center gap-4">
-                    {% if request.user.is_authenticated %}
-                        <span class="text-xs bg-slate-800 text-slate-200 font-semibold px-3 py-2 rounded-lg border border-slate-700">
-                            <i class="fa-solid fa-user-shield text-amber-500"></i> {{ request.user.username }}
-                        </span>
-                    {% else %}
-                        <a href="{% url 'index' %}" class="text-xs bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-4 py-2 rounded-lg">Operator Portal</a>
-                    {% endif %}
+                    <a href="{% url 'dashboard' %}" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold px-3 py-2 rounded-lg border border-slate-700">
+                        <i class="fa-solid fa-gauge text-amber-500"></i> Dashboard
+                    </a>
+                    <a href="{% url 'cart_view' %}" class="relative text-slate-300 hover:text-amber-500">
+                        <i class="fa-solid fa-cart-shopping text-xl"></i>
+                    </a>
                 </div>
             </div>
         </div>
@@ -44,21 +43,15 @@
         <!-- Category Bar -->
         <div class="bg-slate-900 px-6 border-b border-slate-800">
             <div class="max-w-7xl mx-auto px-4 flex items-center gap-6 py-2.5 text-xs font-semibold overflow-x-auto whitespace-nowrap">
-                <a href="{% url 'index' %}" class="{% if not request.GET.category %}text-amber-500 font-bold{% else %}text-slate-400 hover:text-amber-500{% endif %}">All Assets</a>
-                
-                <!-- Vehicle Categories -->
-                <a href="{% url 'index' %}?category=sport_car" class="{% if request.GET.category == 'sport_car' %}text-amber-500 font-bold{% else %}text-slate-400 hover:text-amber-500{% endif %}"><i class="fa-solid fa-car-rear"></i> Sport Cars</a>
-                <a href="{% url 'index' %}?category=suv" class="{% if request.GET.category == 'suv' %}text-amber-500 font-bold{% else %}text-slate-400 hover:text-amber-500{% endif %}"><i class="fa-solid fa-truck-monster"></i> Heavy SUVs & 4x4</a>
-                
-                <!-- Bike Categories -->
-                <a href="{% url 'index' %}?category=commuter_bike" class="{% if request.GET.category == 'commuter_bike' %}text-amber-500 font-bold{% else %}text-slate-400 hover:text-amber-500{% endif %}"><i class="fa-solid fa-motorcycle"></i> Commuter Bikes</a>
-                <a href="{% url 'index' %}?category=adventure_bike" class="{% if request.GET.category == 'adventure_bike' %}text-amber-500 font-bold{% else %}text-slate-400 hover:text-amber-500{% endif %}"><i class="fa-solid fa-mountain"></i> Adventure Bikes</a>
-                <a href="{% url 'index' %}?category=hyper_bike" class="{% if request.GET.category == 'hyper_bike' %}text-amber-500 font-bold{% else %}text-slate-400 hover:text-amber-500{% endif %}"><i class="fa-solid fa-bolt"></i> Hyper Bikes</a>
-                <a href="{% url 'index' %}?category=quad_scooter" class="{% if request.GET.category == 'quad_scooter' %}text-amber-500 font-bold{% else %}text-slate-400 hover:text-amber-500{% endif %}"><i class="fa-solid fa-shield"></i> Quads & Scooters</a>
-
-                <!-- Trailers, Rollies & Spare Parts -->
-                <a href="{% url 'index' %}?category=trailer_rollie" class="{% if request.GET.category == 'trailer_rollie' %}text-amber-500 font-bold{% else %}text-slate-400 hover:text-amber-500{% endif %}"><i class="fa-solid fa-trailer"></i> Trailers & Rollies</a>
-                <a href="{% url 'index' %}?category=spare_part" class="{% if request.GET.category == 'spare_part' %}text-amber-500 font-bold{% else %}text-slate-400 hover:text-amber-500{% endif %}"><i class="fa-solid fa-gears"></i> Heavy Spare Parts</a>
+                <a href="{% url 'index' %}" class="text-amber-500 font-bold">All Assets</a>
+                <a href="{% url 'index' %}?category=sport_car" class="text-slate-400 hover:text-amber-500"><i class="fa-solid fa-car-rear"></i> Sport Cars</a>
+                <a href="{% url 'index' %}?category=suv" class="text-slate-400 hover:text-amber-500"><i class="fa-solid fa-truck-monster"></i> Heavy SUVs & 4x4</a>
+                <a href="{% url 'index' %}?category=commuter_bike" class="text-slate-400 hover:text-amber-500"><i class="fa-solid fa-motorcycle"></i> Commuter Bikes</a>
+                <a href="{% url 'index' %}?category=adventure_bike" class="text-slate-400 hover:text-amber-500"><i class="fa-solid fa-mountain"></i> Adventure Bikes</a>
+                <a href="{% url 'index' %}?category=hyper_bike" class="text-slate-400 hover:text-amber-500"><i class="fa-solid fa-bolt"></i> Hyper Bikes</a>
+                <a href="{% url 'index' %}?category=quad_scooter" class="text-slate-400 hover:text-amber-500"><i class="fa-solid fa-shield"></i> Quads & Scooters</a>
+                <a href="{% url 'index' %}?category=trailer_rollie" class="text-slate-400 hover:text-amber-500"><i class="fa-solid fa-trailer"></i> Trailers & Rollies</a>
+                <a href="{% url 'index' %}?category=spare_part" class="text-slate-400 hover:text-amber-500"><i class="fa-solid fa-gears"></i> Heavy Spare Parts</a>
             </div>
         </div>
     </header>
@@ -71,7 +64,7 @@
     <!-- Footer -->
     <footer class="bg-slate-950 border-t border-slate-800 mt-16 text-xs text-slate-400">
         <div class="max-w-7xl mx-auto px-6 py-10 text-center">
-            <p>&copy; 2026 VANGUARD ENGINES & INDUSTRIAL DYNAMICS. All rights reserved. Custom Engineering, Defense & Heavy Mobility.</p>
+            <p>&copy; 2026 VANGUARD ENGINES & INDUSTRIAL DYNAMICS. All rights reserved.</p>
         </div>
     </footer>
 </body>
