@@ -11,62 +11,8 @@ def index(request):
         products = Product.objects.all().order_by('-id')
         
         if category:
-            # Expanded filtering for parent categories and sub-categories
-            if category == 'car':
-                products = products.filter(
-                    Q(name__icontains='sport') | Q(description__icontains='sport') |
-                    Q(name__icontains='car') | Q(description__icontains='car') |
-                    Q(name__icontains='suv') | Q(description__icontains='suv') |
-                    Q(name__icontains='offroad') | Q(description__icontains='offroad') |
-                    Q(name__icontains='pickup') | Q(description__icontains='pickup') |
-                    Q(name__icontains='van') | Q(description__icontains='van') |
-                    Q(name__icontains='sedan') | Q(description__icontains='sedan')
-                )
-            elif category in ['sport_car', 'suv', 'offroad', 'pickup', 'van', 'sedan']:
-                products = products.filter(
-                    Q(name__icontains=category) | Q(description__icontains=category) |
-                    Q(name__icontains='car') | Q(description__icontains='car')
-                )
-            elif category == 'bike':
-                products = products.filter(
-                    Q(name__icontains='bike') | Q(description__icontains='bike') |
-                    Q(name__icontains='motorcycle') | Q(description__icontains='motorcycle') |
-                    Q(name__icontains='quad') | Q(description__icontains='quad') |
-                    Q(name__icontains='scooter') | Q(description__icontains='scooter')
-                )
-            elif category in ['commuter_bike', 'adventure_bike', 'hyper_bike', 'quad_scooter']:
-                products = products.filter(
-                    Q(name__icontains=category) | Q(description__icontains=category) |
-                    Q(name__icontains='bike') | Q(description__icontains='bike')
-                )
-            elif category == 'heavy_fleet':
-                products = products.filter(
-                    Q(name__icontains='trailer') | Q(description__icontains='trailer') |
-                    Q(name__icontains='lorry') | Q(description__icontains='lorry') |
-                    Q(name__icontains='truck') | Q(description__icontains='truck') |
-                    Q(name__icontains='bus') | Q(description__icontains='bus')
-                )
-            elif category in ['trailer_rollie', 'lorry_truck', 'bus_transporter']:
-                products = products.filter(
-                    Q(name__icontains=category) | Q(description__icontains=category) |
-                    Q(name__icontains='truck') | Q(description__icontains='truck')
-                )
-            elif category == 'spare_part':
-                products = products.filter(
-                    Q(name__icontains='spare') | Q(description__icontains='spare') |
-                    Q(name__icontains='engine') | Q(description__icontains='engine') |
-                    Q(name__icontains='turbo') | Q(description__icontains='turbo') |
-                    Q(name__icontains='panel') | Q(description__icontains='panel')
-                )
-            elif category in ['engine_part', 'body_panel', 'custom_tuning']:
-                products = products.filter(
-                    Q(name__icontains=category) | Q(description__icontains=category) |
-                    Q(name__icontains='spare') | Q(description__icontains='spare')
-                )
-            else:
-                products = products.filter(
-                    Q(name__icontains=category) | Q(description__icontains=category)
-                )
+            # Strict database filtering: category must match exactly
+            products = products.filter(category=category)
                 
         if query:
             products = products.filter(

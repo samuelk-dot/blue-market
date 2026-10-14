@@ -40,17 +40,18 @@
             </div>
         </div>
 
-        <!-- 4 Core Main Sections Navbar -->
+        <!-- 4 Core Main Sections Navbar with Smart Highlighting -->
         <div class="bg-slate-900 px-6 border-b border-slate-800">
             <div class="max-w-7xl mx-auto px-4 flex items-center gap-8 py-3 text-xs font-bold uppercase tracking-wide">
                 
-                <a href="{% url 'index' %}" class="text-amber-500 hover:text-amber-400">
+                <!-- All Assets -->
+                <a href="{% url 'index' %}" class="{% if not request.GET.category %}text-amber-500 font-bold{% else %}text-slate-300 hover:text-amber-500{% endif %}">
                     <i class="fa-solid fa-layer-group mr-1"></i> All Assets
                 </a>
 
-                <!-- 1. Cars Section Dropdown -->
+                <!-- 1. Cars Section -->
                 <div class="relative group cursor-pointer">
-                    <a href="{% url 'index' %}?category=car" class="text-slate-300 group-hover:text-amber-500 flex items-center gap-1 py-1">
+                    <a href="{% url 'index' %}?category=car" class="{% if request.GET.category == 'car' or request.GET.category == 'sport_car' or request.GET.category == 'suv' or request.GET.category == 'offroad' %}text-amber-500 font-bold{% else %}text-slate-300 hover:text-amber-500{% endif %} flex items-center gap-1 py-1">
                         <i class="fa-solid fa-car"></i> Cars & Vehicles <i class="fa-solid fa-chevron-down text-[10px] ml-1"></i>
                     </a>
                     <div class="absolute left-0 top-full hidden group-hover:flex flex-col bg-slate-950 border border-slate-800 rounded-xl shadow-2xl py-2 w-52 z-50">
@@ -66,9 +67,9 @@
                     </div>
                 </div>
 
-                <!-- 2. Motorcycles Section Dropdown -->
+                <!-- 2. Motorcycles Section -->
                 <div class="relative group cursor-pointer">
-                    <a href="{% url 'index' %}?category=bike" class="text-slate-300 group-hover:text-amber-500 flex items-center gap-1 py-1">
+                    <a href="{% url 'index' %}?category=bike" class="{% if request.GET.category == 'bike' or request.GET.category == 'commuter_bike' or request.GET.category == 'adventure_bike' or request.GET.category == 'hyper_bike' or request.GET.category == 'quad_scooter' %}text-amber-500 font-bold{% else %}text-slate-300 hover:text-amber-500{% endif %} flex items-center gap-1 py-1">
                         <i class="fa-solid fa-motorcycle"></i> Bikes & Motorcycles <i class="fa-solid fa-chevron-down text-[10px] ml-1"></i>
                     </a>
                     <div class="absolute left-0 top-full hidden group-hover:flex flex-col bg-slate-950 border border-slate-800 rounded-xl shadow-2xl py-2 w-56 z-50">
@@ -87,9 +88,9 @@
                     </div>
                 </div>
 
-                <!-- 3. Heavy Haulage & Commercial Fleet -->
+                <!-- 3. Heavy Haulage Section -->
                 <div class="relative group cursor-pointer">
-                    <a href="{% url 'index' %}?category=heavy_fleet" class="text-slate-300 group-hover:text-amber-500 flex items-center gap-1 py-1">
+                    <a href="{% url 'index' %}?category=heavy_fleet" class="{% if request.GET.category == 'heavy_fleet' or request.GET.category == 'trailer_rollie' or request.GET.category == 'lorry_truck' or request.GET.category == 'bus_transporter' %}text-amber-500 font-bold{% else %}text-slate-300 hover:text-amber-500{% endif %} flex items-center gap-1 py-1">
                         <i class="fa-solid fa-truck-moving"></i> Trailers, Lorries & Buses <i class="fa-solid fa-chevron-down text-[10px] ml-1"></i>
                     </a>
                     <div class="absolute left-0 top-full hidden group-hover:flex flex-col bg-slate-950 border border-slate-800 rounded-xl shadow-2xl py-2 w-60 z-50">
@@ -105,9 +106,9 @@
                     </div>
                 </div>
 
-                <!-- 4. Spare Parts Section Dropdown -->
+                <!-- 4. Spare Parts Section -->
                 <div class="relative group cursor-pointer">
-                    <a href="{% url 'index' %}?category=spare_part" class="text-slate-300 group-hover:text-amber-500 flex items-center gap-1 py-1">
+                    <a href="{% url 'index' %}?category=spare_part" class="{% if request.GET.category == 'spare_part' or request.GET.category == 'engine_part' or request.GET.category == 'body_panel' or request.GET.category == 'custom_tuning' %}text-amber-500 font-bold{% else %}text-slate-300 hover:text-amber-500{% endif %} flex items-center gap-1 py-1">
                         <i class="fa-solid fa-gears"></i> Heavy Spare Parts <i class="fa-solid fa-chevron-down text-[10px] ml-1"></i>
                     </a>
                     <div class="absolute left-0 top-full hidden group-hover:flex flex-col bg-slate-950 border border-slate-800 rounded-xl shadow-2xl py-2 w-56 z-50">
