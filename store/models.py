@@ -9,15 +9,25 @@ class Product(models.Model):
         ("spare_part", "Heavy Spare Parts"),
     ]
 
+    TRANSMISSION_CHOICES = [
+        ("automatic", "Automatic"),
+        ("manual", "Manual"),
+    ]
+
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=200)
     category = models.CharField(max_length=50, choices=CATEGORY_CHOICES, default="car")
     description = models.TextField()
     price = models.DecimalField(max_digits=12, decimal_places=2)
     
-    # New fields added for Search & Filter
+    # Detailed Vehicle & Equipment Specs
     year = models.IntegerField(null=True, blank=True)
     location = models.CharField(max_length=100, null=True, blank=True)
+    mileage = models.IntegerField(null=True, blank=True, help_text="Mileage in KM")
+    engine_cc = models.IntegerField(null=True, blank=True, help_text="Engine capacity in CC")
+    transmission = models.CharField(max_length=20, choices=TRANSMISSION_CHOICES, default="automatic", null=True, blank=True)
+    fuel_type = models.CharField(max_length=50, null=True, blank=True, help_text="e.g. Petrol, Diesel, Hybrid, Electric")
+    running_cost_specs = models.TextField(null=True, blank=True, help_text="Detailed specs, fuel economy, service cost")
 
     image_url = models.URLField(max_length=1000, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
