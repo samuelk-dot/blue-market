@@ -2,15 +2,29 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Product(models.Model):
-    vendor = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    CATEGORY_CHOICES = [
+        ("car", "Cars & Vehicles"),
+        ("bike", "Bikes & Motorcycles"),
+        ("heavy_fleet", "Trailers, Lorries & Buses"),
+        ("spare_part", "Heavy Spare Parts"),
+    ]
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=200)
+    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES, default="car")
     description = models.TextField()
     price = models.DecimalField(max_digits=12, decimal_places=2)
+    
+    # New fields added for Search & Filter
+    year = models.IntegerField(null=True, blank=True)
+    location = models.CharField(max_length=100, null=True, blank=True)
+
     image_url = models.URLField(max_length=1000, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.name
+        return f"{self.name} ({self.get_category_display()})"
+
 
 # Model for up to 5 additional gallery images (File or URL)
 class ProductImage(models.Model):

@@ -4,12 +4,16 @@ from django.http import JsonResponse
 from .models import Product
 
 def index(request):
-    category = request.GET.get('category')
-    query = request.GET.get('q')
+    category = request.GET.get('category', '')
+    query = request.GET.get('q', '')
+    budget = request.GET.get('budget', '')
+    year_filter = request.GET.get('year', '')
+    location = request.GET.get('location', '')
+    sort_by = request.GET.get('sort', '')
 
     try:
-        products = Product.objects.all().order_by('-id')
-        
+        products = Product.objects.all()
+
         if category:
             products = products.filter(category=category)
 
@@ -17,6 +21,41 @@ def index(request):
             products = products.filter(
                 Q(name__icontains=query) | Q(description__icontains=query)
             )
+
+        # Budget filtering
+        if budget == 'under_1m':
+            products = products.filter(price__lt=1000000)
+        elif budget == '1m_2m':
+            products = products.filter(price__gte=1000000, price__lte=2000000)
+        elif budget == '2m_5m':
+            products = products.filter(price__gte=2000000, price__lte=5000000)
+        elif budget == 'over_5m':
+            products = products.filter(price__gt=5000000)
+
+        # Year filtering
+        if year_filter == '2022_newer':
+            products = products.filter(year__gte=2022)
+        elif year_filter == '2019_2021':
+            products = products.filter(year__gte=2019, year__lte=2021)
+        elif year_filter == '2015_2018':
+            products = products.filter(year__gte=2015, year__lte=2018)
+        elif year_filter == 'older':
+            products = products.filter(year__lt=2015)
+
+        # Location filtering
+        if location:
+            products = products.filter(location__icontains=location)
+
+        # Sorting
+        if sort_by == 'price_low':
+            products = products.order_by('price')
+        elif sort_by == 'price_high':
+            products = products.order_by('-price')
+        elif sort_by == 'newest':
+            products = products.order_by('-id')
+        else:
+            products = products.order_by('-id')
+
     except Exception:
         products = []
 

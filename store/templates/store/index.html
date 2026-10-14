@@ -157,6 +157,68 @@
         </div>
     </div>
 
+    <!-- Advanced Dashboard Search & Filter Bar -->
+        <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-2xl mb-8 backdrop-blur-md">
+            <form method="GET" action="" class="space-y-6">
+                
+                <!-- Search Input Bar -->
+                <div class="flex flex-col md:flex-row gap-3">
+                    <div class="relative flex-1">
+                        <input type="text" name="q" value="{{ request.GET.q }}" placeholder="Search any car, e.g. 'Toyota Prado', model, or spare part..." 
+                            class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-amber-500 transition">
+                    </div>
+                    <button type="submit" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-8 py-3 rounded-xl transition shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        Search Fleet
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t border-slate-800">
+                    
+                    <!-- Filter by Budget -->
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-amber-400 mb-2">Filter by Budget (KES)</label>
+                        <select name="budget" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-slate-200 focus:outline-none focus:border-amber-500 text-sm">
+                            <option value="">All Budgets</option>
+                            <option value="under_1m" {% if request.GET.budget == 'under_1m' %}selected{% endif %}>Under 1M KES</option>
+                            <option value="1m_2m" {% if request.GET.budget == '1m_2m' %}selected{% endif %}>1M - 2M KES</option>
+                            <option value="2m_5m" {% if request.GET.budget == '2m_5m' %}selected{% endif %}>2M - 5M KES</option>
+                            <option value="over_5m" {% if request.GET.budget == 'over_5m' %}selected{% endif %}>More than 5M KES</option>
+                        </select>
+                    </div>
+
+                    <!-- Filter by Year -->
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-amber-400 mb-2">Manufacturing Year</label>
+                        <select name="year" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-slate-200 focus:outline-none focus:border-amber-500 text-sm">
+                            <option value="">All Years</option>
+                            <option value="2022_newer" {% if request.GET.year == '2022_newer' %}selected{% endif %}>2022 and Newer</option>
+                            <option value="2019_2021" {% if request.GET.year == '2019_2021' %}selected{% endif %}>2019 to 2021</option>
+                            <option value="2015_2018" {% if request.GET.year == '2015_2018' %}selected{% endif %}>2015 to 2018</option>
+                            <option value="older" {% if request.GET.year == 'older' %}selected{% endif %}>2014 and Older</option>
+                        </select>
+                    </div>
+
+                    <!-- Sort By / Location -->
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-amber-400 mb-2">Location</label>
+                            <input type="text" name="location" value="{{ request.GET.location }}" placeholder="e.g. Nairobi" 
+                                class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-slate-200 placeholder-slate-600 focus:outline-none focus:border-amber-500 text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-amber-400 mb-2">Sort By</label>
+                            <select name="sort" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-slate-200 focus:outline-none focus:border-amber-500 text-sm">
+                                <option value="newest">Newest First</option>
+                                <option value="price_low" {% if request.GET.sort == 'price_low' %}selected{% endif %}>Price: Low to High</option>
+                                <option value="price_high" {% if request.GET.sort == 'price_high' %}selected{% endif %}>Price: High to Low</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
     <!-- Available Assets Section -->
     <div class="space-y-6 pt-6">
         <div class="flex items-center justify-between border-b border-slate-800 pb-4">
