@@ -69,7 +69,7 @@ def vendor_dashboard(request):
         products = Product.objects.all().order_by('-id')
     except Exception:
         products = []
-    return render(request, 'store/vendor_dashboard.html', {'products': products})
+    return render(request, 'store/dashboard.html', {'products': products})
 
 def product_detail(request, product_id):
     product = get_object_or_404(Product, id=product_id)
