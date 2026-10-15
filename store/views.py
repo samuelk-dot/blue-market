@@ -66,26 +66,39 @@ def index(request):
 
 def vendor_dashboard(request):
     if request.method == 'POST' and 'add_product' in request.POST:
-        # Let errors show on screen directly if anything fails
-        name = request.POST.get('name') or f"{request.POST.get('make')} {request.POST.get('model')}".strip()
+        # Build a rich description combining all the wizard details
+        make = request.POST.get('make', '')
+        model = request.POST.get('model', '')
+        year = request.POST.get('year', '')
+        mileage = request.POST.get('mileage', '')
         price = request.POST.get('price') or 0
+        body_type = request.POST.get('body_type', '')
+        fuel_type = request.POST.get('fuel_type', '')
+        transmission = request.POST.get('transmission', '')
+        engine_cc = request.POST.get('engine_cc', '')
+        condition = request.POST.get('usage_condition', '')
         
+        name = request.POST.get('name') or f"{year} {make} {model}".strip()
+        
+        detailed_description = f"""
+        Make: {make}
+        Model: {model}
+        Year: {year}
+        Mileage: {mileage} km
+        Body Type: {body_type}
+        Fuel: {fuel_type}
+        Transmission: {transmission}
+        Engine CC: {engine_cc}
+        Condition: {condition}
+        
+        {request.POST.get('description', '')}
+        """.strip()
+
         Product.objects.create(
             name=name,
             price=price,
-            description=request.POST.get('description', ''),
+            description=detailed_description,
             image_url=request.POST.get('image_url', ''),
-            make=request.POST.get('make', ''),
-            model=request.POST.get('model', ''),
-            year=request.POST.get('year') or None,
-            mileage=request.POST.get('mileage') or None,
-            body_type=request.POST.get('body_type', ''),
-            fuel_type=request.POST.get('fuel_type', ''),
-            transmission=request.POST.get('transmission', ''),
-            engine_cc=request.POST.get('engine_cc') or None,
-            usage_condition=request.POST.get('usage_condition', ''),
-            chassis_number=request.POST.get('chassis_number', ''),
-            registration_number=request.POST.get('registration_number', ''),
         )
         return redirect('vendor-dashboard')
 
