@@ -435,6 +435,35 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
     showStep(currentStep);
+
+    // POWER-USER KEYBOARD NAVIGATION (Enter to jump/next step)
+    const formInputs = document.querySelectorAll('#vehicle-form input, #vehicle-form select, #vehicle-form textarea');
+    formInputs.forEach((input) => {
+        input.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                
+                const currentStepEl = document.querySelector('.form-step:not(.hidden)');
+                if (!currentStepEl) return;
+                
+                const stepInputs = Array.from(currentStepEl.querySelectorAll('input, select, textarea'));
+                const currentIndex = stepInputs.indexOf(this);
+
+                if (currentIndex < stepInputs.length - 1) {
+                    stepInputs[currentIndex + 1].focus();
+                } else {
+                    if (currentStep < steps.length - 1) {
+                        changeStep(1);
+                        setTimeout(() => {
+                            const newStepEl = document.querySelector('.form-step:not(.hidden)');
+                            const newStepInputs = newStepEl ? newStepEl.querySelectorAll('input, select, textarea') : [];
+                            if (newStepInputs.length > 0) newStepInputs[0].focus();
+                        }, 50);
+                    }
+                }
+            }
+        });
+    });
 });
 
 async function parseAndAutoPublishAll() {
