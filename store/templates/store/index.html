@@ -219,13 +219,68 @@
                 </div>
             </form>
         </div>
-    <!-- Available Assets Section -->
-    <div class="space-y-6 pt-6">
-        <div class="flex items-center justify-between border-b border-slate-800 pb-4">
-            <h2 class="text-xl font-bold text-slate-200 flex items-center gap-2">
-                <i class="fa-solid fa-boxes-stacked text-amber-500"></i> Available Assets & Components
-            </h2>
-            <span class="text-xs text-slate-500 font-mono">{{ products.count }} Units Active</span>
+        <!-- Available Assets Section -->
+        <div class="space-y-6 pt-6">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                <h2 class="text-xl font-bold text-slate-200 flex items-center gap-2">
+                    <i class="fa-solid fa-boxes-stacked text-amber-500"></i> Available Assets & Components
+                </h2>
+            </div>
+
+            {% if products %}
+                <!-- 3-COLUMN RESPONSIVE CARD GRID -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {% for item in products %}
+                        <a href="{% url 'product_detail' item.id %}" class="block bg-slate-900 hover:bg-slate-800/90 border border-slate-800 hover:border-amber-400/50 rounded-2xl overflow-hidden shadow-xl transition duration-200 group flex flex-col justify-between">
+                    
+                            <div>
+                                <!-- Vehicle Image Container -->
+                                <div class="h-48 bg-slate-950 border-b border-slate-800 overflow-hidden relative">
+                                    {% if item.image_url %}
+                                        <img src="{{ item.image_url }}" alt="{{ item.name }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                                    {% else %}
+                                        <div class="w-full h-full flex items-center justify-center text-slate-700">
+                                            <i class="fa-solid fa-car text-5xl"></i>
+                                        </div>
+                                    {% endif %}
+                                    <span class="absolute top-3 right-3 bg-slate-900/90 text-amber-400 font-extrabold text-[10px] px-2.5 py-1 rounded-md border border-slate-700 uppercase tracking-wider">
+                                        {{ item.condition|default:"Stock" }}
+                                    </span>
+                                </div>
+
+                                <!-- Card Content -->
+                                <div class="p-5 space-y-3">
+                                    <h3 class="font-extrabold text-white text-lg group-hover:text-amber-400 transition tracking-wide line-clamp-1">
+                                        {{ item.name }}
+                                    </h3>
+                            
+                                    <p class="text-xs text-slate-400 line-clamp-2 leading-relaxed">
+                                        {{ item.description }}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Footer / Price Bar -->
+                            <div class="px-5 pb-5 pt-2 flex items-center justify-between border-t border-slate-800/60 mt-auto">
+                                <div>
+                                    <span class="text-[10px] uppercase font-bold text-slate-500 block">Listed Price</span>
+                                    <span class="text-amber-400 font-black text-base">KES {{ item.price }}</span>
+                                </div>
+                                <span class="bg-amber-400 group-hover:bg-amber-300 text-slate-950 px-3.5 py-1.5 rounded-xl text-xs font-extrabold shadow-md transition flex items-center gap-1">
+                                    Inspect <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                                </span>
+                            </div>
+
+                        </a>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-12 text-center space-y-3">
+                    <i class="fa-solid fa-folder-open text-5xl text-slate-700"></i>
+                    <p class="font-bold text-slate-300">No machinery or spare parts listed yet.</p>
+                    <p class="text-xs text-slate-500">Use your Operator Dashboard to add your first listing.</p>
+                </div>
+            {% endif %}
         </div>
 
         {% if products %}
