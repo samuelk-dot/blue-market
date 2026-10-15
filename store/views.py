@@ -65,10 +65,37 @@ def index(request):
     })
 
 def vendor_dashboard(request):
+    if request.method == 'POST' and 'add_product' in request.POST:
+        try:
+            name = request.POST.get('name') or f"{request.POST.get('make')} {request.POST.get('model')}".strip()
+            price = request.POST.get('price') or 0
+            
+            Product.objects.create(
+                name=name,
+                price=price,
+                description=request.POST.get('description', ''),
+                image_url=request.POST.get('image_url', ''),
+                make=request.POST.get('make', ''),
+                model=request.POST.get('model', ''),
+                year=request.POST.get('year') or None,
+                mileage=request.POST.get('mileage') or None,
+                body_type=request.POST.get('body_type', ''),
+                fuel_type=request.POST.get('fuel_type', ''),
+                transmission=request.POST.get('transmission', ''),
+                engine_cc=request.POST.get('engine_cc') or None,
+                usage_condition=request.POST.get('usage_condition', ''),
+                chassis_number=request.POST.get('chassis_number', ''),
+                registration_number=request.POST.get('registration_number', ''),
+            )
+            return redirect('vendor-dashboard')
+        except Exception as e:
+            print("Error saving vehicle:", e)
+
     try:
         products = Product.objects.all().order_by('-id')
     except Exception:
         products = []
+        
     return render(request, 'store/dashboard.html', {'products': products})
 
 def product_detail(request, product_id):
