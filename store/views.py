@@ -100,7 +100,7 @@ def vendor_dashboard(request):
             description=detailed_description,
             image_url=request.POST.get('image_url', ''),
         )
-        return redirect('vendor-dashboard')
+        return redirect('vendor_dashboard')
 
     try:
         products = Product.objects.all().order_by('-id')
