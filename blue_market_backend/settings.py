@@ -128,3 +128,15 @@ MAILERS = {
 }
 LOGIN_URL = 'login'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+# Production Security & Login Redirects
+DEBUG = False
+
+ALLOWED_HOSTS = ['blue-market-sz8x.onrender.com', 'localhost', '127.0.0.1']
+
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'vendor_dashboard'
+LOGOUT_REDIRECT_URL = 'index'
