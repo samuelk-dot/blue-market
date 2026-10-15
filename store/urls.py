@@ -16,4 +16,6 @@ urlpatterns = [
     path('api/autocomplete/', views.product_autocomplete, name='product_autocomplete'),
     path('api/ai-ingest/', views.ai_universal_ingest, name='ai_universal_ingest'),
     path('delete-product/<int:product_id>/', views.delete_product, name='delete_product'),
+    path('dealers/', views.dealers_directory, name='dealers'),
+    path('logout/', views.logout_view, name='logout'),
 ]

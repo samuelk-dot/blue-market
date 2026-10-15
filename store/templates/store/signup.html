@@ -1,7 +1,24 @@
-<h2>Seller Signup</h2>
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Create Account</button>
-</form>
-<p>Already have an account? <a href="{% url 'login' %}">Log in here</a></p>
+{% extends 'store/base.html' %}
+
+{% block content %}
+<div class="max-w-md mx-auto py-12 px-4">
+    <div class="bg-[#0b132b] border border-slate-800 rounded-2xl p-8 shadow-2xl space-y-6">
+        <div class="text-center space-y-2">
+            <h1 class="text-2xl font-black text-white">Seller Sign In</h1>
+            <p class="text-xs text-slate-400">Log in to manage your inventory and dashboard.</p>
+        </div>
+
+        <form method="POST" class="space-y-4 text-xs text-slate-200">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="w-full py-3 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black rounded-xl transition shadow-lg mt-4 cursor-pointer">
+                Log In
+            </button>
+        </form>
+
+        <div class="text-center text-xs text-slate-500 pt-2 border-t border-slate-800">
+            Need a seller account? <a href="{% url 'signup' %}" class="text-amber-400 font-bold hover:underline">Sign up here</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

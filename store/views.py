@@ -1,6 +1,10 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
 from django.http import JsonResponse
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from .models import Product
 
 def index(request):
@@ -64,6 +68,7 @@ def index(request):
         'current_category': str(category) if category else '',
     })
 
+@login_required(login_url='login')
 def vendor_dashboard(request):
     if request.method == 'POST' and 'add_product' in request.POST:
         # Build a rich description combining all the wizard details
@@ -123,10 +128,34 @@ def place_order(request):
     return redirect('index')
 
 def signup_view(request):
-    return render(request, 'store/signup.html')
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('vendor_dashboard')
+    else:
+        form = UserCreationForm()
+    return render(request, 'store/signup.html', {'form': form})
 
 def login_view(request):
-    return render(request, 'store/login.html')
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('vendor_dashboard')
+    else:
+        form = AuthenticationForm()
+    return render(request, 'store/login.html', {'form': form})
+
+def logout_view(request):
+    logout(request)
+    return redirect('index')
+
+def dealers_directory(request):
+    dealers = User.objects.all()
+    return render(request, 'store/dealers.html', {'dealers': dealers})
 
 def search_products(request):
     query = request.GET.get('q', '')
