@@ -425,8 +425,9 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     if (nextBtn) {
-        nextBtn.addEventListener('click', (e) => {
+        nextBtn.addEventListener('click', function(e) {
             e.preventDefault();
+            e.stopPropagation();
             if (currentStep < steps.length - 1) {
                 currentStep++;
                 showStep(currentStep);
@@ -435,8 +436,9 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     if (prevBtn) {
-        prevBtn.addEventListener('click', (e) => {
+        prevBtn.addEventListener('click', function(e) {
             e.preventDefault();
+            e.stopPropagation();
             if (currentStep > 0) {
                 currentStep--;
                 showStep(currentStep);
