@@ -6,9 +6,9 @@
     <!-- MAIN TWO-COLUMN DASHBOARD GRID -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
-        <!-- CARD 1: ADD NEW VEHICLE WIZARD (Vanguard Industrial Theme with Automotive Background) -->
+        <!-- CARD 1: ADD NEW VEHICLE WIZARD -->
         <div class="relative bg-[#0b132b] text-slate-100 rounded-2xl p-6 sm:p-8 shadow-2xl border border-slate-800 overflow-hidden">
-            <!-- Background Automotive Overlay Image Effect -->
+            <!-- Background Automotive Overlay -->
             <div class="absolute inset-0 opacity-10 bg-cover bg-center pointer-events-none" style="background-image: url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80');"></div>
 
             <div class="relative z-10">
@@ -215,8 +215,8 @@
 
                     <!-- Form Navigation Controls -->
                     <div class="flex justify-between items-center pt-3 border-t border-slate-800">
-                        <button type="button" id="prevBtn" class="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded text-xs font-bold hidden">Back</button>
-                        <button type="button" id="nextBtn" class="px-5 py-1.5 bg-amber-500 hover:bg-amber-600 text-slate-950 rounded text-xs font-bold ml-auto shadow">Next Step</button>
+                        <button type="button" id="prevBtn" onclick="changeStep(-1); return false;" class="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded text-xs font-bold hidden">Back</button>
+                        <button type="button" id="nextBtn" onclick="changeStep(1); return false;" class="px-5 py-1.5 bg-amber-500 hover:bg-amber-600 text-slate-950 rounded text-xs font-bold ml-auto shadow">Next Step</button>
                         <button type="submit" id="submitBtn" class="px-5 py-1.5 bg-emerald-500 hover:bg-emerald-600 text-slate-950 rounded text-xs font-bold ml-auto hidden shadow">Publish Vehicle Live</button>
                     </div>
                 </form>
@@ -323,16 +323,109 @@
     </div>
 
 </div>
-{% endblock %}
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    let currentStep = 0;
+let currentStep = 0;
+
+function showStep(n) {
     const steps = document.querySelectorAll('.form-step');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
     const submitBtn = document.getElementById('submitBtn');
+    const indicators = document.querySelectorAll('.step-indicator');
 
+    steps.forEach((step, index) => {
+        step.classList.toggle('hidden', index !== n);
+        if (indicators[index]) {
+            indicators[index].className = index <= n 
+                ? 'step-indicator w-6 h-1.5 bg-amber-500 rounded-full transition-all' 
+                : 'step-indicator w-6 h-1.5 bg-slate-700 rounded-full transition-all';
+        }
+    });
+
+    const stepNumEl = document.getElementById('current-step-num');
+    if (stepNumEl) stepNumEl.innerText = n + 1;
+
+    if (prevBtn) prevBtn.classList.toggle('hidden', n === 0);
+
+    if (n === steps.length - 1) {
+        if (nextBtn) nextBtn.classList.add('hidden');
+        if (submitBtn) submitBtn.classList.remove('hidden');
+        updateCompletenessCheck();
+    } else {
+        if (nextBtn) nextBtn.classList.remove('hidden');
+        if (submitBtn) submitBtn.classList.add('hidden');
+    }
+}
+
+function changeStep(direction) {
+    const steps = document.querySelectorAll('.form-step');
+    if (direction === 1 && currentStep < steps.length - 1) {
+        currentStep++;
+    } else if (direction === -1 && currentStep > 0) {
+        currentStep--;
+    }
+    showStep(currentStep);
+}
+
+function updateCompletenessCheck() {
+    const getValue = (id) => {
+        const el = document.getElementById(id);
+        return el ? el.value.trim() : '';
+    };
+
+    const hasPhotos = document.getElementById('id_images_url') ? document.getElementById('id_images_url').value.trim().length > 0 : false;
+    const mileage = getValue('id_mileage');
+    const year = getValue('id_year');
+    const price = getValue('id_listing_price');
+    const bodyType = getValue('id_body_type');
+    const fuel = getValue('id_fuel_type');
+    const gearbox = getValue('id_transmission');
+    const engineCc = getValue('id_engine_cc');
+    const condition = getValue('id_condition');
+    const chassis = getValue('id_chassis');
+    const reg = getValue('id_registration');
+
+    const hasSpecs = bodyType && fuel && gearbox && engineCc && condition;
+
+    const setStatus = (elementId, isValid) => {
+        const el = document.getElementById(elementId);
+        if (!el) return;
+        const icon = el.children[0];
+        if (isValid) {
+            el.className = 'flex items-center gap-2 text-emerald-400 font-medium text-xs';
+            if (icon) icon.textContent = '✓';
+        } else {
+            el.className = 'flex items-center gap-2 text-rose-400 text-xs';
+            if (icon) icon.textContent = '✕';
+        }
+    };
+
+    setStatus('chk-photos', hasPhotos);
+    setStatus('chk-mileage', Boolean(mileage));
+    setStatus('chk-year', Boolean(year));
+    setStatus('chk-price', Boolean(price));
+    setStatus('chk-specs', Boolean(hasSpecs));
+
+    if (document.getElementById('sum-condition')) document.getElementById('sum-condition').innerText = condition || '-';
+    if (document.getElementById('sum-chassis')) document.getElementById('sum-chassis').innerText = chassis || '-';
+    if (document.getElementById('sum-registration')) document.getElementById('sum-registration').innerText = reg || '-';
+    if (document.getElementById('sum-price')) document.getElementById('sum-price').innerText = price ? `KES ${Number(price).toLocaleString()}` : '-';
+
+    const missing = [];
+    if (!price) missing.push('Listing price');
+    if (!hasPhotos) missing.push('Photos/URL');
+    if (!mileage) missing.push('Mileage');
+    if (!hasSpecs) missing.push('Specs');
+
+    const missingEl = document.getElementById('missing-fields-text');
+    if (missingEl) {
+        missingEl.innerText = missing.length > 0 ? missing.join(', ') : 'None! Ready for publish.';
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    const steps = document.querySelectorAll('.form-step');
     const indicatorsContainer = document.getElementById('step-indicators');
     if (indicatorsContainer && indicatorsContainer.children.length === 0) {
         for (let i = 0; i < steps.length; i++) {
@@ -341,111 +434,6 @@ document.addEventListener("DOMContentLoaded", function() {
             indicatorsContainer.appendChild(dot);
         }
     }
-    const indicators = document.querySelectorAll('.step-indicator');
-
-    function updateCompletenessCheck() {
-        const getValue = (id) => {
-            const el = document.getElementById(id);
-            return el ? el.value.trim() : '';
-        };
-
-        const hasPhotos = document.getElementById('id_images_url') ? document.getElementById('id_images_url').value.trim().length > 0 : false;
-        const mileage = getValue('id_mileage');
-        const year = getValue('id_year');
-        const price = getValue('id_listing_price');
-        const bodyType = getValue('id_body_type');
-        const fuel = getValue('id_fuel_type');
-        const gearbox = getValue('id_transmission');
-        const engineCc = getValue('id_engine_cc');
-        const condition = getValue('id_condition');
-        const chassis = getValue('id_chassis');
-        const reg = getValue('id_registration');
-
-        const hasSpecs = bodyType && fuel && gearbox && engineCc && condition;
-
-        const setStatus = (elementId, isValid) => {
-            const el = document.getElementById(elementId);
-            if (!el) return;
-            const icon = el.children[0];
-            if (isValid) {
-                el.className = 'flex items-center gap-2 text-emerald-400 font-medium text-xs';
-                if (icon) icon.textContent = '✓';
-            } else {
-                el.className = 'flex items-center gap-2 text-rose-400 text-xs';
-                if (icon) icon.textContent = '✕';
-            }
-        };
-
-        setStatus('chk-photos', hasPhotos);
-        setStatus('chk-mileage', Boolean(mileage));
-        setStatus('chk-year', Boolean(year));
-        setStatus('chk-price', Boolean(price));
-        setStatus('chk-specs', Boolean(hasSpecs));
-
-        if (document.getElementById('sum-condition')) document.getElementById('sum-condition').innerText = condition || '-';
-        if (document.getElementById('sum-chassis')) document.getElementById('sum-chassis').innerText = chassis || '-';
-        if (document.getElementById('sum-registration')) document.getElementById('sum-registration').innerText = reg || '-';
-        if (document.getElementById('sum-price')) document.getElementById('sum-price').innerText = price ? `KES ${Number(price).toLocaleString()}` : '-';
-
-        const missing = [];
-        if (!price) missing.push('Listing price');
-        if (!hasPhotos) missing.push('Photos/URL');
-        if (!mileage) missing.push('Mileage');
-        if (!hasSpecs) missing.push('Specs');
-
-        const missingEl = document.getElementById('missing-fields-text');
-        if (missingEl) {
-            missingEl.innerText = missing.length > 0 ? missing.join(', ') : 'None! Ready for publish.';
-        }
-    }
-
-    function showStep(n) {
-        steps.forEach((step, index) => {
-            step.classList.toggle('hidden', index !== n);
-            if (indicators[index]) {
-                indicators[index].className = index <= n 
-                    ? 'step-indicator w-6 h-1.5 bg-amber-500 rounded-full transition-all' 
-                    : 'step-indicator w-6 h-1.5 bg-slate-700 rounded-full transition-all';
-            }
-        });
-
-        const stepNumEl = document.getElementById('current-step-num');
-        if (stepNumEl) stepNumEl.innerText = n + 1;
-
-        if (prevBtn) prevBtn.classList.toggle('hidden', n === 0);
-
-        if (n === steps.length - 1) {
-            if (nextBtn) nextBtn.classList.add('hidden');
-            if (submitBtn) submitBtn.classList.remove('hidden');
-            updateCompletenessCheck();
-        } else {
-            if (nextBtn) nextBtn.classList.remove('hidden');
-            if (submitBtn) submitBtn.classList.add('hidden');
-        }
-    }
-
-    if (nextBtn) {
-        nextBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            if (currentStep < steps.length - 1) {
-                currentStep++;
-                showStep(currentStep);
-            }
-        });
-    }
-
-    if (prevBtn) {
-        prevBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            if (currentStep > 0) {
-                currentStep--;
-                showStep(currentStep);
-            }
-        });
-    }
-
     showStep(currentStep);
 });
 
@@ -470,3 +458,4 @@ async function parseAndAutoPublishAll() {
     alert('AI successfully parsed specifications into the wizard!');
 }
 </script>
+{% endblock %}
