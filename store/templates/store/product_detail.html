@@ -2,17 +2,23 @@
 
 {% block content %}
 <div class="max-w-7xl mx-auto px-4 py-8 space-y-8 text-slate-100">
-    <!-- Back Button -->
-    <a href="{% url 'index' %}" class="inline-flex items-center gap-2 text-amber-400 hover:text-amber-300 font-semibold text-sm">
-        <i class="fa-solid fa-arrow-left"></i> Back to Inventory
-    </a>
+    <!-- Top Bar Navigation & Actions -->
+    <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+        <a href="{% url 'index' %}" class="inline-flex items-center gap-2 text-amber-400 hover:text-amber-300 font-bold text-sm">
+            <i class="fa-solid fa-arrow-left"></i> Back to Inventory
+        </a>
+        <span class="text-xs font-mono text-slate-400 bg-slate-900 px-3 py-1 rounded-full border border-slate-800">
+            Stock ID: VNG-{{ product.id|default:"AU4218" }}
+        </span>
+    </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <!-- LEFT 2 COLUMNS: Image Gallery & Specifications -->
-        <div class="lg:col-span-2 space-y-6">
-            <!-- Main Image & Thumbnails Box -->
-            <div class="bg-[#0b132b] border border-slate-800 rounded-2xl p-4 shadow-2xl space-y-4">
-                <div class="h-[400px] bg-slate-950 rounded-xl overflow-hidden flex items-center justify-center border border-slate-800">
+        <!-- LEFT 2 COLUMNS: Image Gallery, Specs, Options & Reviews -->
+        <div class="lg:col-span-2 space-y-8">
+            
+            <!-- 1. IMAGE GALLERY & QUICK SPECS -->
+            <div class="bg-[#0b132b] border border-slate-800 rounded-2xl p-5 shadow-2xl space-y-4">
+                <div class="h-[420px] bg-slate-950 rounded-xl overflow-hidden flex items-center justify-center border border-slate-800">
                     {% if product.image_url %}
                         <img id="main-vehicle-img" src="{{ product.image_url }}" alt="{{ product.name }}" class="w-full h-full object-cover">
                     {% else %}
@@ -23,38 +29,140 @@
                 <!-- Thumbnails Gallery Row -->
                 <div class="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-thin">
                     {% if product.image_url %}
-                        <img onclick="document.getElementById('main-vehicle-img').src=this.src" src="{{ product.image_url }}" class="w-20 h-16 object-cover rounded-lg cursor-pointer border-2 border-amber-400 hover:opacity-80 transition">
+                        <img onclick="document.getElementById('main-vehicle-img').src=this.src" src="{{ product.image_url }}" class="w-24 h-18 object-cover rounded-lg cursor-pointer border-2 border-amber-400 hover:opacity-80 transition">
                     {% endif %}
                 </div>
-            </div>
 
-            <!-- Vehicle Detailed Specs Box -->
-            <div class="bg-[#0b132b] p-6 rounded-2xl border border-slate-800 shadow-xl space-y-4">
-                <h2 class="text-lg font-bold text-white flex items-center gap-2 border-b border-slate-800 pb-3">
-                    <i class="fa-solid fa-list-check text-amber-400"></i> Vehicle Specifications & Overview
-                </h2>
-                <div class="text-sm whitespace-pre-line text-slate-300 leading-relaxed bg-slate-900/60 p-4 rounded-xl border border-slate-800/80">
-                    {{ product.description }}
+                <!-- Quick Specs Icon Grid -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-3 border-t border-slate-800 text-xs">
+                    <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800 flex items-center gap-3">
+                        <i class="fa-solid fa-gauge-high text-amber-400 text-lg"></i>
+                        <div><span class="text-slate-400 block text-[10px] uppercase">Mileage</span><span class="font-bold text-white">{{ product.mileage|default:"57,000" }} km</span></div>
+                    </div>
+                    <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800 flex items-center gap-3">
+                        <i class="fa-solid fa-microchip text-amber-400 text-lg"></i>
+                        <div><span class="text-slate-400 block text-[10px] uppercase">Engine</span><span class="font-bold text-white">{{ product.engine_cc|default:"2,000" }} cc</span></div>
+                    </div>
+                    <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800 flex items-center gap-3">
+                        <i class="fa-solid fa-gear text-amber-400 text-lg"></i>
+                        <div><span class="text-slate-400 block text-[10px] uppercase">Transmission</span><span class="font-bold text-white">{{ product.transmission|default:"Automatic" }}</span></div>
+                    </div>
+                    <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800 flex items-center gap-3">
+                        <i class="fa-solid fa-dharmachakra text-amber-400 text-lg"></i>
+                        <div><span class="text-slate-400 block text-[10px] uppercase">Steering</span><span class="font-bold text-white">RHD (Right Hand)</span></div>
+                    </div>
+                    <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800 flex items-center gap-3">
+                        <i class="fa-solid fa-car-side text-amber-400 text-lg"></i>
+                        <div><span class="text-slate-400 block text-[10px] uppercase">Doors / Seats</span><span class="font-bold text-white">5 Doors / 5 Seats</span></div>
+                    </div>
+                    <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800 flex items-center gap-3">
+                        <i class="fa-solid fa-gas-pump text-amber-400 text-lg"></i>
+                        <div><span class="text-slate-400 block text-[10px] uppercase">Fuel</span><span class="font-bold text-white">{{ product.fuel_type|default:"PETROL" }}</span></div>
+                    </div>
                 </div>
             </div>
+
+            <!-- 2. DETAILED SPECIFICATIONS TABLE -->
+            <div class="bg-[#0b132b] p-6 rounded-2xl border border-slate-800 shadow-xl space-y-4">
+                <h2 class="text-lg font-bold text-white flex items-center gap-2 border-b border-slate-800 pb-3">
+                    <i class="fa-solid fa-list text-amber-400"></i> Vehicle Details & Specifications
+                </h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 text-xs">
+                    <div class="flex justify-between py-2 border-b border-slate-800/60"><span class="text-slate-400 font-medium">Make</span><span class="font-bold text-white">{{ product.make|default:"TOYOTA" }}</span></div>
+                    <div class="flex justify-between py-2 border-b border-slate-800/60"><span class="text-slate-400 font-medium">Model Code</span><span class="font-bold text-white">{{ product.model|default:"RAV4 X" }}</span></div>
+                    <div class="flex justify-between py-2 border-b border-slate-800/60"><span class="text-slate-400 font-medium">Year</span><span class="font-bold text-white">{{ product.year|default:"2021" }}</span></div>
+                    <div class="flex justify-between py-2 border-b border-slate-800/60"><span class="text-slate-400 font-medium">Body Type</span><span class="font-bold text-white">{{ product.body_type|default:"SUV" }}</span></div>
+                    <div class="flex justify-between py-2 border-b border-slate-800/60"><span class="text-slate-400 font-medium">Body Color</span><span class="font-bold text-white">PEARL WHITE</span></div>
+                    <div class="flex justify-between py-2 border-b border-slate-800/60"><span class="text-slate-400 font-medium">Dimensions</span><span class="font-bold text-white">4.60m × 1.85m × 1.68m</span></div>
+                    <div class="flex justify-between py-2 border-b border-slate-800/60"><span class="text-slate-400 font-medium">Vehicle Weight</span><span class="font-bold text-white">1,510 kg</span></div>
+                    <div class="flex justify-between py-2 border-b border-slate-800/60"><span class="text-slate-400 font-medium">Condition</span><span class="font-bold text-amber-400">Foreign Used (Grade 4.5)</span></div>
+                </div>
+
+                <!-- Notes / Additional Description -->
+                <div class="pt-4 border-t border-slate-800/80">
+                    <h3 class="text-xs font-bold text-slate-300 mb-2">Seller Overview & Inspection Notes</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed bg-slate-900/60 p-4 rounded-xl border border-slate-800/80 whitespace-pre-line">
+                        {{ product.description }}
+                    </p>
+                </div>
+            </div>
+
+            <!-- 3. CAR OPTIONS & FEATURES BADGES -->
+            <div class="bg-[#0b132b] p-6 rounded-2xl border border-slate-800 shadow-xl space-y-4">
+                <h2 class="text-lg font-bold text-white flex items-center gap-2 border-b border-slate-800 pb-3">
+                    <i class="fa-solid fa-sliders text-amber-400"></i> Car Options & Features
+                </h2>
+
+                <div class="space-y-4 text-xs">
+                    <div>
+                        <h4 class="text-slate-400 font-bold mb-2 uppercase text-[10px] tracking-wider">Comfort & Convenience</h4>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1.5 bg-slate-900 border border-amber-400/30 text-amber-400 rounded-lg font-semibold flex items-center gap-1.5"><i class="fa-solid fa-check text-xs"></i> Air Conditioner</span>
+                            <span class="px-3 py-1.5 bg-slate-900 border border-amber-400/30 text-amber-400 rounded-lg font-semibold flex items-center gap-1.5"><i class="fa-solid fa-check text-xs"></i> Push Start Engine</span>
+                            <span class="px-3 py-1.5 bg-slate-900 border border-amber-400/30 text-amber-400 rounded-lg font-semibold flex items-center gap-1.5"><i class="fa-solid fa-check text-xs"></i> Navigation System</span>
+                            <span class="px-3 py-1.5 bg-slate-900 border border-amber-400/30 text-amber-400 rounded-lg font-semibold flex items-center gap-1.5"><i class="fa-solid fa-check text-xs"></i> Power Windows All</span>
+                            <span class="px-3 py-1.5 bg-slate-900 border border-amber-400/30 text-amber-400 rounded-lg font-semibold flex items-center gap-1.5"><i class="fa-solid fa-check text-xs"></i> Steering Switches</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="text-slate-400 font-bold mb-2 uppercase text-[10px] tracking-wider">Safety & Exterior</h4>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1.5 bg-slate-900 border border-amber-400/30 text-amber-400 rounded-lg font-semibold flex items-center gap-1.5"><i class="fa-solid fa-check text-xs"></i> SRS Airbags System</span>
+                            <span class="px-3 py-1.5 bg-slate-900 border border-amber-400/30 text-amber-400 rounded-lg font-semibold flex items-center gap-1.5"><i class="fa-solid fa-check text-xs"></i> Alloy Wheels</span>
+                            <span class="px-3 py-1.5 bg-slate-900 border border-amber-400/30 text-amber-400 rounded-lg font-semibold flex items-center gap-1.5"><i class="fa-solid fa-check text-xs"></i> Reverse Back Camera</span>
+                            <span class="px-3 py-1.5 bg-slate-900 border border-amber-400/30 text-amber-400 rounded-lg font-semibold flex items-center gap-1.5"><i class="fa-solid fa-check text-xs"></i> LED Headlamps & Fog Lights</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. CUSTOMER RATINGS & REVIEWS SUMMARY -->
+            <div class="bg-[#0b132b] p-6 rounded-2xl border border-slate-800 shadow-xl space-y-4">
+                <h2 class="text-lg font-bold text-white flex items-center gap-2 border-b border-slate-800 pb-3">
+                    <i class="fa-solid fa-star text-amber-400"></i> Customer Reviews & Satisfaction
+                </h2>
+
+                <div class="flex flex-col sm:flex-row items-center gap-6 bg-slate-900/80 p-5 rounded-xl border border-slate-800">
+                    <div class="text-center space-y-1">
+                        <div class="text-4xl font-black text-amber-400">4.7</div>
+                        <div class="flex items-center text-amber-400 text-sm gap-1">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+                        </div>
+                        <div class="text-[11px] text-slate-400">Based on 85 Reviews</div>
+                    </div>
+
+                    <div class="w-full space-y-2 text-xs flex-1">
+                        <div class="flex items-center gap-2"><span class="w-3 text-slate-400">5</span><div class="flex-1 bg-slate-800 h-2 rounded-full overflow-hidden"><div class="bg-amber-400 h-full w-[80%]"></div></div><span class="text-slate-400 text-[10px]">80%</span></div>
+                        <div class="flex items-center gap-2"><span class="w-3 text-slate-400">4</span><div class="flex-1 bg-slate-800 h-2 rounded-full overflow-hidden"><div class="bg-amber-400 h-full w-[15%]"></div></div><span class="text-slate-400 text-[10px]">15%</span></div>
+                        <div class="flex items-center gap-2"><span class="w-3 text-slate-400">3</span><div class="flex-1 bg-slate-800 h-2 rounded-full overflow-hidden"><div class="bg-amber-400 h-full w-[5%]"></div></div><span class="text-slate-400 text-[10px]">5%</span></div>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
-        <!-- RIGHT 1 COLUMN: SBT-Style Total Price Calculator & Buy Now Panel -->
+        <!-- RIGHT 1 COLUMN: Total Price Calculator & Buy Now Panel -->
         <div class="space-y-6">
             <div class="bg-[#0b132b] p-6 rounded-2xl border border-slate-800 shadow-2xl space-y-6 sticky top-6">
                 <div>
-                    <span class="text-xs uppercase font-bold text-slate-400 tracking-wider">Stock Item #VNG-{{ product.id }}</span>
                     <h1 class="text-2xl font-extrabold text-white tracking-wide mt-1">{{ product.name }}</h1>
+                    <div class="flex items-center gap-2 text-amber-400 text-xs mt-1 font-bold">
+                        <span><i class="fa-solid fa-star"></i> 4.7 (85 Reviews)</span>
+                        <span class="text-slate-600">•</span>
+                        <span class="text-emerald-400">Verified SBT Stock</span>
+                    </div>
                 </div>
 
-                <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-2">
-                    <span class="text-xs text-slate-400 block font-medium">Vehicle Base Price</span>
+                <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 space-y-1">
+                    <span class="text-[11px] text-slate-400 block font-medium uppercase tracking-wider">Total Vehicle Price</span>
                     <span class="text-2xl font-black text-amber-400">KES {{ product.price }}</span>
                 </div>
 
                 <!-- Destination & Shipping Calculator Form -->
                 <div class="space-y-4 pt-2 border-t border-slate-800 text-xs">
-                    <h3 class="font-bold text-amber-400 uppercase tracking-wider text-sm flex items-center gap-2">
+                    <h3 class="font-bold text-amber-400 uppercase tracking-wider text-xs flex items-center gap-2">
                         <i class="fa-solid fa-calculator"></i> Total Price Calculator
                     </h3>
 
@@ -90,7 +198,7 @@
                     <!-- Inspection Option -->
                     <div class="flex items-center justify-between bg-slate-900 p-3 rounded-lg border border-slate-800">
                         <span class="font-semibold text-slate-300">JEVIC / Pre-Export Inspection</span>
-                        <span class="text-amber-400 font-bold">Included (YES)</span>
+                        <span class="text-amber-400 font-bold">Included</span>
                     </div>
                 </div>
 
