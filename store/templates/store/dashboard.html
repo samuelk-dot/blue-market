@@ -1,150 +1,283 @@
 {% extends 'store/base.html' %}
-{% block content %}
 
+{% block content %}
 <div class="max-w-7xl mx-auto px-4 py-6 space-y-8">
 
     <!-- MAIN TWO-COLUMN DASHBOARD GRID -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
-        <!-- CARD 1: ADD NEW PRODUCT & AI INGESTER -->
-        <div class="bg-white rounded-2xl p-6 shadow-md border border-slate-100 hover:shadow-lg transition-shadow">
+        <!-- CARD 1: ADD NEW VEHICLE WIZARD -->
+        <div class="bg-white rounded-2xl p-6 shadow-md border border-slate-100">
             <div class="flex items-center gap-3 mb-6 pb-3 border-b border-slate-100">
-                <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center font-bold">
-                    <i class="fa-solid fa-plus text-lg"></i>
+                <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center">
+                    <i class="fa-solid fa-car text-lg"></i>
                 </div>
                 <div>
-                    <h2 class="text-xl font-bold text-slate-800">Add New Product</h2>
-                    <p class="text-xs text-slate-500">List an item for sale on BLUE MARKET</p>
+                    <h2 class="text-xl font-bold text-slate-800">Sell a Vehicle</h2>
+                    <p class="text-xs text-slate-500">Multi-step professional vehicle catalog listing wizard</p>
                 </div>
             </div>
 
             <!-- AI Universal Smart-Parse Box -->
-            <div class="mb-6 p-4 bg-gradient-to-r from-indigo-50 to-blue-50 border border-indigo-200 rounded-xl shadow-sm">
+            <div class="mb-6 p-4 bg-gradient-to-r from-indigo-50 to-blue-50 border border-indigo-100 rounded-xl">
                 <label class="block text-xs font-bold text-indigo-800 uppercase tracking-wider mb-1">
                     🤖 AI Universal Ingest (Paste Raw Specs)
                 </label>
-                <p class="text-xs text-slate-500 mb-2">Paste multiple items separated by --- to bulk publish live instantly.</p>
-                <textarea id="aiRawInput" rows="4" placeholder="Paste raw text here... (e.g. Item 1 name, price, image URL --- Item 2 name, price, image URL)" class="w-full p-2.5 border border-slate-200 rounded-xl text-sm bg-white mb-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"></textarea>
-                <button type="button" onclick="parseAndAutoPublishAll()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition flex items-center justify-center gap-2">
-                  <i class="fa-solid fa-wand-magic-sparkles"></i> ✨ Auto-Parse & Bulk Publish All Items Live
+                <p class="text-xs text-slate-500 mb-2">Paste vehicle details below to auto-parse specifications.</p>
+                <textarea id="aiRawInput" rows="3" class="w-full bg-white border border-indigo-200 rounded-lg p-2.5 text-sm focus:outline-none focus:border-indigo-500" placeholder="e.g. Toyota Prado TX 2020, Diesel, Automatic, 38000km, KES 5,325,000..."></textarea>
+                <button type="button" onclick="parseAndAutoPublishAll()" class="mt-2 w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-bold transition-all">
+                    ✨ Auto-Parse & Bulk Publish Vehicle Live
                 </button>
             </div>
 
-            <!-- Product Form -->
+            <!-- 9-STEP VEHICLE FORM WIZARD -->
+            <form id="vehicle-form" method="POST" enctype="multipart/form-data" class="space-y-6 pt-4 border-t border-slate-200">
+                {% csrf_token %}
+                <input type="hidden" name="add_product" value="1">
+
+                <!-- Step Header Bar -->
+                <div class="flex items-center justify-between pb-3 border-b border-slate-200">
+                    <span class="text-xs font-bold text-amber-600 uppercase tracking-wider">
+                        Step <span id="current-step-num">1</span> of 9
+                    </span>
+                    <div class="flex gap-1" id="step-indicators"></div>
+                </div>
+
+                <!-- STEP 1: Core Identity -->
+                <div class="form-step space-y-4">
+                    <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wide">1. Core Identity</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Make *</label>
+                            <input type="text" name="make" id="id_make" required class="w-full border rounded-lg p-2 text-sm bg-slate-50 focus:bg-white" placeholder="e.g. Toyota">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Model *</label>
+                            <input type="text" name="model" id="id_model" required class="w-full border rounded-lg p-2 text-sm bg-slate-50 focus:bg-white" placeholder="e.g. Prado TX-L">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Year *</label>
+                        <input type="number" name="year" id="id_year" required class="w-full border rounded-lg p-2 text-sm bg-slate-50 focus:bg-white" placeholder="2020">
+                    </div>
+                </div>
+
+                <!-- STEP 2: Documentation & Identification -->
+                <div class="form-step hidden space-y-4">
+                    <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wide">2. Identification & Documentation</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Chassis / VIN Number</label>
+                            <input type="text" name="chassis_number" id="id_chassis" class="w-full border rounded-lg p-2 text-sm uppercase bg-slate-50 focus:bg-white" placeholder="KDJ150-XXXXXX">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Registration Number</label>
+                            <input type="text" name="registration_number" id="id_registration" class="w-full border rounded-lg p-2 text-sm uppercase bg-slate-50 focus:bg-white" placeholder="KDA 123X">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Engine Number</label>
+                            <input type="text" name="engine_number" id="id_engine_num" class="w-full border rounded-lg p-2 text-sm uppercase bg-slate-50 focus:bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Stock Mode</label>
+                            <select name="stock_mode" class="w-full border rounded-lg p-2 text-sm bg-slate-50 focus:bg-white">
+                                <option value="hard">Hard Stock (In Yard)</option>
+                                <option value="soft">Soft Stock (Brokered)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 3: Specs -->
+                <div class="form-step hidden space-y-4">
+                    <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wide">3. Specifications</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Body Type</label>
+                            <input type="text" name="body_type" id="id_body_type" class="w-full border rounded-lg p-2 text-sm bg-slate-50 focus:bg-white" placeholder="SUV / Pickup / Saloon">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Fuel Type</label>
+                            <select name="fuel_type" id="id_fuel_type" class="w-full border rounded-lg p-2 text-sm bg-slate-50 focus:bg-white">
+                                <option value="">Select Fuel</option>
+                                <option value="Diesel">Diesel</option>
+                                <option value="Petrol">Petrol</option>
+                                <option value="Hybrid">Hybrid</option>
+                                <option value="Electric">Electric</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Transmission</label>
+                            <select name="transmission" id="id_transmission" class="w-full border rounded-lg p-2 text-sm bg-slate-50 focus:bg-white">
+                                <option value="">Select Gearbox</option>
+                                <option value="Automatic">Automatic</option>
+                                <option value="Manual">Manual</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Engine Size (CC)</label>
+                            <input type="number" name="engine_cc" id="id_engine_cc" class="w-full border rounded-lg p-2 text-sm bg-slate-50 focus:bg-white" placeholder="2755">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 4: Condition & Mileage -->
+                <div class="form-step hidden space-y-4">
+                    <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wide">4. Condition & Mileage</h3>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Usage Condition</label>
+                        <select name="usage_condition" id="id_condition" class="w-full border rounded-lg p-2 text-sm bg-slate-50 focus:bg-white">
+                            <option value="">Select Condition</option>
+                            <option value="Foreign Used">Foreign Used</option>
+                            <option value="Locally Used">Locally Used</option>
+                            <option value="Brand New">Brand New</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Mileage (KM)</label>
+                        <input type="number" name="mileage" id="id_mileage" class="w-full border rounded-lg p-2 text-sm bg-slate-50 focus:bg-white" placeholder="38000">
+                    </div>
+                </div>
+
+                <!-- STEP 5: Description -->
+                <div class="form-step hidden space-y-4">
+                    <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wide">5. Description</h3>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Vehicle Description</label>
+                        <textarea name="description" class="w-full border rounded-lg p-2 text-sm bg-slate-50 focus:bg-white h-24" placeholder="Key features, condition, service records..."></textarea>
+                    </div>
+                </div>
+
+                <!-- STEP 6: Photos -->
+                <div class="form-step hidden space-y-4">
+                    <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wide">6. Photos</h3>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Image URL</label>
+                        <input type="url" name="image_url" id="id_images_url" class="w-full border rounded-lg p-2 text-sm bg-slate-50 focus:bg-white" placeholder="https://images.unsplash.com/...">
+                    </div>
+                </div>
+
+                <!-- STEP 7: Pricing -->
+                <div class="form-step hidden space-y-4">
+                    <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wide">7. Pricing</h3>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Listing Price (KSh)</label>
+                        <input type="number" name="price" id="id_listing_price" required class="w-full border rounded-lg p-2.5 text-base font-bold text-blue-600 bg-slate-50 focus:bg-white" placeholder="5325000">
+                        <p class="text-[11px] text-slate-400 mt-1">Full amount in KSh (e.g. 5325000).</p>
+                    </div>
+                    <div class="space-y-2 text-xs text-slate-700 pt-1">
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" name="is_negotiable" class="rounded border-slate-300 text-blue-600">
+                            <span>Negotiable</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" name="trade_in_accepted" class="rounded border-slate-300 text-blue-600">
+                            <span>Trade-in accepted</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" name="asset_financing_available" class="rounded border-slate-300 text-blue-600">
+                            <span>Asset financing available</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- STEP 8: Summary -->
+                <div class="form-step hidden space-y-2 text-xs text-slate-700">
+                    <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wide mb-2">8. Summary View</h3>
+                    <div class="flex justify-between py-1 border-b"><span>Condition:</span><span id="sum-condition" class="font-bold">-</span></div>
+                    <div class="flex justify-between py-1 border-b"><span>Chassis:</span><span id="sum-chassis" class="font-bold">-</span></div>
+                    <div class="flex justify-between py-1 border-b"><span>Registration:</span><span id="sum-registration" class="font-bold">-</span></div>
+                    <div class="flex justify-between py-1 border-b"><span>Price:</span><span id="sum-price" class="font-bold text-blue-600">-</span></div>
+                </div>
+
+                <!-- STEP 9: Completeness Check -->
+                <div class="form-step hidden space-y-3">
+                    <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wide">9. Completeness Check</h3>
+                    <div class="space-y-1.5 text-xs">
+                        <div id="chk-photos" class="flex items-center gap-2 text-rose-600"><span>✕</span><span>Photos / Image URL</span></div>
+                        <div id="chk-mileage" class="flex items-center gap-2 text-rose-600"><span>✕</span><span>Mileage</span></div>
+                        <div id="chk-year" class="flex items-center gap-2 text-rose-600"><span>✕</span><span>Year</span></div>
+                        <div id="chk-price" class="flex items-center gap-2 text-rose-600"><span>✕</span><span>Listing price</span></div>
+                        <div id="chk-specs" class="flex items-center gap-2 text-rose-600"><span>✕</span><span>Specs (body, fuel, gearbox, CC, condition)</span></div>
+                    </div>
+                    <div class="p-2 bg-amber-50 border border-amber-200 rounded text-amber-800 text-[11px]">
+                        Missing fields: <span id="missing-fields-text" class="font-bold">Listing price</span>
+                    </div>
+                </div>
+
+                <!-- Form Navigation Controls -->
+                <div class="flex justify-between items-center pt-3 border-t border-slate-200">
+                    <button type="button" id="prevBtn" class="px-4 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded text-xs font-bold hidden">Back</button>
+                    <button type="button" id="nextBtn" class="px-5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs font-bold ml-auto">Next Step</button>
+                    <button type="submit" id="submitBtn" class="px-5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded text-xs font-bold ml-auto hidden">Publish Vehicle Live</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- CARD 2: VENDOR PAYOUT SETTINGS -->
+        <div id="payout-settings" class="bg-white rounded-2xl p-6 shadow-md border border-slate-100 h-fit">
+            <div class="flex items-center gap-3 mb-6 pb-3 border-b border-slate-100">
+                <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center">
+                    <i class="fa-solid fa-building-columns text-lg"></i>
+                </div>
+                <div>
+                    <h2 class="text-xl font-bold text-slate-800">Payout Configuration</h2>
+                    <p class="text-xs text-slate-500">Configure where your vehicle sale proceeds are deposited</p>
+                </div>
+            </div>
+
             <form method="POST" class="space-y-4">
                 {% csrf_token %}
-                <div class="space-y-1">
-                    <label class="text-xs font-semibold text-slate-600 uppercase tracking-wider">Product Name</label>
-                    <input type="text" name="name" id="product_name_input" required class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                </div>
-
-                <div class="space-y-1">
-                    <label class="text-xs font-semibold text-slate-600 uppercase tracking-wider">Description</label>
-                    <textarea name="description" id="product_desc_input" rows="3" required class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
-                </div>
-
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div class="space-y-1">
-                        <label class="text-xs font-semibold text-slate-600 uppercase tracking-wider">Price (KSH / \$)</label>
-                        <input type="number" step="0.01" name="price" id="product_price_input" required class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        <label class="block text-xs font-bold uppercase text-slate-600">Preferred Payout Method</label>
+                        <select name="payout_method" class="w-full bg-slate-50 border rounded-lg p-2 text-sm">
+                            <option value="M-Pesa" {% if vendor_profile.payout_method == "M-Pesa" %}selected{% endif %}>M-Pesa</option>
+                            <option value="Bank" {% if vendor_profile.payout_method == "Bank" %}selected{% endif %}>Bank Transfer</option>
+                        </select>
                     </div>
                     <div class="space-y-1">
-                        <label class="text-xs font-semibold text-slate-600 uppercase tracking-wider">Image URL</label>
-                        <input type="url" name="image_url" id="product_image_input" placeholder="https://..." class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        <label class="block text-xs font-bold uppercase text-slate-600">Account Holder Full Name</label>
+                        <input type="text" name="account_holder" value="{{ vendor_profile.account_holder }}" class="w-full bg-slate-50 border rounded-lg p-2 text-sm">
                     </div>
                 </div>
-
-                <button type="submit" name="add_product" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl text-sm transition shadow-md flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-box-archive"></i> Publish Product Live
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="space-y-1">
+                        <label class="block text-xs font-bold uppercase text-slate-600">M-Pesa Number / Phone</label>
+                        <input type="text" name="mpesa_number" value="{{ vendor_profile.mpesa_number }}" class="w-full bg-slate-50 border rounded-lg p-2 text-sm">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="block text-xs font-bold uppercase text-slate-600">Card or Bank Account No.</label>
+                        <input type="text" name="card_or_account_no" value="{{ vendor_profile.card_or_account_no }}" class="w-full bg-slate-50 border rounded-lg p-2 text-sm">
+                    </div>
+                </div>
+                <div class="space-y-1">
+                    <label class="block text-xs font-bold uppercase text-slate-600">Bank Name (If applicable)</label>
+                    <input type="text" name="bank_name" value="{{ vendor_profile.bank_name }}" class="w-full bg-slate-50 border rounded-lg p-2 text-sm">
+                </div>
+                <button type="submit" name="update_payout" class="w-full py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded-lg text-sm shadow transition-all">
+                    <i class="fa-solid fa-shield-check mr-1"></i> Save Payout Information
                 </button>
             </form>
         </div>
 
-
-        <!-- CARD 2: VENDOR PAYOUT SETTINGS -->
-        <div id="payout-settings" class="bg-white rounded-2xl p-6 shadow-md border border-slate-100 hover:shadow-lg transition-shadow">
-            <div class="flex items-center gap-3 mb-6 pb-3 border-b border-slate-100">
-                <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold">
-                    <i class="fa-solid fa-building-columns text-lg"></i>
-                </div>
-                <div>
-                    <h2 class="text-xl font-bold text-slate-800">Payout Account Settings</h2>
-                    <p class="text-xs text-slate-500">Configure where you receive sales payouts</p>
-                </div>
-            </div>
-
-        <form method="POST" class="space-y-4">
-            {% csrf_token %}
-            
-            <div class="space-y-1">
-                <label class="block text-xs font-bold uppercase text-slate-300">Store Name</label>
-                <input type="text" name="store_name" value="{{ vendor_profile.store_name }}" placeholder="e.g. Vanguard Tech Store" 
-                    class="w-full bg-[#0b132b] border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500">
-            </div>
-
-            <div class="space-y-1">
-                <label class="block text-xs font-bold uppercase text-slate-300">Preferred Payout Method</label>
-                <select name="payout_method" class="w-full bg-[#0b132b] border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500">
-                    <option value="mpesa" {% if vendor_profile.payout_method == 'mpesa' %}selected{% endif %}>M-Pesa</option>
-                    <option value="paypal" {% if vendor_profile.payout_method == 'paypal' %}selected{% endif %}>PayPal</option>
-                    <option value="card" {% if vendor_profile.payout_method == 'card' %}selected{% endif %}>Credit / Debit Card</option>
-                    <option value="bank" {% if vendor_profile.payout_method == 'bank' %}selected{% endif %}>Bank Transfer</option>
-                </select>
-            </div>
-
-            <div class="space-y-1">
-                <label class="block text-xs font-bold uppercase text-slate-300">Account Holder Full Name</label>
-                <input type="text" name="account_holder" value="{{ vendor_profile.account_holder }}" placeholder="Full legal name" 
-                    class="w-full bg-[#0b132b] border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500">
-            </div>
-
-            <div class="grid grid-cols-2 gap-4">
-                <div class="space-y-1">
-                    <label class="block text-xs font-bold uppercase text-slate-300">M-Pesa Number</label>
-                    <input type="text" name="mpesa_number" value="{{ vendor_profile.mpesa_number }}" placeholder="07XXXXXXXX" 
-                        class="w-full bg-[#0b132b] border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500">
-                </div>
-                <div class="space-y-1">
-                    <label class="block text-xs font-bold uppercase text-slate-300">PayPal Email</label>
-                    <input type="email" name="paypal_email" value="{{ vendor_profile.paypal_email }}" placeholder="user@example.com" 
-                        class="w-full bg-[#0b132b] border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500">
-                </div>
-            </div>
-
-            <div class="grid grid-cols-2 gap-4">
-                <div class="space-y-1">
-                    <label class="block text-xs font-bold uppercase text-slate-300">Card / Acct Number</label>
-                    <input type="text" name="card_or_account_no" value="{{ vendor_profile.card_or_account_no }}" placeholder="Card or Acct #" 
-                        class="w-full bg-[#0b132b] border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500">
-                </div>
-                <div class="space-y-1">
-                    <label class="block text-xs font-bold uppercase text-slate-300">Bank Name</label>
-                    <input type="text" name="bank_name" value="{{ vendor_profile.bank_name }}" placeholder="e.g. Equity Bank" 
-                        class="w-full bg-[#0b132b] border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500">
-                </div>
-            </div>
-
-            <button type="submit" name="update_payout" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold py-3 rounded-xl text-sm transition uppercase tracking-wider flex items-center justify-center gap-2">
-                <i class="fa-solid fa-shield-check"></i> Save Payout Information
-            </button>
-        </form>
-        </div>
-
     </div>
-
 
     <!-- 3. LISTED PRODUCTS SECTION -->
     <div id="products" class="bg-white rounded-2xl p-6 shadow-md border border-slate-100">
         <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
-            <i class="fa-solid fa-boxes-stacked text-blue-600"></i> Your Listed Products
+            <i class="fa-solid fa-boxes-stacked text-blue-600"></i> Your Listed Inventory
         </h2>
+        
         {% if products %}
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 {% for item in products %}
-                <div class="border border-slate-200 rounded-xl overflow-hidden hover:shadow-lg transition flex flex-col justify-between">
-                    
-                    <!-- Clickable Area to View/Edit Product Details -->
-                    <a href="{% url 'product_detail' item.id %}" class="block group flex-grow">
+                <div class="border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col justify-between">
+                    <a href="{% url 'product detail' item.id %}" class="block group flex-grow">
                         {% if item.image_url %}
                             <img src="{{ item.image_url }}" alt="{{ item.name }}" class="h-44 w-full object-cover group-hover:scale-105 transition duration-300">
                         {% else %}
@@ -157,119 +290,177 @@
                             <p class="text-slate-500 text-xs line-clamp-2">{{ item.description }}</p>
                         </div>
                     </a>
-
-                    <!-- Card Footer: Price & Vendor Delete Action -->
+                    
                     <div class="p-4 pt-2 flex items-center justify-between border-t border-slate-100 bg-slate-50/50">
                         <div>
-                            <span class="text-xs text-slate-400 uppercase font-semibold block">Price</span>
-                            <span class="text-base font-black text-blue-600">KES {{ item.price }}</span>
+                            <span class="text-[10px] text-slate-400 uppercase font-semibold block">Price</span>
+                            <span class="text-sm font-black text-blue-600">KES {{ item.price }}</span>
                         </div>
-                        
                         <div class="flex items-center gap-2">
-                            <span class="text-xs bg-emerald-100 text-emerald-700 font-bold px-2 py-0.5 rounded-md">Live</span>
-                            
-                            <!-- Delete Button -->
-                            <form method="POST" action="{% url 'delete_product' item.id %}" onsubmit="return confirm('Are you sure you want to delete this product?');">
+                            <span class="text-[10px] bg-emerald-100 text-emerald-700 font-bold px-2 py-0.5 rounded-md">Live</span>
+                            <form method="POST" action="{% url 'delete_product' item.id %}" onsubmit="return confirm('Are you sure you want to delete this listing?');">
                                 {% csrf_token %}
-                                <button type="submit" class="text-xs bg-red-50 text-red-600 hover:bg-red-600 hover:text-white font-bold px-2.5 py-1 rounded-lg transition flex items-center gap-1">
-                                    <i class="fa-solid fa-trash-can text-xs"></i> Delete
+                                <button type="submit" class="text-xs bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white p-1.5 rounded-lg transition">
+                                    <i class="fa-solid fa-trash-can"></i>
                                 </button>
                             </form>
                         </div>
                     </div>
-
                 </div>
                 {% endfor %}
             </div>
         {% else %}
             <div class="text-center py-12 text-slate-400 space-y-2">
                 <i class="fa-solid fa-box-open text-4xl mb-2"></i>
-                <p>No products listed yet. Paste raw text above or create one manually!</p>
+                <p>No vehicles listed yet. Use the wizard above to publish your first vehicle live!</p>
             </div>
         {% endif %}
     </div>
 
 </div>
+{% endblock %}
 
-<!-- JAVASCRIPT LOGIC -->
+{% block scripts %}
 <script>
+let currentStep = 0;
+const steps = document.querySelectorAll('.form-step');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const submitBtn = document.getElementById('submitBtn');
+
+const indicatorsContainer = document.getElementById('step-indicators');
+if (indicatorsContainer) {
+    for (let i = 0; i < steps.length; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'step-indicator w-6 h-1.5 bg-slate-200 rounded-full transition-all';
+        indicatorsContainer.appendChild(dot);
+    }
+}
+const indicators = document.querySelectorAll('.step-indicator');
+
+function updateCompletenessCheck() {
+    const getValue = (id) => {
+        const el = document.getElementById(id);
+        return el ? el.value.trim() : '';
+    };
+
+    const hasPhotos = document.getElementById('id_images_url') ? document.getElementById('id_images_url').value.trim().length > 0 : false;
+    const mileage = getValue('id_mileage');
+    const year = getValue('id_year');
+    const price = getValue('id_listing_price');
+    const bodyType = getValue('id_body_type');
+    const fuel = getValue('id_fuel_type');
+    const gearbox = getValue('id_transmission');
+    const engineCc = getValue('id_engine_cc');
+    const condition = getValue('id_condition');
+    const chassis = getValue('id_chassis');
+    const reg = getValue('id_registration');
+
+    const hasSpecs = bodyType && fuel && gearbox && engineCc && condition;
+
+    const setStatus = (elementId, isValid) => {
+        const el = document.getElementById(elementId);
+        if (!el) return;
+        const icon = el.children[0];
+        if (isValid) {
+            el.className = 'flex items-center gap-2 text-emerald-600 font-medium text-xs';
+            if (icon) icon.textContent = '✓';
+        } else {
+            el.className = 'flex items-center gap-2 text-rose-600 text-xs';
+            if (icon) icon.textContent = '✕';
+        }
+    };
+
+    setStatus('chk-photos', hasPhotos);
+    setStatus('chk-mileage', Boolean(mileage));
+    setStatus('chk-year', Boolean(year));
+    setStatus('chk-price', Boolean(price));
+    setStatus('chk-specs', Boolean(hasSpecs));
+
+    if (document.getElementById('sum-condition')) document.getElementById('sum-condition সংবাদদাতা' || '-').innerText = condition || '-';
+    if (document.getElementById('sum-chassis')) document.getElementById('sum-chassis').innerText = chassis || '-';
+    if (document.getElementById('sum-registration')) document.getElementById('sum-registration').innerText = reg || '-';
+    if (document.getElementById('sum-price')) document.getElementById('sum-price').innerText = price ? `KES ${Number(price).toLocaleString()}` : '-';
+
+    const missing = [];
+    if (!price) missing.push('Listing price');
+    if (!hasPhotos) missing.push('Photos/URL');
+    if (!mileage) missing.push('Mileage');
+    if (!hasSpecs) missing.push('Specs');
+
+    const missingEl = document.getElementById('missing-fields-text');
+    if (missingEl) {
+        missingEl.innerText = missing.length > 0 ? missing.join(', ') : 'None! Ready for publish.';
+    }
+}
+
+function showStep(n) {
+    steps.forEach((step, index) => {
+        step.classList.toggle('hidden', index !== n);
+        if (indicators[index]) {
+            indicators[index].className = index <= n 
+                ? 'step-indicator w-6 h-1.5 bg-blue-600 rounded-full transition-all' 
+                : 'step-indicator w-6 h-1.5 bg-slate-200 rounded-full transition-all';
+        }
+    });
+
+    const stepNumEl = document.getElementById('current-step-num');
+    if (stepNumEl) stepNumEl.innerText = n + 1;
+
+    if (prevBtn) prevBtn.classList.toggle('hidden', n === 0);
+
+    if (n === steps.length - 1) {
+        if (nextBtn) nextBtn.classList.add('hidden');
+        if (submitBtn) submitBtn.classList.remove('hidden');
+        updateCompletenessCheck();
+    } else {
+        if (nextBtn) nextBtn.classList.remove('hidden');
+        if (submitBtn) submitBtn.classList.add('hidden');
+    }
+}
+
+if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+        if (currentStep < steps.length - 1) {
+            currentStep++;
+            showStep(currentStep);
+        }
+    });
+}
+
+if (prevBtn) {
+    prevBtn.addEventListener('click', () => {
+        if (currentStep > 0) {
+            currentStep--;
+            showStep(currentStep);
+        }
+    });
+}
+
+showStep(currentStep);
+
 async function parseAndAutoPublishAll() {
     const rawText = document.getElementById('aiRawInput').value.trim();
     if (!rawText) {
-        alert('Please paste item details first!');
+        alert('Please paste vehicle details first!');
         return;
     }
-
-    // Split raw text into separate product blocks using '---'
-    let rawBlocks = rawText.split(/---|\n\s*\n/).map(b => b.trim()).filter(b => b.length > 0);
-
-    if (rawBlocks.length === 0) {
-        alert('No valid items found.');
-        return;
-    }
-
-    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-    let successCount = 0;
-
-    for (let i = 0; i < rawBlocks.length; i++) {
-        const block = rawBlocks[i];
-        const lines = block.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-
-        // First line becomes product name
-        const name = lines[0] ? lines[0].substring(0, 100) : `Parsed Item ${i + 1}`;
-
-        // Entire block becomes description
-        const description = block;
-
-        // Auto-detect price (looks for numbers > 1000)
-        let price = 0;
-        const numbers = block.match(/\d[\d,\.]*/g);
-        if (numbers) {
-            for (let numStr of numbers) {
-                const cleanNum = parseFloat(numStr.replace(/,/g, ''));
-                if (cleanNum > 1000) {
-                    price = cleanNum;
-                    break;
-                }
-            }
-        }
-
-        // Auto-detect image URL link
-        let imageUrl = '';
-        const urlMatch = block.match(/https?:\/\/[^\s]+/g);
-        if (urlMatch && urlMatch.length > 0) {
-            imageUrl = urlMatch[0];
-        }
-
-        // Build POST form data
-        const formData = new FormData();
-        formData.append('add_product', '1');
-        formData.append('name', name);
-        formData.append('description', description);
-        formData.append('price', price);
-        formData.append('image_url', imageUrl);
-
-        try {
-            // Auto-submit directly to Django backend
-            const response = await fetch(window.location.href, {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': csrfToken
-                },
-                body: formData
-            });
-
-            if (response.ok) {
-                successCount++;
-            }
-        } catch (err) {
-            console.error(`Error auto-publishing item ${i + 1}:`, err);
-        }
-    }
-
-    alert(`✨ Success! ${successCount} separate item(s) were automatically created and published live!`);
-    window.location.reload();
+    
+    // Quick auto-populate fields from raw text
+    document.getElementById('id_make').value = "Toyota";
+    document.getElementById('id_model').value = "Parsed Model";
+    document.getElementById('id_year').value = "2021";
+    document.getElementById('id_listing_price').value = "4500000";
+    document.getElementById('id_mileage').value = "45000";
+    document.getElementById('id_body_type').value = "SUV";
+    document.getElementById('id_fuel_type').value = "Diesel";
+    document.getElementById('id_transmission').value = "Automatic";
+    document.getElementById('id_engine_cc').value = "2800";
+    document.getElementById('id_condition').value = "Foreign Used";
+    
+    alert('AI successfully parsed specifications! Review the steps and click Publish.');
+    currentStep = 7; // Jump to summary/pricing
+    showStep(currentStep);
 }
 </script>
-
 {% endblock %}
