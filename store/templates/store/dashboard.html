@@ -35,9 +35,10 @@
                 </div>
 
                 <!-- 9-STEP VEHICLE FORM WIZARD -->
-                <form id="vehicle-form" method="POST" enctype="multipart/form-data" class="space-y-6 pt-2 border-t border-slate-800">
+                <form id="vehicle-form" method="POST" enctype="multipart/form-data" novalidate class="space-y-6 pt-2 border-t border-slate-800">
                     {% csrf_token %}
                     <input type="hidden" name="add_product" value="1">
+                    <input type="hidden" name="name" id="id_full_name">
 
                     <!-- Step Header Bar -->
                     <div class="flex items-center justify-between pb-3 border-b border-slate-800">
@@ -217,7 +218,7 @@
                     <div class="flex justify-between items-center pt-3 border-t border-slate-800">
                         <button type="button" id="prevBtn" onclick="changeStep(-1); return false;" class="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded text-xs font-bold hidden">Back</button>
                         <button type="button" id="nextBtn" onclick="changeStep(1); return false;" class="px-5 py-1.5 bg-amber-500 hover:bg-amber-600 text-slate-950 rounded text-xs font-bold ml-auto shadow">Next Step</button>
-                        <button type="submit" id="submitBtn" class="px-5 py-1.5 bg-emerald-500 hover:bg-emerald-600 text-slate-950 rounded text-xs font-bold ml-auto hidden shadow">Publish Vehicle Live</button>
+                        <button type="submit" id="submitBtn" onclick="prepareAndSubmitForm(event)" class="px-5 py-1.5 bg-emerald-500 hover:bg-emerald-600 text-slate-950 rounded text-xs font-bold ml-auto hidden shadow">Publish Vehicle Live</button>
                     </div>
                 </form>
             </div>
@@ -485,6 +486,19 @@ async function parseAndAutoPublishAll() {
     document.getElementById('id_condition').value = "Foreign Used";
     
     alert('AI successfully parsed specifications into the wizard!');
+}
+
+function prepareAndSubmitForm(e) {
+    const make = document.getElementById('id_make')?.value || '';
+    const model = document.getElementById('id_model')?.value || '';
+    const year = document.getElementById('id_year')?.value || '';
+    
+    const fullNameInput = document.getElementById('id_full_name');
+    if (fullNameInput) {
+        fullNameInput.value = `${make} ${model} ${year}`.trim() || "Listed Vehicle";
+    }
+
+    document.getElementById('vehicle-form').submit();
 }
 </script>
 {% endblock %}
