@@ -3,22 +3,79 @@
 {% block content %}
 <div class="max-w-md mx-auto py-12 px-4">
     <div class="bg-[#0b132b] border border-slate-800 rounded-2xl p-8 shadow-2xl space-y-6">
+        
         <div class="text-center space-y-2">
-            <h1 class="text-2xl font-black text-white">Seller Sign In</h1>
-            <p class="text-xs text-slate-400">Log in to manage your inventory and dashboard.</p>
+            <h1 class="text-2xl font-black text-white">Create an Account</h1>
+            <p class="text-xs text-slate-400">Register to buy or sell vehicles securely across Kenya</p>
+        </div>
+
+        <!-- Role Selection Tabs -->
+        <div class="grid grid-cols-2 gap-2 p-1 bg-slate-900 border border-slate-800 rounded-xl">
+            <button type="button" id="tab-signup-buyer" onclick="setSignupType('buyer')" class="py-2 text-xs font-bold rounded-lg transition bg-amber-400 text-slate-950 shadow-md">
+                Buyer Account
+            </button>
+            <button type="button" id="tab-signup-seller" onclick="setSignupType('seller')" class="py-2 text-xs font-bold text-slate-400 hover:text-white rounded-lg transition">
+                Sign Up as a Seller
+            </button>
         </div>
 
         <form method="POST" class="space-y-4 text-xs text-slate-200">
             {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="w-full py-3 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black rounded-xl transition shadow-lg mt-4 cursor-pointer">
-                Log In
+            <input type="hidden" name="account_type" id="signup_type_input" value="buyer">
+
+            <div>
+                <label class="block font-semibold text-slate-300 mb-1">Username / Account Name *</label>
+                <input type="text" name="username" required placeholder="e.g. Samuel King'uri" class="w-full px-3.5 py-2.5 bg-slate-900 text-white rounded-xl border border-slate-700 focus:outline-none focus:border-amber-400">
+            </div>
+
+            <div>
+                <label class="block font-semibold text-slate-300 mb-1">Email Address *</label>
+                <input type="email" name="email" required placeholder="name@example.com" class="w-full px-3.5 py-2.5 bg-slate-900 text-white rounded-xl border border-slate-700 focus:outline-none focus:border-amber-400">
+            </div>
+
+            <!-- Dealer Name Field (Visible for Seller Signup) -->
+            <div id="dealer-field" class="hidden">
+                <label class="block font-semibold text-amber-400 mb-1">Dealership / Company Name</label>
+                <input type="text" name="company_name" placeholder="e.g. Outer Roamers Rides KE / Vanguard Motors" class="w-full px-3.5 py-2.5 bg-slate-900 text-white rounded-xl border border-amber-400/50 focus:outline-none focus:border-amber-400">
+                <p class="text-[10px] text-slate-500 mt-1">This name will be listed in our Verified Car Dealers Directory.</p>
+            </div>
+
+            <div>
+                <label class="block font-semibold text-slate-300 mb-1">Password *</label>
+                <input type="password" name="password" required placeholder="At least 8 characters" class="w-full px-3.5 py-2.5 bg-slate-900 text-white rounded-xl border border-slate-700 focus:outline-none focus:border-amber-400">
+            </div>
+
+            <button type="submit" id="signup-submit-btn" class="w-full py-3.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black rounded-xl transition shadow-lg mt-4 cursor-pointer text-sm">
+                Register Buyer Account
             </button>
         </form>
 
         <div class="text-center text-xs text-slate-500 pt-2 border-t border-slate-800">
-            Need a seller account? <a href="{% url 'signup' %}" class="text-amber-400 font-bold hover:underline">Sign up here</a>
+            Already registered? <a href="{% url 'login' %}" class="text-amber-400 font-bold hover:underline">Log in directly</a>
         </div>
     </div>
 </div>
+
+<script>
+function setSignupType(type) {
+    const input = document.getElementById('signup_type_input');
+    const tabBuyer = document.getElementById('tab-signup-buyer');
+    const tabSeller = document.getElementById('tab-signup-seller');
+    const dealerField = document.getElementById('dealer-field');
+    const submitBtn = document.getElementById('signup-submit-btn');
+
+    input.value = type;
+    if (type === 'seller') {
+        tabSeller.className = 'py-2 text-xs font-bold rounded-lg transition bg-amber-400 text-slate-950 shadow-md';
+        tabBuyer.className = 'py-2 text-xs font-bold text-slate-400 hover:text-white rounded-lg transition';
+        dealerField.classList.remove('hidden');
+        submitBtn.textContent = 'Register Seller / Dealer Account';
+    } else {
+        tabBuyer.className = 'py-2 text-xs font-bold rounded-lg transition bg-amber-400 text-slate-950 shadow-md';
+        tabSeller.className = 'py-2 text-xs font-bold text-slate-400 hover:text-white rounded-lg transition';
+        dealerField.classList.add('hidden');
+        submitBtn.textContent = 'Register Buyer Account';
+    }
+}
+</script>
 {% endblock %}

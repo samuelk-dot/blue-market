@@ -129,25 +129,40 @@ def place_order(request):
 
 def signup_view(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        account_type = request.POST.get('account_type', 'buyer')
+        
+        if User.objects.filter(username=username).exists():
+            return render(request, 'store/signup.html', {'error': 'Username already taken.'})
+            
+        user = User.objects.create_user(username=username, email=email, password=password)
+        login(request, user)
+        
+        if account_type == 'seller':
             return redirect('vendor_dashboard')
-    else:
-        form = UserCreationForm()
-    return render(request, 'store/signup.html', {'form': form})
+        return redirect('index')
+        
+    return render(request, 'store/signup.html')
 
 def login_view(request):
     if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
+        username_input = request.POST.get('username')
+        password_input = request.POST.get('password')
+        
+        # Check if user provided email or username
+        user_obj = User.objects.filter(email=username_input).first()
+        username = user_obj.username if user_obj else username_input
+        
+        user = authenticate(request, username=username, password=password_input)
+        if user is not None:
             login(request, user)
             return redirect('vendor_dashboard')
-    else:
-        form = AuthenticationForm()
-    return render(request, 'store/login.html', {'form': form})
+        else:
+            return render(request, 'store/login.html', {'error': 'Invalid credentials.'})
+            
+    return render(request, 'store/login.html')
 
 def logout_view(request):
     logout(request)

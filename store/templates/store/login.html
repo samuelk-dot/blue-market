@@ -1,192 +1,70 @@
 {% extends 'store/base.html' %}
 
 {% block content %}
-<style>
-  .login-container {
-    min-height: 80vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  }
+<div class="max-w-md mx-auto py-12 px-4">
+    <div class="bg-[#0b132b] border border-slate-800 rounded-2xl p-8 shadow-2xl space-y-6">
+        
+        <!-- Header -->
+        <div class="text-center space-y-2">
+            <h1 class="text-2xl font-black text-white">Welcome Back</h1>
+            <p class="text-xs text-slate-400">Select your account type to sign in</p>
+        </div>
 
-  .login-card {
-    background: #ffffff;
-    border-radius: 16px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 440px;
-    padding: 32px;
-    box-sizing: border-box;
-  }
+        <!-- Role Selection Tabs -->
+        <div class="grid grid-cols-2 gap-2 p-1 bg-slate-900 border border-slate-800 rounded-xl">
+            <button type="button" id="tab-buyer" onclick="setAccountType('buyer')" class="py-2 text-xs font-bold rounded-lg transition bg-amber-400 text-slate-950 shadow-md">
+                Buyer Login
+            </button>
+            <button type="button" id="tab-seller" onclick="setAccountType('seller')" class="py-2 text-xs font-bold text-slate-400 hover:text-white rounded-lg transition">
+                Seller Login
+            </button>
+        </div>
 
-  .login-header {
-    text-align: center;
-    margin-bottom: 24px;
-  }
+        <!-- Login Form -->
+        <form method="POST" class="space-y-4 text-xs text-slate-200">
+            {% csrf_token %}
+            <input type="hidden" name="account_type" id="account_type_input" value="buyer">
 
-  .login-header h2 {
-    font-size: 26px;
-    color: #1a202c;
-    margin-bottom: 8px;
-    font-weight: 700;
-  }
+            <div>
+                <label class="block font-semibold text-slate-300 mb-1">Username or Email</label>
+                <input type="text" name="username" required placeholder="name@example.com or username" class="w-full px-3.5 py-2.5 bg-slate-900 text-white rounded-xl border border-slate-700 focus:outline-none focus:border-amber-400">
+            </div>
 
-  .login-header p {
-    color: #718096;
-    font-size: 14px;
-  }
+            <div>
+                <label class="block font-semibold text-slate-300 mb-1">Password</label>
+                <input type="password" name="password" required placeholder="••••••••" class="w-full px-3.5 py-2.5 bg-slate-900 text-white rounded-xl border border-slate-700 focus:outline-none focus:border-amber-400">
+            </div>
 
-  /* Buyer / Seller Role Selector Tabs */
-  .role-toggle {
-    display: flex;
-    background: #edf2f7;
-    border-radius: 10px;
-    padding: 4px;
-    margin-bottom: 24px;
-  }
+            <button type="submit" id="submit-btn" class="w-full py-3.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black rounded-xl transition shadow-lg mt-4 cursor-pointer text-sm">
+                Log In as Buyer
+            </button>
+        </form>
 
-  .role-btn {
-    flex: 1;
-    padding: 10px;
-    border: none;
-    background: transparent;
-    font-size: 14px;
-    font-weight: 600;
-    color: #4a5568;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
-  }
-
-  .role-btn.active {
-    background: #0052cc;
-    color: #ffffff;
-    box-shadow: 0 2px 6px rgba(0, 82, 204, 0.3);
-  }
-
-  .form-group {
-    margin-bottom: 18px;
-  }
-
-  .form-group label {
-    display: block;
-    font-size: 13px;
-    font-weight: 600;
-    color: #2d3748;
-    margin-bottom: 6px;
-  }
-
-  .form-control {
-    width: 100%;
-    padding: 12px 14px;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    font-size: 14px;
-    box-sizing: border-box;
-    transition: border-color 0.2s ease;
-  }
-
-  .form-control:focus {
-    outline: none;
-    border-color: #0052cc;
-    box-shadow: 0 0 0 3px rgba(0, 82, 204, 0.15);
-  }
-
-  .submit-btn {
-    width: 100%;
-    padding: 12px;
-    background: #0052cc;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: background 0.2s ease;
-  }
-
-  .submit-btn:hover {
-    background: #003d99;
-  }
-
-  .login-footer {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 14px;
-    color: #718096;
-  }
-
-  .login-footer a {
-    color: #0052cc;
-    text-decoration: none;
-    font-weight: 600;
-  }
-
-  .login-footer a:hover {
-    text-decoration: underline;
-  }
-</style>
-
-<div class="login-container">
-  <div class="login-card">
-    <div class="login-header">
-      <h2>Welcome Back</h2>
-      <p id="sub-heading">Access your BLUE MARKET account</p>
+        <!-- Footer link to Sign Up -->
+        <div class="text-center text-xs text-slate-500 pt-2 border-t border-slate-800">
+            Don't have an account? 
+            <a href="{% url 'signup' %}" class="text-amber-400 font-bold hover:underline">Sign up as a Seller or Buyer here</a>
+        </div>
     </div>
-
-    <!-- Toggle between Buyer and Seller -->
-    <div class="role-toggle">
-      <button type="button" class="role-btn active" id="buyer-tab" onclick="switchRole('buyer')">Buyer Login</button>
-      <button type="button" class="role-btn" id="seller-tab" onclick="switchRole('seller')">Seller Login</button>
-    </div>
-
-    <form method="POST" action="">
-      {% csrf_token %}
-      <input type="hidden" name="user_type" id="user_type" value="buyer">
-
-      <div class="form-group">
-        <label for="username">Username or Email</label>
-        <input type="text" name="username" id="username" class="form-control" placeholder="Enter your username" required>
-      </div>
-
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" name="password" id="password" class="form-control" placeholder="Enter your password" required>
-      </div>
-
-      <button type="submit" class="submit-btn" id="submit-button">Log In as Buyer</button>
-    </form>
-
-    <div class="login-footer">
-      Don't have an account? <a href="{% url 'signup' %}">Sign up here</a>
-    </div>
-  </div>
 </div>
 
 <script>
-  function switchRole(role) {
-    const buyerTab = document.getElementById('buyer-tab');
-    const sellerTab = document.getElementById('seller-tab');
-    const userTypeInput = document.getElementById('user_type');
-    const submitBtn = document.getElementById('submit-button');
-    const subHeading = document.getElementById('sub-heading');
+function setAccountType(type) {
+    const input = document.getElementById('account_type_input');
+    const tabBuyer = document.getElementById('tab-buyer');
+    const tabSeller = document.getElementById('tab-seller');
+    const submitBtn = document.getElementById('submit-btn');
 
-    if (role === 'buyer') {
-      buyerTab.classList.add('active');
-      sellerTab.classList.remove('active');
-      userTypeInput.value = 'buyer';
-      submitBtn.innerText = 'Log In as Buyer';
-      subHeading.innerText = 'Access your buyer account & orders';
+    input.value = type;
+    if (type === 'seller') {
+        tabSeller.className = 'py-2 text-xs font-bold rounded-lg transition bg-amber-400 text-slate-950 shadow-md';
+        tabBuyer.className = 'py-2 text-xs font-bold text-slate-400 hover:text-white rounded-lg transition';
+        submitBtn.textContent = 'Log In as Seller';
     } else {
-      sellerTab.classList.add('active');
-      buyerTab.classList.remove('active');
-      userTypeInput.value = 'seller';
-      submitBtn.innerText = 'Log In as Seller';
-      subHeading.innerText = 'Access your seller dashboard & sales';
+        tabBuyer.className = 'py-2 text-xs font-bold rounded-lg transition bg-amber-400 text-slate-950 shadow-md';
+        tabSeller.className = 'py-2 text-xs font-bold text-slate-400 hover:text-white rounded-lg transition';
+        submitBtn.textContent = 'Log In as Buyer';
     }
-  }
+}
 </script>
 {% endblock %}

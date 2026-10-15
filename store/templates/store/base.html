@@ -29,13 +29,38 @@
                 </a>
                 
                 <!-- Navigation & Portal Links -->
-                <div class="flex items-center gap-4">
-                    <a href="{% url 'dashboard' %}" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold px-3 py-2 rounded-lg border border-slate-700">
-                        <i class="fa-solid fa-gauge text-amber-500"></i> Dashboard
+                <div class="flex items-center gap-4 text-xs font-semibold text-slate-300">
+                    <a href="{% url 'dealers' %}" class="hover:text-amber-400 transition flex items-center gap-1">
+                        <i class="fa-solid fa-store text-amber-400"></i> Dealers
                     </a>
-                    <a href="{% url 'cart_view' %}" class="relative text-slate-300 hover:text-amber-500">
-                        <i class="fa-solid fa-cart-shopping text-xl"></i>
-                    </a>
+
+                    {% if user.is_authenticated %}
+                        <!-- LOGGED IN USER MENU -->
+                        <a href="{% url 'vendor_dashboard' %}" class="hover:text-amber-400 transition flex items-center gap-1">
+                            <i class="fa-solid fa-plus-circle text-amber-400"></i> Sell Your Car
+                        </a>
+
+                        <div class="relative group cursor-pointer bg-slate-900 border border-slate-700 px-3 py-1.5 rounded-lg flex items-center gap-2">
+                            <i class="fa-solid fa-user-check text-amber-400"></i>
+                            <span>Logged in as <strong class="text-white">{{ user.username }}</strong></span>
+                        
+                            <!-- Dropdown Menu -->
+                            <div class="absolute right-0 top-full mt-2 w-48 bg-[#0b132b] border border-slate-800 rounded-xl shadow-2xl p-2 hidden group-hover:block z-50">
+                                <a href="{% url 'vendor_dashboard' %}" class="block px-3 py-2 hover:bg-slate-900 text-slate-200 rounded-lg text-xs font-semibold">
+                                    <i class="fa-solid fa-gauge mr-2 text-amber-400"></i> Seller Dashboard
+                                </a>
+                                <a href="{% url 'logout' %}" class="block px-3 py-2 hover:bg-red-500/20 text-red-400 rounded-lg text-xs font-semibold">
+                                    <i class="fa-solid fa-right-from-bracket mr-2"></i> Log Out
+                                </a>
+                            </div>
+                        </div>
+                    {% else %}
+                        <!-- NOT LOGGED IN MENU -->
+                        <a href="{% url 'login' %}" class="hover:text-amber-400 transition">Log In</a>
+                        <a href="{% url 'signup' %}" class="bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold px-3.5 py-1.5 rounded-lg transition shadow-md">
+                            Sign Up
+                        </a>
+                    {% endif %}
                 </div>
             </div>
         </div>
