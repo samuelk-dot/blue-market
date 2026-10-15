@@ -489,16 +489,23 @@ async function parseAndAutoPublishAll() {
 }
 
 function prepareAndSubmitForm(e) {
-    const make = document.getElementById('id_make')?.value || '';
-    const model = document.getElementById('id_model')?.value || '';
-    const year = document.getElementById('id_year')?.value || '';
-    
+    if (e) e.preventDefault();
+
+    const make = document.getElementById('id_make')?.value.trim() || '';
+    const model = document.getElementById('id_model')?.value.trim() || '';
+    const year = document.getElementById('id_year')?.value.trim() || '';
+
+    // Guarantee full product name for Django model
     const fullNameInput = document.getElementById('id_full_name');
     if (fullNameInput) {
         fullNameInput.value = `${make} ${model} ${year}`.trim() || "Listed Vehicle";
     }
 
-    document.getElementById('vehicle-form').submit();
+    // Submit form programmatically bypassing HTML5 native popup block
+    const form = document.getElementById('vehicle-form');
+    if (form) {
+        form.submit();
+    }
 }
 </script>
 {% endblock %}
