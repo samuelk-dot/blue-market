@@ -283,7 +283,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 {% for item in products %}
                 <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-md hover:border-amber-500/50 transition flex flex-col justify-between">
-                    <a href="{% url 'product detail' item.id %}" class="block group flex-grow">
+                    <a href="{% url 'product_detail' item.id %}" class="block group flex-grow">
                         {% if item.image_url %}
                             <img src="{{ item.image_url }}" alt="{{ item.name }}" class="h-44 w-full object-cover group-hover:scale-105 transition duration-300">
                         {% else %}
