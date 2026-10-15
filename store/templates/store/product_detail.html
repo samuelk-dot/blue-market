@@ -7,62 +7,103 @@
         <i class="fa-solid fa-arrow-left"></i> Back to Inventory
     </a>
 
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <!-- Image Gallery & Thumbnails -->
-        <div class="space-y-4">
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl h-96 flex items-center justify-center">
-                {% if product.image_url %}
-                    <img id="main-vehicle-img" src="{{ product.image_url }}" alt="{{ product.name }}" class="w-full h-full object-cover">
-                {% else %}
-                    <i class="fa-solid fa-car text-6xl text-slate-700"></i>
-                {% endif %}
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- LEFT 2 COLUMNS: Image Gallery & Specifications -->
+        <div class="lg:col-span-2 space-y-6">
+            <!-- Main Image & Thumbnails Box -->
+            <div class="bg-[#0b132b] border border-slate-800 rounded-2xl p-4 shadow-2xl space-y-4">
+                <div class="h-[400px] bg-slate-950 rounded-xl overflow-hidden flex items-center justify-center border border-slate-800">
+                    {% if product.image_url %}
+                        <img id="main-vehicle-img" src="{{ product.image_url }}" alt="{{ product.name }}" class="w-full h-full object-cover">
+                    {% else %}
+                        <i class="fa-solid fa-car text-6xl text-slate-700"></i>
+                    {% endif %}
+                </div>
+                
+                <!-- Thumbnails Gallery Row -->
+                <div class="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-thin">
+                    {% if product.image_url %}
+                        <img onclick="document.getElementById('main-vehicle-img').src=this.src" src="{{ product.image_url }}" class="w-20 h-16 object-cover rounded-lg cursor-pointer border-2 border-amber-400 hover:opacity-80 transition">
+                    {% endif %}
+                </div>
             </div>
-            
-            <!-- Gallery Thumbnails (Up to 10 Images) -->
-            <div class="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-thin">
-                {% if product.image_url %}
-                    <img onclick="document.getElementById('main-vehicle-img').src=this.src" src="{{ product.image_url }}" class="w-20 h-16 object-cover rounded-lg cursor-pointer border-2 border-amber-400 hover:opacity-80 transition">
-                {% endif %}
+
+            <!-- Vehicle Detailed Specs Box -->
+            <div class="bg-[#0b132b] p-6 rounded-2xl border border-slate-800 shadow-xl space-y-4">
+                <h2 class="text-lg font-bold text-white flex items-center gap-2 border-b border-slate-800 pb-3">
+                    <i class="fa-solid fa-list-check text-amber-400"></i> Vehicle Specifications & Overview
+                </h2>
+                <div class="text-sm whitespace-pre-line text-slate-300 leading-relaxed bg-slate-900/60 p-4 rounded-xl border border-slate-800/80">
+                    {{ product.description }}
+                </div>
             </div>
         </div>
 
-        <!-- Title & Buy / Contact Panel -->
-        <div class="space-y-6 bg-[#0b132b] p-6 rounded-2xl border border-slate-800 shadow-xl">
-            <div>
-                <h1 class="text-3xl font-extrabold text-white tracking-wide">{{ product.name }}</h1>
-                <p class="text-2xl font-bold text-amber-400 mt-2">KES {{ product.price }}</p>
-            </div>
+        <!-- RIGHT 1 COLUMN: SBT-Style Total Price Calculator & Buy Now Panel -->
+        <div class="space-y-6">
+            <div class="bg-[#0b132b] p-6 rounded-2xl border border-slate-800 shadow-2xl space-y-6 sticky top-6">
+                <div>
+                    <span class="text-xs uppercase font-bold text-slate-400 tracking-wider">Stock Item #VNG-{{ product.id }}</span>
+                    <h1 class="text-2xl font-extrabold text-white tracking-wide mt-1">{{ product.name }}</h1>
+                </div>
 
-            <div class="pt-4 border-t border-slate-800 space-y-3">
-                <a href="https://wa.me/?text=Hello%20Vanguard%20Motors,%20I'm%20interested%20in%20{{ product.name }}" target="_blank" class="w-full block text-center bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold py-3 px-6 rounded-xl shadow-lg transition">
-                    <i class="fa-brands fa-whatsapp mr-2"></i> Inquire / Buy via WhatsApp
-                </a>
-            </div>
-        </div>
-    </div>
+                <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-2">
+                    <span class="text-xs text-slate-400 block font-medium">Vehicle Base Price</span>
+                    <span class="text-2xl font-black text-amber-400">KES {{ product.price }}</span>
+                </div>
 
-    <!-- Complete Specification Table -->
-    <div class="bg-[#0b132b] p-6 sm:p-8 rounded-2xl border border-slate-800 shadow-xl space-y-6">
-        <h2 class="text-xl font-bold text-white flex items-center gap-2 border-b border-slate-800 pb-3">
-            <i class="fa-solid fa-list-check text-amber-400"></i> Complete Vehicle Technical Specifications
-        </h2>
+                <!-- Destination & Shipping Calculator Form -->
+                <div class="space-y-4 pt-2 border-t border-slate-800 text-xs">
+                    <h3 class="font-bold text-amber-400 uppercase tracking-wider text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-calculator"></i> Total Price Calculator
+                    </h3>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3 text-sm">
-            <div class="whitespace-pre-line text-slate-300 leading-relaxed bg-slate-900/60 p-4 rounded-xl border border-slate-800/80">
-                {{ product.description }}
-            </div>
-            
-            <div class="space-y-2">
-                <table class="w-full text-left text-xs border-collapse">
-                    <tbody>
-                        <tr class="border-b border-slate-800/60"><td class="py-2 text-slate-400 font-medium">Doors</td><td class="py-2 text-white font-bold text-right">4 / 5 Doors</td></tr>
-                        <tr class="border-b border-slate-800/60"><td class="py-2 text-slate-400 font-medium">Seating Capacity</td><td class="py-2 text-white font-bold text-right">5 Seats</td></tr>
-                        <tr class="border-b border-slate-800/60"><td class="py-2 text-slate-400 font-medium">Interior Trim</td><td class="py-2 text-white font-bold text-right">Premium Fabric / Leather</td></tr>
-                        <tr class="border-b border-slate-800/60"><td class="py-2 text-slate-400 font-medium">Suspension System</td><td class="py-2 text-white font-bold text-right">MacPherson Strut (Front) / Multi-link (Rear)</td></tr>
-                        <tr class="border-b border-slate-800/60"><td class="py-2 text-slate-400 font-medium">Airbags & Safety</td><td class="py-2 text-white font-bold text-right">SRS Front & Side Airbags + ABS</td></tr>
-                        <tr class="border-b border-slate-800/60"><td class="py-2 text-slate-400 font-medium">Infotainment / Audio</td><td class="py-2 text-white font-bold text-right">Touchscreen, Bluetooth, USB & Aux</td></tr>
-                    </tbody>
-                </table>
+                    <!-- Destination Country -->
+                    <div class="space-y-1">
+                        <label class="block font-semibold text-slate-300">Destination Country *</label>
+                        <select id="calc-country" class="w-full px-3 py-2 bg-slate-900 text-slate-100 rounded-lg border border-slate-700 focus:outline-none focus:border-amber-400">
+                            <option value="kenya">KENYA</option>
+                            <option value="uganda">UGANDA</option>
+                            <option value="tanzania">TANZANIA</option>
+                            <option value="rwanda">RWANDA</option>
+                        </select>
+                    </div>
+
+                    <!-- Destination Port -->
+                    <div class="space-y-1">
+                        <label class="block font-semibold text-slate-300">Destination Port *</label>
+                        <select id="calc-port" class="w-full px-3 py-2 bg-slate-900 text-slate-100 rounded-lg border border-slate-700 focus:outline-none focus:border-amber-400">
+                            <option value="mombasa">MOMBASA PORT (Kenya)</option>
+                            <option value="dar">DAR ES SALAAM (Tanzania)</option>
+                        </select>
+                    </div>
+
+                    <!-- Shipment Method -->
+                    <div class="space-y-1">
+                        <label class="block font-semibold text-slate-300">Shipment Type *</label>
+                        <select class="w-full px-3 py-2 bg-slate-900 text-slate-100 rounded-lg border border-slate-700 focus:outline-none">
+                            <option value="roro">RORO (Roll-on/Roll-off)</option>
+                            <option value="container">Container Shipping</option>
+                        </select>
+                    </div>
+
+                    <!-- Inspection Option -->
+                    <div class="flex items-center justify-between bg-slate-900 p-3 rounded-lg border border-slate-800">
+                        <span class="font-semibold text-slate-300">JEVIC / Pre-Export Inspection</span>
+                        <span class="text-amber-400 font-bold">Included (YES)</span>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="space-y-3 pt-2">
+                    <button onclick="alert('Order inquiry registered successfully! Our Vanguard sales team will contact you shortly.')" class="w-full block text-center bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold py-3.5 px-6 rounded-xl shadow-lg transition tracking-wide text-sm">
+                        <i class="fa-solid fa-cart-shopping mr-2"></i> Buy Now / Place Order
+                    </button>
+                    
+                    <a href="https://wa.me/?text=Hello%20Vanguard%20Motors,%20I%20want%20to%20inquire%20about%20{{ product.name }}%20(Stock%20#VNG-{{ product.id }})" target="_blank" class="w-full block text-center bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition text-xs">
+                        <i class="fa-brands fa-whatsapp mr-2 text-sm"></i> Inquire via WhatsApp
+                    </a>
+                </div>
             </div>
         </div>
     </div>
