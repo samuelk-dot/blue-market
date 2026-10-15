@@ -1,0 +1,70 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-8 space-y-8 text-slate-100">
+    <!-- Back Button -->
+    <a href="{% url 'index' %}" class="inline-flex items-center gap-2 text-amber-400 hover:text-amber-300 font-semibold text-sm">
+        <i class="fa-solid fa-arrow-left"></i> Back to Inventory
+    </a>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Image Gallery & Thumbnails -->
+        <div class="space-y-4">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl h-96 flex items-center justify-center">
+                {% if product.image_url %}
+                    <img id="main-vehicle-img" src="{{ product.image_url }}" alt="{{ product.name }}" class="w-full h-full object-cover">
+                {% else %}
+                    <i class="fa-solid fa-car text-6xl text-slate-700"></i>
+                {% endif %}
+            </div>
+            
+            <!-- Gallery Thumbnails (Up to 10 Images) -->
+            <div class="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-thin">
+                {% if product.image_url %}
+                    <img onclick="document.getElementById('main-vehicle-img').src=this.src" src="{{ product.image_url }}" class="w-20 h-16 object-cover rounded-lg cursor-pointer border-2 border-amber-400 hover:opacity-80 transition">
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Title & Buy / Contact Panel -->
+        <div class="space-y-6 bg-[#0b132b] p-6 rounded-2xl border border-slate-800 shadow-xl">
+            <div>
+                <h1 class="text-3xl font-extrabold text-white tracking-wide">{{ product.name }}</h1>
+                <p class="text-2xl font-bold text-amber-400 mt-2">KES {{ product.price }}</p>
+            </div>
+
+            <div class="pt-4 border-t border-slate-800 space-y-3">
+                <a href="https://wa.me/?text=Hello%20Vanguard%20Motors,%20I'm%20interested%20in%20{{ product.name }}" target="_blank" class="w-full block text-center bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold py-3 px-6 rounded-xl shadow-lg transition">
+                    <i class="fa-brands fa-whatsapp mr-2"></i> Inquire / Buy via WhatsApp
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Complete Specification Table -->
+    <div class="bg-[#0b132b] p-6 sm:p-8 rounded-2xl border border-slate-800 shadow-xl space-y-6">
+        <h2 class="text-xl font-bold text-white flex items-center gap-2 border-b border-slate-800 pb-3">
+            <i class="fa-solid fa-list-check text-amber-400"></i> Complete Vehicle Technical Specifications
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3 text-sm">
+            <div class="whitespace-pre-line text-slate-300 leading-relaxed bg-slate-900/60 p-4 rounded-xl border border-slate-800/80">
+                {{ product.description }}
+            </div>
+            
+            <div class="space-y-2">
+                <table class="w-full text-left text-xs border-collapse">
+                    <tbody>
+                        <tr class="border-b border-slate-800/60"><td class="py-2 text-slate-400 font-medium">Doors</td><td class="py-2 text-white font-bold text-right">4 / 5 Doors</td></tr>
+                        <tr class="border-b border-slate-800/60"><td class="py-2 text-slate-400 font-medium">Seating Capacity</td><td class="py-2 text-white font-bold text-right">5 Seats</td></tr>
+                        <tr class="border-b border-slate-800/60"><td class="py-2 text-slate-400 font-medium">Interior Trim</td><td class="py-2 text-white font-bold text-right">Premium Fabric / Leather</td></tr>
+                        <tr class="border-b border-slate-800/60"><td class="py-2 text-slate-400 font-medium">Suspension System</td><td class="py-2 text-white font-bold text-right">MacPherson Strut (Front) / Multi-link (Rear)</td></tr>
+                        <tr class="border-b border-slate-800/60"><td class="py-2 text-slate-400 font-medium">Airbags & Safety</td><td class="py-2 text-white font-bold text-right">SRS Front & Side Airbags + ABS</td></tr>
+                        <tr class="border-b border-slate-800/60"><td class="py-2 text-slate-400 font-medium">Infotainment / Audio</td><td class="py-2 text-white font-bold text-right">Touchscreen, Bluetooth, USB & Aux</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

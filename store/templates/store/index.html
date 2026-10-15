@@ -231,14 +231,14 @@
         {% if products %}
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             {% for product in products %}
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-4 hover:border-slate-700 transition">
+            <a href="{% url 'product_detail' product.id %}" class="block bg-slate-900 hover:bg-slate-800/90 border border-slate-800 hover:border-amber-400/50 rounded-xl overflow-hidden shadow-lg transition duration-200 group">
                 <h3 class="font-bold text-slate-100">{{ product.name }}</h3>
                 <p class="text-xs text-slate-400 line-clamp-2">{{ product.description }}</p>
                 <div class="flex items-center justify-between pt-2 border-t border-slate-800">
                     <span class="text-amber-500 font-bold">{{ product.price }}</span>
                     <a href="{% url 'product_detail' product.id %}" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-lg font-medium transition">Inspect</a>
                 </div>
-            </div>
+            </a>
             {% endfor %}
         </div>
         {% else %}

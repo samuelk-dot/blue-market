@@ -157,15 +157,25 @@
                         </div>
                     </div>
 
+                    
                     <!-- STEP 6: Photos -->
                     <div class="form-step hidden space-y-4">
-                        <h3 class="text-sm font-bold text-amber-400 uppercase tracking-wide">6. Photos</h3>
+                        <h3 class="text-sm font-bold text-amber-400 uppercase tracking-wider">6. Vehicle Images (Up to 10 Photos)</h3>
+    
+                        <!-- Multi-File Upload from Device -->
+                        <div class="space-y-2">
+                            <label class="block text-xs font-semibold text-slate-300">Choose Files from Device (Select up to 10)</label>
+                            <input type="file" id="id_image_files" name="image_files" multiple accept="image/*" class="block w-full text-xs text-slate-300 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-400 file:text-slate-950 hover:file:bg-amber-300 cursor-pointer bg-slate-900 border border-slate-700 rounded-lg">
+                        </div>
+
+                        <div class="text-center text-xs text-slate-500 font-bold my-2">- OR PASTE DIRECT IMAGE URL -</div>
+
+                        <!-- URL Input -->
                         <div>
-                            <label class="block text-xs font-semibold text-slate-300 mb-1">Image URL</label>
-                            <input type="url" name="image_url" id="id_images_url" class="w-full border border-slate-700 rounded-lg p-2.5 text-sm text-slate-900 bg-white focus:outline-none focus:border-amber-500" placeholder="https://images.unsplash.com/...">
+                           <label class="block text-xs font-semibold text-slate-300 mb-1">Primary Image URL</label>
+                           <input type="url" name="image_url" id="id_image_url" placeholder="https://images.unsplash.com/photo-..." class="w-full px-3 py-2 bg-slate-100 text-slate-950 rounded-lg text-sm border border-slate-300 focus:outline-none">
                         </div>
                     </div>
-
                     <!-- STEP 7: Pricing -->
                     <div class="form-step hidden space-y-4">
                         <h3 class="text-sm font-bold text-amber-400 uppercase tracking-wide">7. Pricing</h3>
