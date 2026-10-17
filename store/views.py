@@ -70,6 +70,12 @@ def index(request):
 
 @login_required(login_url='login')
 def vendor_dashboard(request):
+    @login_required
+def vendor_dashboard(request):
+    # Only allow staff/dealers to post vehicles
+    if not request.user.is_staff:
+        return redirect('index')
+        
     if request.method == 'POST' and 'add_product' in request.POST:
         # Build a rich description combining all the wizard details
         make = request.POST.get('make', '')

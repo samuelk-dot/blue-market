@@ -30,7 +30,9 @@
                 
                 <!-- Navigation & Portal Links -->
                 <div class="flex items-center gap-4 text-xs font-semibold text-slate-300">
-                    <a href="{% url 'dealers' %}" class="hover:text-amber-400 transition flex items-center gap-1">
+                    {% if user.is_authenticated and user.is_staff %}
+                        <a href="{% url 'vendor_dashboard' %}" class="hover:text-amber-500 font-semibold">Seller Dashboard</a>
+                    {% endif %}
                         <i class="fa-solid fa-store text-amber-400"></i> Dealers
                     </a>
 
