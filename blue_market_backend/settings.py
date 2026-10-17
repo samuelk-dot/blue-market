@@ -121,11 +121,19 @@ STATIC_URL = 'static/'
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
 
-MAILERS = {
-    'default': {
-        'BACKEND': 'django.core.mail.backends.console.EmailBackend',
-    },
-}
+# Email Configuration for Inquiries & Buy Alerts
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'samuelkinguri13@gmail.com'        # Your Gmail address
+EMAIL_HOST_PASSWORD = '53mbv9'  # Google App Password
+DEFAULT_FROM_EMAIL = 'Vanguard Motors <samuelkinguri13@gmail.com>'
+ADMIN_ALERT_EMAIL = 'samuelkinguri13@gmail.com'      # Where you receive buyer alerts
+
+# Media Files (Uploaded Vehicle Photos)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 LOGIN_URL = 'login'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 

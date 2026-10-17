@@ -99,12 +99,25 @@ def vendor_dashboard(request):
         {request.POST.get('description', '')}
         """.strip()
 
-        Product.objects.create(
+        # Store the created product in a variable named 'product'
+        product = Product.objects.create(
             name=name,
             price=price,
             description=detailed_description,
             image_url=request.POST.get('image_url', ''),
         )
+
+        # 1. Handle Multiple Uploaded Image Files (up to 15 images)
+        images = request.FILES.getlist('images')
+        for img in images:
+            ProductImage.objects.create(product=product, image=img)
+
+        # 2. Handle Image URL Link if provided
+        image_url = request.POST.get('image_url')
+        if image_url:
+            # Connect image link if you have a field for it in ProductImage
+            ProductImage.objects.create(product=product, image_url=image_url)
+
         return redirect('vendor_dashboard')
 
     try:
@@ -124,8 +137,36 @@ def cart_view(request):
 def add_to_cart(request, product_id):
     return redirect('cart_view')
 
-def place_order(request):
-    return redirect('index')
+def place_order(request, product_id):
+    if request.method == 'POST':
+        product = get_object_or_404(Product, id=product_id)
+        
+        buyer_name = request.POST.get('name', request.user.username if request.user.is_authenticated else 'Guest Buyer')
+        buyer_phone = request.POST.get('phone', 'N/A')
+        buyer_email = request.POST.get('email', request.user.email if request.user.is_authenticated else 'N/A')
+        
+        # 1. Email Alert to Admin/Owner
+        subject = f"🚨 NEW ORDER ALERT: {product.title}"
+        message = (
+            f"You received a new purchase order/inquiry on Vanguard Motors!\n\n"
+            f"🚗 Vehicle: {product.title}\n"
+            f"💰 Listed Price: KES {product.price}\n\n"
+            f"👤 Buyer Details:\n"
+            f"Name: {buyer_name}\n"
+            f"Phone: {buyer_phone}\n"
+            f"Email: {buyer_email}\n"
+        )
+        
+        send_mail(
+            subject,
+            message,
+            settings.DEFAULT_FROM_EMAIL,
+            [settings.ADMIN_ALERT_EMAIL],
+            fail_silently=False,
+        )
+        
+        messages.success(request, "Your order/inquiry has been received! Vanguard Motors will contact you shortly.")
+        return redirect('product_detail', product_id=product.id)
 
 def signup_view(request):
     if request.method == 'POST':

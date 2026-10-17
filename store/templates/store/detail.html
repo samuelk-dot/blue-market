@@ -39,6 +39,27 @@
                     <i class="fa-brands fa-whatsapp text-lg"></i> Dispatch via WhatsApp
                 </a>
             </div>
+            <!-- 🚨 ADD THIS NEW EMAIL ALERT / BUY NOW FORM RIGHT HERE -->
+            <div class="p-4 border border-slate-800 rounded-2xl bg-slate-950 space-y-3 mt-4">
+                <h4 class="text-xs font-bold text-slate-300 uppercase">Instant Vehicle Inquiry & Order Alert</h4>
+    
+                <form method="POST" action="{% url 'place_order' product.id %}" class="space-y-3">
+                    {% csrf_token %}
+                        <input type="text" name="name" placeholder="Your Full Name" required 
+                            class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-amber-500">
+        
+                        <input type="text" name="phone" placeholder="Your Phone Number (e.g. +254...)" required 
+                            class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-amber-500">
+        
+                        <input type="email" name="email" placeholder="Your Email Address" 
+                            class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-amber-500">
+        
+                        <button type="submit" 
+                            class="w-full py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 text-xs uppercase tracking-wider">
+                           <i class="fa-solid fa-cart-shopping"></i> Buy Now / Send Direct Alert
+                        </button>
+                </form>
+            </div>    
         </div>
     </div>
 </div>
