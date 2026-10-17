@@ -1,7 +1,13 @@
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('store.urls')),  # Loads BLUE MARKET immediately at the main domain URL
+    path('', include('store.urls')),
 ]
+
+# Serve uploaded media files during development / local testing
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
