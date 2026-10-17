@@ -110,7 +110,7 @@ def vendor_dashboard(request):
         # 1. Handle Multiple Uploaded Image Files (up to 15 images)
         images = request.FILES.getlist('images')
         for img in images:
-            ProductImage.objects.create(product=product, image=img)
+            ProductImage.objects.create(product=product, image_file=img)
 
         # 2. Handle Image URL Link if provided
         image_url = request.POST.get('image_url')
