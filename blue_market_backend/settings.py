@@ -128,10 +128,20 @@ MAILERS = {
 }
 LOGIN_URL = 'login'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-# Production Security & Login Redirects
+
+# Production Security & Trusted Origins
 DEBUG = False
 
-ALLOWED_HOSTS = ['blue-market-sz8x.onrender.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = [
+    'blue-market-sz8x.onrender.com',
+    'localhost',
+    '127.0.0.1',
+]
+
+# Tell Django to trust form posts from your live Render domain
+CSRF_TRUSTED_ORIGINS = [
+    'https://blue-market-sz8x.onrender.com',
+]
 
 SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True
