@@ -138,7 +138,7 @@ LOGIN_URL = 'login'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Production Security & Trusted Origins
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     'blue-market-sz8x.onrender.com',
