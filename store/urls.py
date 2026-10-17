@@ -18,8 +18,5 @@ urlpatterns = [
     path('delete-product/<int:product_id>/', views.delete_product, name='delete_product'),
     path('dealers/', views.dealers_directory, name='dealers'),
     path('logout/', views.logout_view, name='logout'),
-    path('product/<int:product_id>/order/', views.place_order, name='place_order')
+    path('product/<int:product_id>/order/', views.place_order, name='place_order'),
 ]
-
-if settings.DEBUG:
-    urlpatterns += Static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
